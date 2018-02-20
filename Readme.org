@@ -1,5 +1,5 @@
 * Spacecraft Lighting Network System TOPIC# - TDC-46-F17 
-** Background:
+** Background:  
    Currently, spacecraft lighting system are operated independently through switches and knobs. 
    For future deep space missions, spacecrafts will require new and innovative intelligent 
    light control methods to minimize power, improve reliability such as compensating for degrading 
@@ -7,7 +7,8 @@
    Therefore, it is highly desired that spacecraftlighting system have the ability to communicate on 
    a networkwith on-board computers for determining lighting health status aswell as controlling the 
    lighting spectrum for task activities and maintaining circadian rhythmsof the crew.
-
+   
+   
 ** Project Description:
    Currently, commercial lighting bus standard chipsets are not suitable for the deep space radiation 
    environment. The focus of this project is to implement the DMX512 lighting standard using programmable 
@@ -23,15 +24,10 @@
    - Control at least two RGB lighting sources and accept one light sensor data over the bus.
    - GUI to control the SLNS
    - Program menu for selecting should include at least
-     - (1) health status of the lighting source such as lighting intensity compare what is programmed to what 
-     sensors detect and different lighting 
+     - (1) health status of the lighting source such as lighting intensity compare what is programmed to what sensors detect and different lighting 
      - (2) control lighting intensity  
      - (3) Provisions for expanding the number of DMX deviceson the bus.
 
    - Enclosure to house the SLNS with standard I/O connectors
-
-
-
-
 
 
