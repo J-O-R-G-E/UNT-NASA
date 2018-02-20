@@ -1,0 +1,197 @@
+#:kivy 1.9.0
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+<ScreenManagement>:
+    LoginScreen:
+        id: main
+    HomePage:
+        id: home
+    Setting:
+        id: sett
+
+<LoginScreen>:
+    name: "main_screen"
+   
+    Label:
+        font_size: 50
+        pos_hint: {"center_x": 0.5, "center_y": 0.8}
+        markup: True 
+        text:'[b][color=008000]Team 2b|!2b[/color][/b]'
+    GridLayout:
+        size_hint: (0.6, 0.3)
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        cols: 2
+        padding: 15
+
+        Label:
+            size_hint: (0.9, 0.1)
+            text: "Username:"
+            font_size: 30
+            text_size: self.size
+            valign: "middle"
+
+        TextInput:
+            id: user_name
+            size_hint: (1.3, 0.1)
+            cursor_blink: True
+            font_size: 30
+            multiline: False
+            spacing: [5,5]
+        Label:
+            size_hint: (0.9, 0.1)
+            text:"Password:"
+            font_size: 30
+            text_size: self.size
+            valign: "middle"
+
+        TextInput:
+            id: passw
+            size_hint: (1.3, 0.1)
+            cursor_blink: True
+            font_size: 30
+            multiline: False
+            password: True
+
+    BoxLayout:
+        orientation: 'vertical'        
+        size_hint: (0.5, 0.2)
+        pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+        Button:
+            height: 90
+            text:'Login'
+            font_size: 30
+            
+            on_press: root.manager.ids.main.login(user_name.text, passw.text)
+            
+
+
+
+########################################
+######### ADD FOR JORGE ################
+########################################
+######## Color Wheel Popup  ############
+########################################
+<ColorSelector>:
+    color: 1, 1, 1, 1
+    title: 'Select A Color'
+    content: content
+    id: colorSelected
+    
+    BoxLayout:
+        id: content
+        orientation: 'vertical'
+        size_hint_y: 1.0
+        ColorPicker:
+            id: RGBSource
+            color: root.color
+        BoxLayout:
+            size_hint_y: .30
+            #height: '20sp'
+            Button:
+                text: 'Ok'
+                on_release:
+                    # Remember Selection
+                    root.color = RGBSource.color
+                    colorSelected.on_press_dismiss(RGBSource)		    
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()
+
+###### END OF Color Wheel Popup  #######
+
+ 
+########################################
+########### SETTINGS CLASS #############
+########################################
+<Setting>:
+#Name of this rule
+    name: 'set'
+
+#Box Layout for Window
+    BoxLayout:
+        orientation: 'horizontal'
+        
+        Label:
+            id: 'Screen'
+            font_size: 40.0
+            size_hint_min_y: None
+            shorten: False
+            text: "System's Settings"
+            pos_hint:{'center_x': 0.5, 'center_y': 0.9}
+        
+
+
+
+#GRIDLAYOUT:
+######################################################
+#						     #
+#    #########	   #########	 ###########         #
+#    # BUTON1 #    # BUTTON2#    # BUTON_N #         #
+######################################################
+    GridLayout:
+        cols: 24
+        spacing: '8dp'
+        size_hint: 1, .2
+        pos_hint: {'center_x': .6, 'center_y': 0.1}
+
+	#BUTON1
+        Button:
+            text: "Add New Device"
+            size_hint:(.2, .1)
+            
+            #event:ruleIDIfAny.windowManager.listOfIds.classID.functionInsideThatClass
+            on_release:root.manager.ids.sett.addPorts()
+
+
+        #BUTON2
+        Button:        
+            text:"Ports Available"
+            size_hint: (.2, .1)
+            on_press: root.manager.ids.sett.getPorts()
+
+
+        #BUTON3
+        Button:
+            text: "Test RGB Values"
+            size_hint:(.2, .1)
+            on_release:
+                app.color_selector.open()
+                app.color_mode = 'brush' 
+
+        Button:
+            text:"Previous"
+            size_hint: (.2, .1)
+            on_press: root.manager.current = 'homepage'
+         
+	#BUTON_N
+	
+########## END OF SETTINGS CLASS ##############
+###############################################
+######### END OF ADD FOR JORGE ################
+#####################$$$$$$$###################
+
+
+<HomePage>:
+    name: 'homepage'
+    BoxLayout:
+        orientation: 'horizontal'
+        Label:
+            text: "DMX-512 Interface"
+            pos_hint:{'center_x': 0.5, 'center_y': 0.9}
+    GridLayout:
+        cols: 24
+        spacing: '8dp'
+        size_hint:1 , .2
+        pos_hint: {'center_x': 0.6, 'center_y': 0.1}  
+       
+        Button:
+            text: 'Setting'
+            font_size: 20
+            on_press: root.manager.current = 'set'
+
+        Button:
+            text: 'Logout'
+            font_size: 20
+            on_press: root.manager.current = 'main_screen'
+
+ 
