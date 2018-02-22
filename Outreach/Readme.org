@@ -1,0 +1,14 @@
+* Spring 2018 Outreach
+** We will hold an outreach at the University of North Texas' Discovery Park Campus
+   In this event, we will host High School students from Little Elm's Lebano High School
+   Our goal is to provide them a hands-on activity that is related to our project.
+   By doing this, the students will be able to understan what Computer Engineering is about
+   as well as to participate on writing code that will demostrate basic coding syntaxs as well
+   and how to compile a basi program.
+
+   We will cover:
+   - A Our background as students and chanllenges we have faced during our course.
+   - We will talk about the indistry as well as to why we chose Computer Engineering.
+   - We will talk about our project and how it will change astronaut's lighting enviroment on deep space missions.
+   - And finally, we will guide them on modifying code related to our project.
+
