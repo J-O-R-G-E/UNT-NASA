@@ -1,0 +1,55 @@
+#:kivy 1.9.0
+
+
+<ColorSelector>:
+    color: 1, 1, 1, 1
+    title: 'Select A Color'
+    content: content
+    id: colorSelected
+    
+    BoxLayout:
+        id: content
+        orientation: 'vertical'
+        size_hint_y: 1.0
+        ColorPicker:
+            id: RGBSource
+            color: root.color
+        BoxLayout:
+            size_hint_y: .30
+            #height: '20sp'
+            Button:
+                text: 'Ok'
+                on_release:
+                    # Remember Selection
+                    root.color = RGBSource.color
+                    colorSelected.on_press_dismiss(RGBSource)		    
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()
+
+<Setting>:
+#Name of this rule
+    name: 'set'
+
+#Box Layout for Window
+    BoxLayout:
+        orientation: 'horizontal'
+        
+        Label:
+            id: 'Screen'
+            font_size: 40.0
+            text: "Welcome Little Elm!"
+
+#Gridlayout for the button
+    GridLayout:
+        cols: 24
+        spacing: '8dp'
+        size_hint: 1, .2
+        pos_hint: {'center_x': .6, 'center_y': 0.1}
+
+        Button:
+            text: "Touch me!"
+            size_hint:(.2, .1)
+            on_release:
+                app.color_selector.open()
+                app.color_mode = 'brush' 
