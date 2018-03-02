@@ -71,29 +71,17 @@ int main(){
   }
   
   sleep(2);
-  
+    
+  //Lets create a temp work file.
+  system("touch tempWF");
   fstream cmdFile("workfile.txt");
   while(getline(cmdFile, cmdLine)){ // Read file untill EOF
     
-    //Lets create a temp work file.
-    ifstream ifile("tempWF");
-    if (ifile) {
-      if(cmdLine[0] != 'S'){
-	string strTemp1 = "echo '" + cmdLine + "' >> tempWF";
-	const char *sysTemp = strTemp1.c_str(); // Converts C++ string to C string aka char []
-	system(sysTemp);
-      }
+    if(cmdLine[0] != 'S'){
+      string strTemp1 = "echo '" + cmdLine + "' >> tempWF";
+      const char *sysTemp = strTemp1.c_str(); // Converts from C++ string to C char []
+      system(sysTemp); // Append the string to that file..
     }
-    else{
-      //The file doesnt exit
-      system("touch tempWF");
-      if(cmdLine[0] != 'S'){
-	string strTemp1 = "echo '" + cmdLine + "' >> tempWF";
-	const char *sysTemp = strTemp1.c_str(); // Converts from C++ string to C char []
-      	system(sysTemp); // Append the string to that file..
-      }
-    }//file exists now
-
     
     // We only care for Server commands:
     if(cmdLine[0] == 'S'){
@@ -187,7 +175,7 @@ int  tcpMaker(){
     
   // This fd is the one that the server will bind to..
   if( (server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0 ){
-    perror("Could Not Create Socket!\n");
+    perror("Could Not Create Socket!");
     exit(EXIT_FAILURE);
   }
     
@@ -196,7 +184,7 @@ int  tcpMaker(){
   address.sin_port = htons( PORT );
   
   if( bind(server_fd, (struct sockaddr *)&address, sizeof(address)) < 0 ){
-    perror("Could Not Bind!\n");
+    perror("Could Not Bind!");
     exit(EXIT_FAILURE);
   }
   
@@ -204,7 +192,7 @@ int  tcpMaker(){
   
   
   if( (new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen)) < 0 ){
-    perror("Unable To Stablish Connection!\n");
+    perror("Unable To Stablish Connection!");
       exit(EXIT_FAILURE);
   }
   
@@ -229,6 +217,8 @@ void populateMap(int fd){
   file_cout.open("workfile.txt", ios_base::app);
   file_cout << "G " << clientIP << " ADD 00000000" << endl;
   
+  file_cout << "S " << clientIP << " SET AABBCCDD" << endl; //For Testing Only
+  file_cout << "P " << clientIP << " SET AABBCCDD" << endl; //For Testing Only
   file_cout << "S " << clientIP << " SET AABBCCDD" << endl; //For Testing Only
 
   file_cout.close();
