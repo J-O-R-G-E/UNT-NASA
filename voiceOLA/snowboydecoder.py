@@ -15,17 +15,53 @@ import array
 import sys
 from time import sleep
 
+
+#Sensor
+import RPi.GPIO as GPIO
+
 # OLA
 wrapper = None
 universe = 1
 dataArr = array.array('B')
+dataArr2 = array.array('B')
+
 
 def DmxSent(status):
     if status.Succeeded():
         print('Success!')
         global wrapper
         wrapper.Stop()
-   
+        
+        
+def processOLA(flag):
+    global wrapper
+    global universe
+    global dataArr2
+    wrapper = ClientWrapper()
+    client = wrapper.Client()
+    if (flag == 1):
+        dataArr2 = []
+        dataArr2 = array.array('B')
+        dataArr2.append(125) #Intencity
+        dataArr2.append(255) #R
+        dataArr2.append(255) #G
+        dataArr2.append(255) #B                                                          
+        print(dataArr2)
+        ledON = 0;
+        while (ledON < 10): # 10 == 10 SECONDS
+            """
+            # THIS IS THE AMOUNT OF TIME WE SHOULD WAIT WHEN WE GET MOTION
+            # THIS VALUE WILL BE THE VALUE THE LIGHT SHOULD REMAIN ON AFTER
+            # MOTION HAS BEEN DETECTED.
+            """
+            sleep(1)
+            client.SendDmx(universe, dataArr2, DmxSent)
+            wrapper.Run()
+            ledON += 1
+        return
+    return
+
+
 logging.basicConfig()
 logger = logging.getLogger("snowboy")
 logger.setLevel(logging.INFO)
@@ -140,6 +176,21 @@ class HotwordDetector(object):
    
         # While we are listening....
         while True:
+
+            #Lets set get the sensor ready..
+            try: # Lets attempt to read from sensor..
+                if GPIO.input(sensorPin): # True when sensor sends a HIGH or 1
+                    print("Motion Detected...")
+                    processOLA(1)
+                    sleep(4)
+            except:
+                print("No Motion...")
+                #couter += 1
+                #if (motionCounter == 120):
+                 #   processOLA(-1)
+            #End of sensor
+
+            
             if interrupt_check():
                 logger.debug("detect voice break")
                 break
@@ -147,7 +198,7 @@ class HotwordDetector(object):
             if len(data) == 0:
                 time.sleep(sleep_time)
                 continue
-
+            
             ans = self.detector.RunDetection(data)
             if ans == -1:
                 logger.warning("Error initializing streams or reading audio data")
@@ -156,7 +207,7 @@ class HotwordDetector(object):
                 if callback is not None:
                     callback()
                     
-                # If we got our Key command, lets hear the next one....
+                    # If we got our Key command, lets hear the next one....
                 if(ans == 1):
                     print("\nHot Key dected.\n")
                     
@@ -310,6 +361,7 @@ class HotwordDetector(object):
                                  
                                 
                 else:
+                    GPIO.cleanup() # If we didnt read from sensor, lets clean up our GPIOs
                     print("Try Again...")
                     continue
 
