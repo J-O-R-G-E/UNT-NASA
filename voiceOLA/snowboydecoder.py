@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 from __future__ import print_function
 import collections
 import pyaudio
@@ -16,8 +17,13 @@ import sys
 from time import sleep
 
 
-#Sensor
+# Sensor
+# GPIO Setup
 import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BCM)
+sensorPin = 21
+GPIO.setup(sensorPin, GPIO.IN)
+
 
 # OLA
 wrapper = None
@@ -26,42 +32,8 @@ dataArr = array.array('B')
 dataArr2 = array.array('B')
 
 
-def DmxSent(status):
-    if status.Succeeded():
-        print('Success!')
-        global wrapper
-        wrapper.Stop()
-        
-        
-def processOLA(flag):
-    global wrapper
-    global universe
-    global dataArr2
-    wrapper = ClientWrapper()
-    client = wrapper.Client()
-    if (flag == 1):
-        dataArr2 = []
-        dataArr2 = array.array('B')
-        dataArr2.append(125) #Intencity
-        dataArr2.append(255) #R
-        dataArr2.append(255) #G
-        dataArr2.append(255) #B                                                          
-        print(dataArr2)
-        ledON = 0;
-        while (ledON < 10): # 10 == 10 SECONDS
-            """
-            # THIS IS THE AMOUNT OF TIME WE SHOULD WAIT WHEN WE GET MOTION
-            # THIS VALUE WILL BE THE VALUE THE LIGHT SHOULD REMAIN ON AFTER
-            # MOTION HAS BEEN DETECTED.
-            """
-            sleep(1)
-            client.SendDmx(universe, dataArr2, DmxSent)
-            wrapper.Run()
-            ledON += 1
-        return
-    return
 
-
+# Snowboy set up
 logging.basicConfig()
 logger = logging.getLogger("snowboy")
 logger.setLevel(logging.INFO)
@@ -70,6 +42,15 @@ TOP_DIR = os.path.dirname(os.path.abspath(__file__))
 RESOURCE_FILE = os.path.join(TOP_DIR, "resources/common.res")
 DETECT_DING = os.path.join(TOP_DIR, "resources/ding.wav")
 DETECT_DONG = os.path.join(TOP_DIR, "resources/dong.wav")
+
+
+
+# OLA Callback
+def DmxSent(status):
+    if status.Succeeded():
+        print('Success!')
+        global wrapper
+        wrapper.Stop()
 
 
 class RingBuffer(object):
@@ -104,6 +85,7 @@ def play_audio_file(fname=DETECT_DING):
     audio.terminate()
     
 
+# Here is where the magic happens
 class HotwordDetector(object):
     
     def __init__(self, decoder_model,
@@ -153,11 +135,20 @@ class HotwordDetector(object):
             frames_per_buffer=2048,
             stream_callback=audio_callback)
 
-        
+
+    # Here we hear commands, or detect motion, PIR.
     def start(self, detected_callback=play_audio_file,
               interrupt_check=lambda: False,
               sleep_time=0.03):
-
+        
+        # OLA and Sensor
+        global wrapper
+        global universe
+        global dataArr
+        global dataArr2
+        global sesorPin
+        wrapper = ClientWrapper()
+        client = wrapper.Client()
         
         if interrupt_check():
             logger.debug("detect voice return")
@@ -177,19 +168,24 @@ class HotwordDetector(object):
         # While we are listening....
         while True:
 
-            #Lets set get the sensor ready..
             try: # Lets attempt to read from sensor..
                 if GPIO.input(sensorPin): # True when sensor sends a HIGH or 1
                     print("Motion Detected...")
-                    processOLA(1)
-                    sleep(4)
-            except:
-                print("No Motion...")
-                #couter += 1
-                #if (motionCounter == 120):
-                 #   processOLA(-1)
-            #End of sensor
+                    dataArr2 = []
+                    dataArr2 = array.array('B')
+                    dataArr2.append(100) #Intencity
+                    dataArr2.append(100) #R
+                    dataArr2.append(100) #G
+                    dataArr2.append(100) #B                                                          
+                    print(dataArr2)
 
+                    client.SendDmx(universe, dataArr2, DmxSent)
+                    wrapper.Run()
+                    sleep(4)
+                    
+            except:
+                print("ERROR: Could not read/open Sensor")
+                
             
             if interrupt_check():
                 logger.debug("detect voice break")
@@ -198,7 +194,8 @@ class HotwordDetector(object):
             if len(data) == 0:
                 time.sleep(sleep_time)
                 continue
-            
+
+            # Detect Voices...
             ans = self.detector.RunDetection(data)
             if ans == -1:
                 logger.warning("Error initializing streams or reading audio data")
@@ -207,9 +204,9 @@ class HotwordDetector(object):
                 if callback is not None:
                     callback()
                     
-                    # If we got our Key command, lets hear the next one....
+                # Our key command should always be the first one.
                 if(ans == 1):
-                    print("\nHot Key dected.\n")
+                    print("\nKeyword dected.\n")
                     
                     while True:
                         if interrupt_check():
@@ -219,7 +216,8 @@ class HotwordDetector(object):
                         if len(data) == 0:
                             time.sleep(sleep_time)
                             continue
-                        
+
+                        # Now lets check the other commands...
                         cmd = self.detector.RunDetection(data)
                         if cmd == -1:
                             logger.warning("Error initializing streams or reading audio data")
@@ -228,21 +226,15 @@ class HotwordDetector(object):
 
                             if callback is not None:
                                 callback()
-                                
-                            # OLA
-                            global wrapper
-                            global universe
-                            global dataArr
-                            wrapper = ClientWrapper()
-                            client = wrapper.Client()
-                            
-                            # Lets see if the work we got is on our list....
+                           
+                            # If we get key command agin, lets break and start over.
+                            # However, we could just pass to hear next keyword....
                             if(cmd == 1):
                                 print("Got Houston instead of CMD")
                                 break
                             
                             elif(cmd == 2):
-                                ARGB = [120, 120, 0, 0]
+                                ARGB = [100, 100, 0, 0]
                                 dataArr.extend(ARGB)
                                 
                                 print("Red Light:{}".format(dataArr))
@@ -256,7 +248,7 @@ class HotwordDetector(object):
                                 break;
                             
                             elif(cmd == 3):
-                                ARGB = [120, 0, 120, 0]
+                                ARGB = [100, 0, 100, 0]
                                 dataArr.extend(ARGB)
                                 print("Green Light:{}".format(dataArr))
                                 
@@ -270,7 +262,7 @@ class HotwordDetector(object):
                                 break
                             
                             elif(cmd == 4):
-                                ARGB = [120, 0, 0, 120]
+                                ARGB = [100, 0, 0, 100]
                                 dataArr.extend(ARGB)
                                 print("Blue Light:{}".format(dataArr))
                                 
@@ -289,7 +281,7 @@ class HotwordDetector(object):
                                     dataArr = []
                                     dataArr = array.array('B')
                                     
-                                    ARGB = [120, 120, 0, 0]
+                                    ARGB = [100, 100, 0, 0]
                                     dataArr.extend(ARGB)
                                     print("EMERGENCY Light:{}".format(dataArr))
                                     
@@ -300,7 +292,7 @@ class HotwordDetector(object):
                                     
                                     dataArr = []
                                     dataArr = array.array('B')
-                                    ARGB = [120, 0, 0, 120]
+                                    ARGB = [100, 0, 0, 100]
                                     dataArr.extend(ARGB)
                                     print("EMERGENCY Light:{}".format(dataArr))
                                     
@@ -313,7 +305,7 @@ class HotwordDetector(object):
                                     dataArr = []
                                     dataArr = array.array('B')
                                 
-                                    ARGB = [120, 120, 0, 0]
+                                    ARGB = [100, 100, 0, 0]
                                     dataArr.extend(ARGB)
                                     print("EMERGENCY Light:{}".format(dataArr))
                                     
@@ -324,7 +316,7 @@ class HotwordDetector(object):
                                     
                                     dataArr = []
                                     dataArr = array.array('B')
-                                    ARGB = [120, 0, 0, 120]
+                                    ARGB = [100, 0, 0, 100]
                                     dataArr.extend(ARGB)
                                     print("EMERGENCY Light:{}".format(dataArr))
                                     
@@ -332,7 +324,6 @@ class HotwordDetector(object):
                                     wrapper.Run()
                                     
                                     sleep(0.5)
-                                    
                                     
                                     dataArr = []
                                     dataArr = array.array('B')
