@@ -2,13 +2,17 @@
 #include <string>
 
 class DMX512{
+  int outOfRange = 0;  
 public:
+ 
   std::string A, R, G, B, OLA;
   unsigned int Ai, Ri, Gi, Bi;
-  char *ack;
-  const char *OLAFailure;
   
-  DMX512(std::string DATA);
+  DMX512();
+  void setOutOfRange(int i);
+  int getOutOfRange();
+  void setData(std::string DATA);
   void clientHandler();
-  char sendOLA();
+  std::string sendOLA();
+  void checkOLA();
 };
