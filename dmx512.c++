@@ -38,17 +38,17 @@ DMX512::DMX512(){
   if(i.size() <= 0){
     std::cout << "OLA IS DOWN\n";
 
-    system("sudo olad -l 4 > /dev/null 2>&1 &");
+    system("sudo ola_dev_info > /dev/null 2>&1 &");
     for(int i=0; i<10; i++){
       std::cout << "\nOLA is Starting Up..";
       sleep(1);
     }
     
-    std::cout << "\nPatching device 5's port 1 to Universe 1\n";
-    std::cout << "\tdevice 5 is our FTDI USB Adapter\n";
+    std::cout << "\nPatching device 8's port 1 to Universe 1\n";
+    std::cout << "\tdevice 8 is our FTDI USB Adapter\n";
     std::cout << "\tsee ola_dev_info\n";
     sleep(3);
-    system("ola_patch -d 5 -p 1 -u 1 > /dev/null 2>&1 &"); 
+    system("ola_patch -d 8 -p 1 -u 1 > /dev/null 2>&1 &"); 
 
     std::cout << "Sending dummy data\n";
     system("ola_streaming_client  -u 1 -d 1,2,255,255 > /dev/null 2>&1 &");
