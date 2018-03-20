@@ -54,11 +54,14 @@ DMX512::DMX512(){
     system("ola_streaming_client  -u 1 -d 1,2,255,255 > /dev/null 2>&1 &");
     sleep(3);
   }
-  else
-    std::cout << "OLA IS UP\n";
- 
+  else{
+    system("sudo ola_dev_info > /dev/null 2>&1 &");
+    system("ola_patch -d 8 -p 1 -u 1 > /dev/null 2>&1 &"); 
+    //std::cout << "OLA IS UP\n";
+  }
+  
   system("rm tempFile-1");
-  std::cout << "OLA Is Now Running..\n\n";
+  std::cout << "OLA IS UP\n";
   
 }
 
