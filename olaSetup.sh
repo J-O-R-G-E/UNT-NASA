@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# By Jorge Cardona
+# jac0656@unt.edu
+
+
+RED=`tput setaf 1`
+GREEN=`tput setaf 2`
+BOLD=`tput bold`
+RESET=`tput sgr0`
 
 
 # Lets check the user is sudoer
@@ -24,33 +32,57 @@ then
     ###################### Dependecies for OLA #################################
     # Lets get Google's Protocol Buffer:
     wget https://github.com/google/protobuf/releases/download/v3.5.1/protobuf-all-3.5.1.tar.gz
+    echo -e "\n${GREEN}DOWNLOADED PROTOBUF   ${RESET}\n"
+
     
     # Lets extract everything:
-    tar -zxvf protobuf-all-3.5.1.tar.gz
+    tar -zxvf protobuf-all-3.5.1.tar.g
+z    echo -e "\n\n${GREEN}UNZIPPED   ${RESET}\n\n"
+
     
     # Lets go there
     cd protobuf-all-3.5.1/
     
     ./configure
-    
+    echo -e "\n\n${GREEN}./configure       ${RESET}\n\n"
+
     # Takes a really long time
     make 
-    
+    echo -e "\n\n${GREEN}make       ${RESET}\n\n"
     # Takes a while, too
-    make check  
     
+    make check  
+    echo -e "\n\n${GREEN}make check       ${RESET}\n\n"
+
     # Make it rain
     sudo make install
+    echo -e "\n\n${GREEN}make install       ${RESET}\n\n"
     
     # We also need all of these:
     sudo apt-get install bison -y
+    echo -e "\n\n${GREEN}bison -y       ${RESET}\n\n"
+    
     sudo apt-get install flex -y
+    echo -e "\n\n${GREEN}flex -y       ${RESET}\n\n"
+    
     sudo apt-get install lex -y
+    echo -e "\n\n${GREEN}lex -y       ${RESET}\n\n"
+    
     sudo apt-get install uuid-dev -y
+    echo -e "\n\n${GREEN}uuid-dev -y       ${RESET}\n\n"
+    
     sudo apt-get install libcppunit-dev -y
+    echo -e "\n\n${GREEN}libcppunit-dev -y       ${RESET}\n\n"
+    
     sudo apt-get install doxygen -y
+    echo -e "\n\n${GREEN}doxygen -y       ${RESET}\n\n" # You should learn about this
+    
     sudo apt-get install libcppunit-dev libcppunit-dev uuid-dev pkg-config libncurses5-dev libtool autoconf automake g++ libmicrohttpd-dev
+    echo -e "\n\n${GREEN}libcppunit-dev libcppunit-dev uuid-dev pkg-config libncurses5-dev libtool autoconf automake g++ libmicrohttpd-dev ${RESET}\n\n"
+    
     libmicrohttpd10 protobuf-compiler libprotobuf-lite10 python-protobuf libprotobuf-dev libprotoc-dev zlib1g-dev bison flex make libftdi-dev libftdi1 libusb-1.0-0-dev liblo-dev libavahi-client-dev python-numpy
+    echo -e "\n\n${GREEN}   libmicrohttpd10 protobuf-compiler libprotobuf-lite10 python-protobuf libprotobuf-dev libprotoc-dev zlib1g-dev bison flex make libftdi-dev libftdi1 libusb-1.0-0-dev liblo-dev libavahi-client-dev python-numpy    ${RESET}\n\n"
+
     sudo ldconfig
     ############### End of Dependecies #####3#############
     
@@ -60,23 +92,28 @@ then
     cd $HOME
     
     sudo  ldconfig
-    
+
     # Just in case...
     sudo apt-get install git
     
     # Thanks open source! We love you all
     git clone https://github.com/OpenLightingProject/ola.git ola
+    echo -e "\n\n${GREEN}DOWNLOADING OLA   ${RESET}\n\n"
+
     
     cd ola
     
     autoreconf -i
+    echo -e "\n\n${GREEN}autoreconf -i       ${RESET}\n\n"
     #./configure --help        # To see all the options available
     #./configure --enable-all-plugins # Use the command above to disable any plugin not needed
+
     ./configure --disable-all-plugins
-    
+        
     # Lets meka sure we have our FTDI plugin
     ./configure --enable-ftdidmx
-    
+    echo -e "\n\n${GREEN}./configure --enable-ftdidmx       ${RESET}\n\n"
+
     make -j 4 all             # 4 is the numbers of cores used
     make
     make check                # Checks everything on OLA. Takes forever
@@ -113,15 +150,19 @@ then
     sudo ln -sf /usr/local/lib/libftd2xx.so.1.4.6 /usr/local/lib/libftd2xx.so
     
     # Lets configure our files for the FTDI USB
-    sudo sed -i -e 's/ttyUSB/ttyUSB*/s' /home/pi/.ola/ola-usbserial.conf
-    sudo sed -i -e 's/ttyU/ttyU*/s'     /home/pi/.ola/ola-usbserial.conf
+    sudo sed -i -e 's/ttyUSB/ttyUSB*/g' /home/pi/.ola/ola-usbserial.conf
+    sudo sed -i -e 's/ttyU/ttyU*/g'     /home/pi/.ola/ola-usbserial.conf
     
     # Lets make sure the plugin is enabled
-    sudo sed -i -e 's/false/true/s' /etc/ola/ola-ftdidmx.conf
-    
+    sudo sed -i -e 's/false/true/g' /etc/ola/ola-ftdidmx.conf
+  
     # Lets change the requency to 44 Hz (MAX)
-    sudo sed -i -e 's/30/44/s' /etc/ola/ola-ftdidmx.conf
+    sudo sed -i -e 's/30/44/g' /etc/ola/ola-ftdidmx.conf
     ################### Setting up FTDI USB ####################
+
+    # Lets make sure there is no conflict with FTDI
+    sudo sed -i -e 's/true/false/g' /etc/ola/ola-usbserial.conf
+    sudo sed -i -e 's/true/false/g' /etc/ola/ola-opendmx.conf
     
 
     echo -e "\n\nThe Coputer will reboot in 5 seconds.\n"
@@ -162,5 +203,4 @@ else
     
 fi
 
-exit # Doesn't get here? 
-
+exit 1
