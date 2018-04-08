@@ -163,11 +163,25 @@ z    echo -e "\n\n${GREEN}UNZIPPED   ${RESET}\n\n"
     # Lets make sure there is no conflict with FTDI
     sudo sed -i -e 's/true/false/g' /etc/ola/ola-usbserial.conf
     sudo sed -i -e 's/true/false/g' /etc/ola/ola-opendmx.conf
-    
 
+
+    # Lets try to complete the setup by init the OLA deamond
+    olad -l 3  > /dev/null 2>&1
+    sleep 5
+
+    # Lets send some dummy data
+    ola_streaming_client  -u 1 -d 1,2,255,255 > /dev/null 2>&1 &
+
+    # Lets path the FTDI USB to Universe 1
+    ola_patch -d 2 -p 1 -u 1
+    
     echo -e "\n\nThe Coputer will reboot in 5 seconds.\n"
     echo -e "After reboot, please run the command 'olad -l 3 '\n"
     echo -e "This command will run the olad deamon...\n\n\n"
+    echo -e "This command will run the olad deamon...\n\n\n"
+    
+    ifconfig | grep "inet 192........."
+    echo -e "Use the highlighted IP address on a browser as: IP:9090 and create a Universe with ID:1"
     
     sleep 5
     
