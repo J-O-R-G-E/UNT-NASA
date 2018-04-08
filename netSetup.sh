@@ -110,12 +110,20 @@ sleep 3
 echo -e "${GREEN}OK${RESET} "
 
 
+# cat /etc/resolv.conf
+# cat /etc/dhcpcd.conf
+
+echo -e "Making back up for DHCP Services"
+cat /etc/dhcpcd.conf > /etc/dhcpcd.conf.ORIGINAL
+echo -e "${GREEN}OK${RESET} "
+
 sudo sed -i -e 's/#interface eth0/interface eth0/g' /etc/dhcpcd.conf
 sudo sed -i -e 's/#static ip_address=192.168.0.10\/24/static ip_address=192.168.1.12\/24/g' /etc/dhcpcd.conf 
 sudo sed -i -e 's/#static ip6_address=fd51:42f8:caae:d92e::ff\/64/static ip6_address=fd51:42f8:caae:d92e::ff\/64/g' /etc/dhcpcd.conf
-sudo sed -i -e 's/#static routers=192.168.0.1/static routers=192.168.0.1\/24/g' /etc/dhcpcd.conf
-sudo sed -i -e 's/#static domain_name_servers=192.168.0.1 8.8.8.8 fd51:42f8:caae:d92e::1/static domain_name_servers=192.168.0.1 8.8.8.8 fd51:42f8:caae:d92e::1/g' /etc/dhcpcd.conf
+sudo sed -i -e 's/#static routers=192.168.0.1/static routers=192.168.1.1/g' /etc/dhcpcd.conf
+sudo sed -i -e 's/#static domain_name_servers=192.168.0.1 8.8.8.8 fd51:42f8:caae:d92e::1/static domain_name_servers=192.168.1.1 8.8.8.8 fd51:42f8:caae:d92e::1/g' /etc/dhcpcd.conf
 sleep 3
+echo "Configured..."
 echo -e "${GREEN}OK${RESET} "
 
 
