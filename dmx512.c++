@@ -48,7 +48,7 @@ DMX512::DMX512(){
     std::cout << "\tdevice 8 is our FTDI USB Adapter\n";
     std::cout << "\tsee ola_dev_info\n";
     sleep(3);
-    system("ola_patch -d 8 -p 1 -u 1 > /dev/null 2>&1 &"); 
+    system("ola_patch -d 2 -p 1 -u 1 > /dev/null 2>&1 &"); 
 
     std::cout << "Sending dummy data\n";
     system("ola_streaming_client  -u 1 -d 1,2,255,255 > /dev/null 2>&1 &");
@@ -56,7 +56,7 @@ DMX512::DMX512(){
   }
   else{
     system("sudo ola_dev_info > /dev/null 2>&1 &");
-    system("ola_patch -d 8 -p 1 -u 1 > /dev/null 2>&1 &"); 
+    system("ola_patch -d 2 -p 1 -u 1 > /dev/null 2>&1 &"); 
     //std::cout << "OLA IS UP\n";
   }
   
@@ -119,7 +119,7 @@ void DMX512::checkOLA(){
   if(i.size() <= 0){
     std::cout << "OLA IS DOWN\n";
     system("sudo olad -l 4 > /dev/null 2>&1 &");
-    system("ola_patch -d 5 -p 1 -u 1 > /dev/null 2>&1 &"); 
+    system("ola_patch -d 2 -p 1 -u 1 > /dev/null 2>&1 &"); 
     system("ola_streaming_client  -u 1 -d 1,2,255,255 > /dev/null 2>&1 &");
   }
   else
