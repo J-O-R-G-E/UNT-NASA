@@ -1,3 +1,8 @@
+/*
+ * By Jorge Cardona
+ * jac0656@unt.edu
+ */
+
 #pragma once
 #include <string>
 

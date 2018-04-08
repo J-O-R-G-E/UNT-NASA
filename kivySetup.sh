@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# source: https://kivy.org/docs/installation/installation-rpi.html
+# By Jorge Cardona     
+# jac0656@unt.edu  
 
 # Lets be modern
 sudo apt-get update --fix-missing

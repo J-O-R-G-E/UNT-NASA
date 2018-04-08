@@ -1,3 +1,8 @@
+/*
+ * By Jorge Cardona
+ * jac0656@unt.edu
+ */
+
 #include <iostream>
 #include <fstream>
 #include <sstream>
