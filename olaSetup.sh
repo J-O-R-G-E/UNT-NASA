@@ -36,8 +36,8 @@ then
 
     
     # Lets extract everything:
-    tar -zxvf protobuf-all-3.5.1.tar.g
-z    echo -e "\n\n${GREEN}UNZIPPED   ${RESET}\n\n"
+    tar -zxvf protobuf-all-3.5.1.tar.gz
+    echo -e "\n\n${GREEN}UNZIPPED   ${RESET}\n\n"
 
     
     # Lets go there

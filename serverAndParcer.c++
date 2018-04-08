@@ -1,4 +1,7 @@
-
+/*
+ * By Jorge Cardona
+ * jac0656@unt.edu
+ */
 
 // Usage: g++ -g -std=c++11 -pthread serverAndParcer.c++ -lpthread -o server 
 // Run: ./server

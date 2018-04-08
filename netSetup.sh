@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# By Jorge Cardona
+# jac0656@unt.edu
+
+
 RED=`tput setaf 1`
 GREEN=`tput setaf 2`
 BOLD=`tput bold`
@@ -102,7 +106,7 @@ echo -e "${GREEN}OK${RESET} "
 
 # TCP_SOMAXCONN
 # This is the kernel's socket limmit.
-# Default is 12
+# Default is 128
 sysctl net.core.somaxconn
 sudo sysctl -w net.core.somaxconn=2048
 sudo echo "net.core.somaxconn = 2048" >> /etc/sysctl.conf # Prevent loosing it on reboot

@@ -1,3 +1,7 @@
+/*
+ * By Jorge Cardona
+ * jac0656@unt.edu
+ */
 
 //Compiles with: g++ testDMX512.c++ dmx512.c++ $(pkg-config --cflags --libs libola) -std=c++11 -Wall
 //Here testDMX.c++ is a file that includes this library

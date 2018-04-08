@@ -1,5 +1,9 @@
-//Regular stuff
+/*
+ * By Jorge Cardona
+ * jac0656@unt.edu
+ */
 
+//Regular stuff
 #include <stdlib.h>
 //#include <iostream>
 #include <time.h>
