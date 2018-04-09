@@ -66,6 +66,11 @@ sleep 2
 #echo "export PYTHONPATH=$(pwd):\$PYTHONPATH" >> ~/.profile
 #source ~/.profile
 
+sudo pip install pathlib
+sleep 2
+echo -e "\n\nsudo pip install pathlib for Python\n"
+
+
 sleep 2
 echo -e "\n\nAbout to test kivy.\n"
 
