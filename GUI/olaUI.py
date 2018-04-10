@@ -1,23 +1,27 @@
 #!/usr/bin/env python
 
-import webkit
-import gtk
+# By Jorge Cardona
+# jac0656@unt.edu
+
 import os
+import gtk    # Must Go First
+import webkit # Must Go Second
 
 win = gtk.Window()
 win.resize(800,500)
 win.connect('destroy', lambda w: gtk.main_quit())
 
-scroller = gtk.ScrolledWindow()
-win.add(scroller)
+scrollBar = gtk.ScrolledWindow()
+win.add(scrollBar)
 
 web = webkit.WebView()
-path=os.getcwd()
-print path
 
-web.open("https://google.com")
+ip = os.sys.argv[1:]
+ip = ip[:13]+":9090"
 
-scroller.add(web)
+web.open("http://"+ip)
+
+scrollBar.add(web)
 
 win.show_all()
 
