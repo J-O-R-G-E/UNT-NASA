@@ -139,6 +139,10 @@ echo -e "${GREEN}OK${RESET} "
 #         #3 system-wide maximum number of file handles
 # sudo echo 10000000 > /proc/sys/fs/file-max
 
+sudo apt-get install arp-scan -y
+echo -e "\nInstalling artp-scan..."
+echo -e "\This is needed for voice commands..."
+echo -e "${GREEN}OK${RESET} "
+
 sleep 3
 echo -e "${GREEN}Done...${RESET} "
-
