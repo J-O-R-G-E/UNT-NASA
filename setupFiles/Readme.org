@@ -1,0 +1,21 @@
+** Configuration Files For Fresh Install or Maintance
+*
+* File Descriptions
+- kivySetup.sh
+  This file sets up all and every dependency needed to run the GUI on a Raspberry Pi as of 4-10-18. Most of the instructios where gathered from: https://github.com/kivy/kivy
+
+- netSetup.sh
+  This file modifies some low level network settings. Sudo user is required to run this script. It changes SOCONMAX fromm 128 to 2048 in order to scale the the network. By changing this value, the server can now handle up 2048 unacknowledged connections. This file also modifies the way resources are used when connections are lost or clients are down by releasing all those resources sooner than normal. And finally, it install arp-scan which is needed for voice command functionalities.
+
+- olaSetup.sh
+  WARNING: This file uses 100% of the power on the Raspberry Pi to a point that a fan has been used. This file builds OLA and install all libraries required to do so. It also intall the FTDI drivers, and configures the OLA plugins, that there is no conflict between the FTDI USB and other USB plugins that come with OLA. Note that by default, I have disable all the plugins and only enabled the FTDI USB plugin. Furthermore, once OLA and the FTDI drivers have been installed, a dummy test of color values are sent. Notice that the DMX512 light should be already pluged in to Pi, using the FTDI USB, in order to see this part. And last but not least, there are two ways to run this script, One: sudo ./olaSetup.sh install or Two: sudo ./olaSetup.sh update The scond one is to update the OLA from the GitHub repository
+
+- ola_UI_Setup.sh
+  This file sets all enviroments to allow the default OLA Dashboard to be displayed withing the GUI. This can be used for testing or troubleshooting specific light within the GUI. Finally, this file requires sudo user.
+
+- voiceSetup.sh 
+  This file sets up SnowBoy which is used for voice commands on a LAN. It also works offline which is perfect for this project.
+
+
+* Disclaimer
+All of the frameworks and libraries used on any of these files are from open source. This files were created in order to have a almost automatic configuration of the entire project so that new developers or user can just run these setp up files and have the most basic configuration for this project
