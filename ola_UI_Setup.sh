@@ -56,4 +56,8 @@ apt install python-gtk2-dev
 wget http://ftp.cn.debian.org/debian/pool/main/p/pywebkitgtk/python-webkit-dev_1.1.8-3_all.deb
 dpkg -i python-webkit-dev_1.1.8-3_all.deb
 
+
+# This is also on netSetup.sh
+sudo apt-get install arp-scan -y
+
 exit
