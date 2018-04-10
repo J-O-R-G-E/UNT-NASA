@@ -71,6 +71,9 @@ sleep 2
 echo -e "\n\nsudo pip install pathlib for Python\n"
 
 
+sudo apt-get install sqlite3
+echo -e "\n\nsudo apt-get install sqlite3\n\n"
+
 sleep 2
 echo -e "\n\nAbout to test kivy.\n"
 
