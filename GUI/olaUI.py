@@ -16,11 +16,13 @@ win.add(scrollBar)
 
 web = webkit.WebView()
 
-ip = os.sys.argv[1:]
-ip = ip[:13]+":9090"
+ip = os.sys.argv[1]
+ip +=":9090"
 
-web.open("http://"+ip)
+print(ip)
 
+#web.open("http://"+ip)
+web.open("https://google.com")
 scrollBar.add(web)
 
 win.show_all()
