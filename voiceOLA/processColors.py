@@ -9,7 +9,7 @@ class VoiceToColor(object):
     
     def processColor(self, color):
         # Get all IP addresses from database.py
-        system('cat database.py  | awk \'{print $1}\' > ipOnly')
+        system('sudo arp-scan 192.168.1.0/24 | grep 192  | awk \'{print $1}\' | tail -n +1 > ipOnly')
         
         # Load on the lines into a buffer
         self.file=open("ipOnly","r")
