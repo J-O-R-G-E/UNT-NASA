@@ -1,0 +1,97 @@
+\hypertarget{classsnowboydecoder_1_1HotwordDetector}{}\section{snowboydecoder.\+Hotword\+Detector Class Reference}
+\label{classsnowboydecoder_1_1HotwordDetector}\index{snowboydecoder.\+Hotword\+Detector@{snowboydecoder.\+Hotword\+Detector}}
+
+
+Inheritance diagram for snowboydecoder.\+Hotword\+Detector\+:
+% FIG 0
+
+
+Collaboration diagram for snowboydecoder.\+Hotword\+Detector\+:
+% FIG 1
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \hyperlink{classsnowboydecoder_1_1HotwordDetector_a22091f02a8fea2f6065f8bc45addf7fc}{\+\_\+\+\_\+init\+\_\+\+\_\+} (self, decoder\+\_\+model, resource=\hyperlink{namespacesnowboydecoder_ae9aa648d909800942df02cc34b56b83a}{R\+E\+S\+O\+U\+R\+C\+E\+\_\+\+F\+I\+LE}, sensitivity=\mbox{[}$\,$\mbox{]}, audio\+\_\+gain=1)
+\item 
+def \hyperlink{classsnowboydecoder_1_1HotwordDetector_a0b753c51c1a02be091a7673870cd74e6}{start} (self, detected\+\_\+callback=\hyperlink{namespacesnowboydecoder_a828506a06fcca3526430747208f904aa}{play\+\_\+audio\+\_\+file}, interrupt\+\_\+check=lambda\+:\+False, sleep\+\_\+time=0.\+03)
+\item 
+def \hyperlink{classsnowboydecoder_1_1HotwordDetector_a1ab6e303be1e4dbd5adaa9b9d29dfa1a}{terminate} (self)
+\end{DoxyCompactItemize}
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classsnowboydecoder_1_1HotwordDetector_a443f1b4a74ff9e6dab682d9161b7aa52}{detector}
+\item 
+\hyperlink{classsnowboydecoder_1_1HotwordDetector_a45759e8fb8047abaf3697071cb88364c}{num\+\_\+hotwords}
+\item 
+\hyperlink{classsnowboydecoder_1_1HotwordDetector_ae5f5881d045e26f9e750b5e03c99f29c}{ring\+\_\+buffer}
+\item 
+\hyperlink{classsnowboydecoder_1_1HotwordDetector_a747f6301374f25541183bd2b7f0baac6}{audio}
+\item 
+\hyperlink{classsnowboydecoder_1_1HotwordDetector_a2658be70bb0b1939517e24f008d392a2}{stream\+\_\+in}
+\end{DoxyCompactItemize}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classsnowboydecoder_1_1HotwordDetector_a22091f02a8fea2f6065f8bc45addf7fc}\label{classsnowboydecoder_1_1HotwordDetector_a22091f02a8fea2f6065f8bc45addf7fc}} 
+\index{snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}!\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}}
+\index{\+\_\+\+\_\+init\+\_\+\+\_\+@{\+\_\+\+\_\+init\+\_\+\+\_\+}!snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}}
+\subsubsection{\texorpdfstring{\+\_\+\+\_\+init\+\_\+\+\_\+()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def snowboydecoder.\+Hotword\+Detector.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{decoder\+\_\+model,  }\item[{}]{resource = {\ttfamily \hyperlink{namespacesnowboydecoder_ae9aa648d909800942df02cc34b56b83a}{R\+E\+S\+O\+U\+R\+C\+E\+\_\+\+F\+I\+LE}},  }\item[{}]{sensitivity = {\ttfamily \mbox{[}\mbox{]}},  }\item[{}]{audio\+\_\+gain = {\ttfamily 1} }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classsnowboydecoder_1_1HotwordDetector_a0b753c51c1a02be091a7673870cd74e6}\label{classsnowboydecoder_1_1HotwordDetector_a0b753c51c1a02be091a7673870cd74e6}} 
+\index{snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}!start@{start}}
+\index{start@{start}!snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}}
+\subsubsection{\texorpdfstring{start()}{start()}}
+{\footnotesize\ttfamily def snowboydecoder.\+Hotword\+Detector.\+start (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{detected\+\_\+callback = {\ttfamily \hyperlink{namespacesnowboydecoder_a828506a06fcca3526430747208f904aa}{play\+\_\+audio\+\_\+file}},  }\item[{}]{interrupt\+\_\+check = {\ttfamily lambda\+:~False},  }\item[{}]{sleep\+\_\+time = {\ttfamily 0.03} }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classsnowboydecoder_1_1HotwordDetector_a1ab6e303be1e4dbd5adaa9b9d29dfa1a}\label{classsnowboydecoder_1_1HotwordDetector_a1ab6e303be1e4dbd5adaa9b9d29dfa1a}} 
+\index{snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}!terminate@{terminate}}
+\index{terminate@{terminate}!snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}}
+\subsubsection{\texorpdfstring{terminate()}{terminate()}}
+{\footnotesize\ttfamily def snowboydecoder.\+Hotword\+Detector.\+terminate (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Terminate audio stream. Users cannot call start() again to detect.
+:return: None
+\end{DoxyVerb}
+ 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classsnowboydecoder_1_1HotwordDetector_a747f6301374f25541183bd2b7f0baac6}\label{classsnowboydecoder_1_1HotwordDetector_a747f6301374f25541183bd2b7f0baac6}} 
+\index{snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}!audio@{audio}}
+\index{audio@{audio}!snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}}
+\subsubsection{\texorpdfstring{audio}{audio}}
+{\footnotesize\ttfamily snowboydecoder.\+Hotword\+Detector.\+audio}
+
+\mbox{\Hypertarget{classsnowboydecoder_1_1HotwordDetector_a443f1b4a74ff9e6dab682d9161b7aa52}\label{classsnowboydecoder_1_1HotwordDetector_a443f1b4a74ff9e6dab682d9161b7aa52}} 
+\index{snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}!detector@{detector}}
+\index{detector@{detector}!snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}}
+\subsubsection{\texorpdfstring{detector}{detector}}
+{\footnotesize\ttfamily snowboydecoder.\+Hotword\+Detector.\+detector}
+
+\mbox{\Hypertarget{classsnowboydecoder_1_1HotwordDetector_a45759e8fb8047abaf3697071cb88364c}\label{classsnowboydecoder_1_1HotwordDetector_a45759e8fb8047abaf3697071cb88364c}} 
+\index{snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}!num\+\_\+hotwords@{num\+\_\+hotwords}}
+\index{num\+\_\+hotwords@{num\+\_\+hotwords}!snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}}
+\subsubsection{\texorpdfstring{num\+\_\+hotwords}{num\_hotwords}}
+{\footnotesize\ttfamily snowboydecoder.\+Hotword\+Detector.\+num\+\_\+hotwords}
+
+\mbox{\Hypertarget{classsnowboydecoder_1_1HotwordDetector_ae5f5881d045e26f9e750b5e03c99f29c}\label{classsnowboydecoder_1_1HotwordDetector_ae5f5881d045e26f9e750b5e03c99f29c}} 
+\index{snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}!ring\+\_\+buffer@{ring\+\_\+buffer}}
+\index{ring\+\_\+buffer@{ring\+\_\+buffer}!snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}}
+\subsubsection{\texorpdfstring{ring\+\_\+buffer}{ring\_buffer}}
+{\footnotesize\ttfamily snowboydecoder.\+Hotword\+Detector.\+ring\+\_\+buffer}
+
+\mbox{\Hypertarget{classsnowboydecoder_1_1HotwordDetector_a2658be70bb0b1939517e24f008d392a2}\label{classsnowboydecoder_1_1HotwordDetector_a2658be70bb0b1939517e24f008d392a2}} 
+\index{snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}!stream\+\_\+in@{stream\+\_\+in}}
+\index{stream\+\_\+in@{stream\+\_\+in}!snowboydecoder\+::\+Hotword\+Detector@{snowboydecoder\+::\+Hotword\+Detector}}
+\subsubsection{\texorpdfstring{stream\+\_\+in}{stream\_in}}
+{\footnotesize\ttfamily snowboydecoder.\+Hotword\+Detector.\+stream\+\_\+in}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/pi/\+Desktop/\+U\+N\+T-\/\+N\+A\+S\+A/voice\+O\+L\+A/\hyperlink{snowboydecoder_8py}{snowboydecoder.\+py}\end{DoxyCompactItemize}
