@@ -1,5 +1,0 @@
-** Documentaion Uing Doxygen
-* Usage:
-  - Single Line Comments: Place Before Methods or Members. //! OR ///
-  - Multiline Comments: Place Before Methods or Members. /*! */ OR /** */ 
-  - Commands '@' or '\': @author \version @version \autor \date \bug \ brief \warning \mainpage \copyright \section \subsection \param \detail
