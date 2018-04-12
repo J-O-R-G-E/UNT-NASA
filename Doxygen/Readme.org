@@ -1,7 +1,7 @@
 ** Documentaion Uing Doxygen
 * Usage:
   - Single Line Comments: Place Before Methods or Members. ///  For Exaple: ///A Doxygen style comment
-  - Multiline Comments: Place Before Methods or Members.  //**  \*\/ For Example: //* This is a multiline comment using  Doxygen stile. It should be placed aboce a Method or a variable. In that way, when the Doxygen file(s) is generated, it will read this comment and C or C++ will not have any issue when compiling it as it seems just like a C or C++ comment, for example. */
+  - Multiline Comments: Place Before Methods or Members.  //**  */ *For Example:** //* This is a multiline comment using  Doxygen stile. It should be placed aboce a Method or a variable. In that way, when the Doxygen file(s) is generated, it will read this comment and C or C++ will not have any issue when compiling it as it seems just like a C or C++ comment, for example. */
 
   - Commands '@' or '\\': @author \version @version \autor \date \bug \ brief \warning \mainpage \copyright \section \subsection \param \detail
 
