@@ -1,0 +1,818 @@
+#:kivy 1.10.0
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+
+<ScreenManagement>:
+	id: manager
+    LoginScreen:
+        id: main
+    #Home page screen
+    HomePage:
+        id: home
+    #Health screen
+    Health:
+		id: health
+    # Color picker screen
+    SetValues:
+		id: set_values
+    Methods:
+		id: method
+	#Settings screen
+    Setting:
+        id: sett
+    #Lights View screen
+    LightsView:
+		id: light_view
+	#Room View screen
+	RoomView:
+		id: room_view
+	TestOLA:
+		id: ola
+
+<LoginScreen>:
+    name: "login_screen"
+   # canvas.before:
+    #    Rectangle:
+     #       pos: self.pos
+      #      size: self.size
+       #     source: 'tech1.jpg'
+    Label:
+        #text: 'Team 2b|!2b'
+        font_size: 50
+        pos_hint: {"center_x": 0.5, "center_y": 0.8}
+        markup: True 
+        text:'[b][color=008000]Team 2b|!2b[/color][/b]'
+        
+    GridLayout:
+        size_hint: (0.6, 0.3)
+        pos_hint: {"center_x": 0.5, "center_y": 0.6}
+        cols: 2
+        padding: 15
+
+        Label:
+            size_hint: (0.9, 0.1)
+            text: "Username:"
+            font_size: 30
+            text_size: self.size
+            valign: "middle"
+
+        TextInput:
+            id: user_name
+            size_hint: (1.3, 0.1)
+            cursor_blink: True
+            font_size: 30
+            multiline: False
+            spacing: [5,5]
+            
+        Label:
+            size_hint: (0.9, 0.1)
+            text:"Password:"
+            font_size: 30
+            text_size: self.size
+            valign: "middle"
+
+        TextInput:
+            id: passw
+            size_hint: (1.3, 0.1)
+            cursor_blink: True
+            font_size: 30
+            multiline: False
+            password: True
+
+    BoxLayout:
+        orientation: 'vertical'        
+        size_hint: (0.5, 0.2)
+        pos_hint: {'center_x': 0.5, 'center_y': 0.3}
+        Button:
+            height: 90
+            text:'Login'
+            font_size: 30
+            
+            on_press: root.manager.ids.main.login(user_name.text, passw.text)
+            
+
+<HomePage>:
+    name: 'homepage'
+    BoxLayout:
+        orientation: 'horizontal'
+        Label:
+            text: "DMX-512 Interface"
+            pos_hint:{'center_x': 0.5, 'center_y': 0.9}
+    GridLayout:
+        cols: 24
+        spacing: '8dp'
+        size_hint:1 , .2
+        pos_hint: {'center_x': 0.6, 'center_y': 0.1}  
+        
+        Button:
+            text: 'Setting'
+            font_size: 20
+            on_press: root.manager.current = 'setting'
+            
+        Button:
+			text: 'Lights'
+			font_size: 20
+			on_press: root.manager.current = 'view_lights'
+
+        Button:
+            #size_hint:(1,0.1)
+            #pos_hint_y: 0.2
+            text: 'Logout'
+            font_size: 20
+            on_press: root.manager.current = 'login_screen'
+            
+            
+<Health>:
+	name: 'health'
+	on_pre_enter: root.health_status()
+		
+	BoxLayout:
+		size_hint:(None,None)
+		size: (450,30)
+		x: 10
+		y: 210
+		
+		canvas:
+            Color:
+				rgb: (39/255.0), (37/255.0), (39/255.0)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+		
+		Label:
+			markup: True
+			font_size: 25
+			text: '[b][color=008000] Circadian Rhythm Data [/color][/b]'
+			
+	FloatLayout:
+		size_hint: (None,None)
+		size: (450,200)
+		#orientation: 'vertical'
+		x: 10
+		y: 10
+		
+		#canvas:
+         #   Color:
+          #      rgb: 0, 0, 1
+           # Rectangle:
+            #    size: self.size
+             #   pos: self.pos
+        Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Current Information'
+			x: 145
+			y: 180
+			size: self.texture_size
+			#text_size: self.size
+			##halign: 'right'
+			##valign: 'middle'
+			
+		Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Date:  {}'.format(root.date)
+			x: 145
+			y: 155
+			size: self.texture_size
+			
+		Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Time:  {}'.format(root.time)
+			x: 145
+			y: 130
+			size: self.texture_size
+			
+		Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Red:  {}'.format(root.red)
+			x: 145
+			y: 105
+			size: self.texture_size
+			
+		Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Green:  {}'.format(root.green)
+			x: 145
+			y: 80
+			size: self.texture_size
+
+		Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Blue:  {}'.format(root.blue)
+			x: 145
+			y: 55
+			size: self.texture_size
+		
+		Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Intensity:  {}'.format(root.intensity)
+			x: 145
+			y: 30
+			size: self.texture_size
+			
+			#canvas:
+			#	Color:
+			#		rgb: 0,1,0
+			#	Rectangle:
+			#		size: (305, 5)
+			#		pos: (145, 20)
+			
+		
+	BoxLayout:
+		size_hint:(None,None)
+		size: (450,30)
+		x: 10
+		y: 445
+		
+		canvas:
+            Color:
+                rgb: (39/255.0), (37/255.0), (39/255.0)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+		
+		Label:
+			markup: True
+			font_size: 25
+			text: '[b][color=008000] Sensor Values [/color][/b]'
+			
+			
+	FloatLayout:
+		size_hint: (None,None)
+		size: (450,200)
+		#orientation: 'vertical'
+		x: 10
+		y: 245
+		
+		#canvas:
+         #   Color:
+          #      rgb: 0, 0, 1
+           # Rectangle:
+            #    size: self.size
+             #   pos: self.pos
+			
+		Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Red:  {}'.format(root.sr)
+			x: 145
+			y: 415
+			size: self.texture_size
+			
+		Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Green:  {}'.format(root.sg)
+			x: 145
+			y: 390
+			size: self.texture_size
+
+		Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Blue:  {}'.format(root.sb)
+			x: 145
+			y: 365
+			size: self.texture_size
+		
+		Label:
+			font_size: 20
+			size_hint: (None,None)
+			text: 'Intensity:  {}'.format(root.sa)
+			x: 145
+			y: 340
+			size: self.texture_size
+			
+			#canvas:
+			#	Color:
+			#		rgb: 0,1,0
+			#	Rectangle:
+			#		size: (305, 5)
+			#		pos: (145, 330)
+					
+	BoxLayout:
+		size_hint:(None,None)
+		size: (320,30)
+		x: 470
+		y: 445
+		
+		canvas:
+            Color:
+                rgb: (39/255.0), (37/255.0), (39/255.0)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+		
+		Label:
+			markup: True
+			font_size: 25
+			text: '[b][color=008000] Light\'s Health Status [/color][/b]'
+			
+	FloatLayout:
+		size_hint: (None,None)
+		size: (320,380)
+		#orientation: 'vertical'
+		x: 470
+		y: 65
+		
+		#canvas:
+         #   Color:
+          #      rgb: 0, 0, 1
+           # Rectangle:
+            #    size: self.size
+             #   pos: self.pos
+                
+		        
+		Label:
+			text: 'Light: {}'.format(root.light_name)
+			font_size: 20
+			size_hint: (None,None)
+			x: 495
+			y: 415
+			size: self.texture_size
+		
+		Label: 
+			text: 'IP address: {}'.format(root.ip)
+			font_size: 20
+			size_hint: (None,None)
+			x: 495
+			y: 390
+			size: self.texture_size
+			
+		Label:
+			markup: True
+			text: '[b]Status: {}[/b]'.format(root.status)
+			font_size: 20
+			size_hint: (None,None)
+			x: 495
+			y: 365
+			size: self.texture_size
+			
+		
+		Button:
+			text: 'previous'
+			on_press: root.manager.current = 'view_room'
+			background_color: [0, (218/255.0),(18/255.0),1]
+			size_hint: (None, None)
+			size: (150, 40)
+			x: 550
+			y: 290
+
+		Button:
+			text: 'home'
+			on_press: root.manager.current = 'homepage'
+			background_color: [0, (218/255.0),(18/255.0),1]
+			size_hint: (None, None)
+			size: (150,40)
+			x: 550
+			y: 250
+            
+<SetValues>:
+	name: 'set_values'
+	on_enter: root.build()
+
+	BoxLayout:
+		id: setbox
+		size_hint: (None,None)
+		size: (550,480)
+			
+	BoxLayout:
+		id: setbox2
+		size_hint: (None,None)
+		size: (250,480)
+		x:500
+		y:0
+		
+		Button:
+			text: 'Set'
+			size_hint: (None, None)
+			size: (100,40)
+			on_press: root.set_selection()
+			#on_release: root.manager.current = 'view_room'
+					
+		Button:
+			text: 'Previous'
+			size_hint: (None, None)
+			size: (100, 40)
+			on_press: root.manager.current = 'view_room'
+		
+		Button:
+			text: 'Home'
+			size_hint: (None, None)
+			size: (100, 40)
+			on_press: root.manager.current = 'homepage'
+
+            
+<Set>:
+    name: 'setting'
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text:"Settings"
+            font_size: 20
+        Button:
+            pos_hint: {'x': 0.7, 'y':0.08}
+            size_hint:(.2,.2)
+            text: "Previous"
+            #go back to previous screen
+            on_press: root.manager.current = 'homepage'
+            
+<LightsView>:
+	name: 'view_lights'
+	on_enter: root.buildlist() #calls for update() inside func
+	on_pre_enter: root.update_rooms() #update rooms
+
+	ScrollView:
+		size_hint: (None, None)
+		size: (380,440)
+		scroll_type:['bars', 'content']
+		do_scroll_x: False
+		bar_pos_y: 'left'
+		bar_width: '8dp'
+			
+		GridLayout:
+			id: gridlayout
+			cols: 1
+			padding: 10
+			spacing: 10
+			size_hint: (None, None)
+			width: 380
+			
+			canvas:
+				Color:
+					rgb: (204/255.0), (204/255.0), (204/255.0)
+				Rectangle:
+					size: self.size
+					pos: self.pos
+			
+	BoxLayout:
+		size_hint: (None,None)
+		size: (380,40) #width and height
+		x:0
+		y:440
+		
+		canvas:
+            Color:
+                rgb: (39/255.0), (37/255.0), (39/255.0)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+		
+		Label:
+			text: 'Unassigned Lights'
+			valign: 'center'
+			padding_y: 5
+			font_size: 20
+			
+			
+			
+	BoxLayout:
+		size_hint: (None,None)
+		size: (405,40) #width and height
+		x:390
+		y:440
+		
+		canvas:
+            Color:
+                rgb: (39/255.0), (37/255.0), (39/255.0)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+		
+		Label:
+			text: 'Rooms'
+			valign: 'center'
+			padding_y: 5
+			font_size: 20
+			
+	BoxLayout:
+		orientation: 'horizontal'
+		size_hint: (None, None)
+		size: (405, 60)
+		x: 390
+		y: 10
+		
+		canvas:
+            Color:
+                rgb: (204/255.0), (204/255.0), (204/255.0)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                
+			
+		Button: 
+			text: 'Remove Light'
+			#size_hint:(None,None)
+			#size:(140,60)
+			background_color: [0, (218/255.0),(18/255.0),1]
+			on_press: root.remove_light()
+			
+		Button:
+			text: 'Home'
+			#size_hint: (None, None)
+			#size: (100,60)
+			background_color: [0, (218/255.0),(18/255.0),1]
+			on_press: root.manager.current = 'homepage'
+	
+	BoxLayout:
+		id: roomlayout
+		orientation: 'vertical'
+		size_hint: (None,None)
+		size: (405, 230)
+		x:390
+		y:210
+		
+		canvas:
+            Color:
+				rgb: (204/255.0), (204/255.0), (204/255.0)
+                
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+	BoxLayout:
+		orientation: 'horizontal'
+		size_hint: (None, None)
+		size: (405,120)
+		x:390
+		y:80
+		
+		canvas:
+            Color:
+                rgb: (179/255.0), (179/255.0), (179/255.0)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                
+		Button:
+			text: 'Add Room'
+			on_press: root.add_room()
+			halign: 'center'
+			valign: 'middle'
+			background_color: [0, (218/255.0),(18/255.0),1]
+			
+		
+		Button:
+			text: 'Remove Room'
+			on_press: root.remove_room()
+			halign: 'center'
+			valign: 'middle'
+			background_color: [0, (218/255.0),(18/255.0),1]
+			
+		Button:
+			text: 'View Room'
+			on_press: root.manager.current = 'view_room'
+			halign: 'center'
+			background_color: [0, (218/255.0),(18/255.0),1]
+			
+		Button:
+			text: 'Add Light(s)\n to Room'
+			halign: 'center'
+			on_press: root.add_to_room()
+			background_color: [0, (218/255.0),(18/255.0),1]
+			#on_release: root.remove_lights_database()
+			
+			
+			
+<RoomView>:
+	name: 'view_room'
+	on_pre_enter: root.build()
+	on_enter: root.clear_select()
+	
+	ScrollView:
+		size_hint: (None, None)
+		size: (800,340)
+		scroll_type:['bars', 'content']
+		do_scroll_x: False
+		bar_pos_y: 'left'
+		bar_width: '8dp'
+		bar_color: [(39/255.0), (37/255.0), (39/255.0), 1]
+		bar_inactive_color: [(39/255.0), (37/255.0), (39/255.0), 1]
+		x: 100
+		y: 100
+		
+			
+		GridLayout:
+			id: gridlayout2
+			cols: 1
+			padding: 10
+			spacing: 10
+			size_hint: (None, None)
+			width: 800
+			
+	BoxLayout:
+		size_hint: (None,None)
+		size: (800,40) #width and height
+		x:0
+		y:440
+		
+		Label:
+			text: '{}'.format(root.room_name)
+			valign: 'center'
+			padding_y: 5
+			font_size: 30
+			
+	BoxLayout:
+		id: testingbox
+		orientation: 'horizontal'
+		size_hint: (None,None)
+		size: (800, 125)
+		x: 0 
+		y: 0
+		
+		Button:
+			text: "Unassign Lights"
+			background_color: [0, (218/255.0),(18/255.0),1]
+			on_press: root.unassign_lights()
+		
+		Button:
+			id: health_button
+			text: "Health Status"
+			on_press: root.manager.current = 'health'
+			#RGBA
+			background_color: [0, (218/255.0),(18/255.0),1]
+		
+		Button:
+			id: set_button
+			text: "Set Values"
+			on_press: root.manager.current = 'set_values'
+			#RGBA
+			background_color: [0, (218/255.0),(18/255.0),1]
+		
+		Button: 
+			text: "Previous"
+			on_press: root.manager.current = 'view_lights'
+			#clears background back to white
+			#background_normal: ''
+			#RGBA
+			background_color: [0, (218/255.0),(18/255.0),1]
+			
+		Button:
+			text: "Home"
+			on_press: root.manager.current = 'homepage'
+			background_color: [0, (218/255.0),(18/255.0),1]
+
+			
+
+#################################################################
+########################################
+########### SETTINGS CLASS #############
+########################################
+<Setting>:
+#Name of this rule
+    name: 'setting'
+
+#Box Layout for Window
+    BoxLayout:
+        orientation: 'horizontal'
+        
+        Label:
+            id: 'Screen'
+            font_size: 40.0
+            size_hint_min_y: None
+            shorten: False
+            text: "System's Settings"
+            pos_hint:{'center_x': 0.5, 'center_y': 0.9}
+        
+
+
+
+#GRIDLAYOUT:
+######################################################
+#						     #
+#    #########	   #########	 ###########         #
+#    # BUTON1 #    # BUTTON2#    # BUTON_N #         #
+######################################################
+    GridLayout:
+        cols: 24
+        spacing: '8dp'
+        size_hint: 1, .2
+        pos_hint: {'center_x': .6, 'center_y': 0.1}
+
+	#BUTON1
+        Button:
+            text: "Add New Device"
+            size_hint:(.2, .1)
+            
+            #event:ruleIDIfAny.windowManager.listOfIds.classID.functionInsideThatClass
+            on_release:root.manager.ids.sett.addPorts()
+
+
+        #BUTON2
+        Button:        
+            text:"Ports Available"
+            size_hint: (.2, .1)
+            on_press: root.manager.ids.sett.getPorts()
+
+
+        #BUTON3
+        Button:
+            text: "Test OLA"
+            size_hint:(.2, .1)
+            on_release:
+                #app.color_selector.open()
+                #app.color_mode = 'brush' 
+            on_press: root.manager.current = 'test_ola'
+
+        Button:
+            text:"Previous"
+            size_hint: (.2, .1)
+            on_press: root.manager.current = 'homepage'
+         
+	#BUTON_N
+########## END OF SETTINGS CLASS ##############
+###############################################
+######### END OF ADD FOR JORGE ################
+#####################$$$$$$$###################
+##################################################################
+
+<TestOLA>:
+	name: 'test_ola'
+	on_pre_enter: root.build() #update lights
+	
+	ScrollView:
+		size_hint: (None, None)
+		size: (800, 500)
+		scroll_type:['bars', 'content']
+		do_scroll_x: False
+		bar_pos_y: 'left'
+		bar_width: '8dp'
+			
+		GridLayout:
+		    id: testolalayout
+		    cols: 1
+		    padding: 10
+		    spacing: 10
+		    size_hint: (None, None)
+		    width: 800
+
+
+	BoxLayout:
+		size_hint: (None,None)
+		size: (800,120) #width and height
+		x:0
+		y:5
+		
+		canvas:
+            Color:
+                rgb: (39/255.0), (37/255.0), (39/255.0)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+		
+		Label:
+			text: 'Lights in Database'
+			valign: 'top'
+			padding_y: 5
+			font_size: 25
+
+        Button:
+            text:"Previous"
+            front_size: 50
+            size_hint: (.4, 1)
+            #pos_hint:{'right':1}
+            on_press: root.manager.current = 'homepage'
+
+
+##############################################################3
+########################################
+######### ADD FOR JORGE ################
+########################################
+######## Color Wheel Popup  ############
+########################################
+<ColorSelector>:
+    color: 1, 1, 1, 1
+    title: 'Select A Color'
+    content: content
+    id: color_selector
+    
+    BoxLayout:
+        id: content
+        orientation: 'vertical'
+        size_hint_y: 1.0
+        ColorPicker:
+            id: RGBSource
+            color: root.color
+        BoxLayout:
+            size_hint_y: .30
+            #height: '20sp'
+            Button:
+                text: 'Ok'
+                on_release:
+                    # Remember Selection
+                    root.color = RGBSource.color
+                    color_selector.on_press_dismiss(RGBSource)		    
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()
+
+###### END OF Color Wheel Popup  #######
+########## END OF SETTINGS CLASS ##############
+###############################################
+######### END OF ADD FOR JORGE ################
+#####################$$$$$$$###################
