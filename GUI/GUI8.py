@@ -874,20 +874,18 @@ class Setting(Screen, GridLayout, BoxLayout):
     def getUser(self, arg1):
         if(self.uInput.text.isdigit()):
             global newDevControl, portsCount
+            
+            # Make sure add them as numbers and not as strings
+            self.old = int(self.portsCount)
+            self.new = int(self.uInput.text)
+            self.new += self.old
 
-            self.portsCount += self.uInput.text
+            self.portsCount = str(self.new)
             self.newDevControl = 1
             
             curs.execute("UPDATE PORTS SET Amount='" + self.portsCount + "'")
             conn.commit()
-
-            ############################################################
-            # IF PORTS >= 2048. AKA SOMAXCONN has been reached,        #
-            # Call the script that updates this ammount.               #
-            # Maybe Create another instance of the servere?            #
-            # If SOMAXCONN is updated, I may need to reboot the system #
-            ############################################################
-            
+  
             print("User Entered: {}".format(self.uInput.text))
             
         else:
@@ -925,6 +923,18 @@ class Setting(Screen, GridLayout, BoxLayout):
         
         self.popup.open()
 
+
+        ############################################################
+        # IF PORTS >= 2048. AKA SOMAXCONN has been reached,        #
+        # Call the script that updates this ammount.               #
+        # Maybe Create another instance of the servere?            #
+        # If SOMAXCONN is updated, I may need to reboot the system #
+        # Maybe Create a warning pop up telling the user what is   #
+        # about to happen so that they dont think they crashed the #
+        # GUI by adding that new devicew                           #
+        ############################################################
+            
+        
         print("{} Ports".format(self.portsCount))
         
         
