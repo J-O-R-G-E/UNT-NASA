@@ -1,3 +1,26 @@
+"""
+By Gladys Hernandez
+   Jorge Cardona*
+   Taylor Shinn**
+
+This is the User's Graphical Interface for our project.
+It communicates with a TCP server written in C++.
+All its information entred and retrieved by the user
+are stored in a database using SQLite3 which means that even
+if the GUI crahsed, all information such as Logins, Passwords, and
+user defined values are kept alive.
+
+...
+
+* = Jorge Cardona only added a small fraction to the entire functionality 
+of this GUI. Under the 'Settings' button, the 'Add New Device', 'Ports Available',
+and 'Test OLA' were implemented.
+
+** = Taylor Shinn ...
+
+"""
+
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.button import Button
