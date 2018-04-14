@@ -21,8 +21,8 @@ ip +=":9090"
 
 print(ip)
 
-#web.open("http://"+ip)
-web.open("https://google.com")
+web.open("http://"+ip)
+#web.open("https://google.com")
 scrollBar.add(web)
 
 win.show_all()
