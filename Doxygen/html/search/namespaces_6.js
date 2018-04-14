@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['testapp1',['TestApp1',['../namespaceTestApp1.html',1,'']]],
-  ['testinggui',['TestingGUI',['../namespaceTestingGUI.html',1,'']]]
+  ['snowboydecoder',['snowboydecoder',['../namespacesnowboydecoder.html',1,'']]],
+  ['snowboydetect',['snowboydetect',['../namespacesnowboydetect.html',1,'']]],
+  ['snowboyola',['snowBoyOLA',['../namespacesnowBoyOLA.html',1,'']]]
 ];

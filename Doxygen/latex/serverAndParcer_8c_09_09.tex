@@ -1,28 +1,34 @@
-\hypertarget{serverAndParcer_8c_09_09}{}\section{/home/pi/\+Desktop/\+U\+N\+T-\/\+N\+A\+S\+A/server\+And\+Parcer.c++ File Reference}
-\label{serverAndParcer_8c_09_09}\index{/home/pi/\+Desktop/\+U\+N\+T-\/\+N\+A\+S\+A/server\+And\+Parcer.\+c++@{/home/pi/\+Desktop/\+U\+N\+T-\/\+N\+A\+S\+A/server\+And\+Parcer.\+c++}}
-{\ttfamily \#include $<$iostream$>$}\newline
-{\ttfamily \#include $<$cstdlib$>$}\newline
-{\ttfamily \#include $<$fstream$>$}\newline
-{\ttfamily \#include $<$sstream$>$}\newline
-{\ttfamily \#include $<$string$>$}\newline
-{\ttfamily \#include $<$mutex$>$}\newline
-{\ttfamily \#include $<$map$>$}\newline
-{\ttfamily \#include $<$thread$>$}\newline
-{\ttfamily \#include $<$stdio.\+h$>$}\newline
-{\ttfamily \#include $<$stdlib.\+h$>$}\newline
-{\ttfamily \#include $<$unistd.\+h$>$}\newline
-{\ttfamily \#include $<$errno.\+h$>$}\newline
-{\ttfamily \#include $<$string.\+h$>$}\newline
-{\ttfamily \#include $<$sys/types.\+h$>$}\newline
-{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
-{\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
-{\ttfamily \#include $<$netdb.\+h$>$}\newline
-{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
-{\ttfamily \#include $<$net/if.\+h$>$}\newline
-{\ttfamily \#include $<$arpa/inet.\+h$>$}\newline
-{\ttfamily \#include $<$pthread.\+h$>$}\newline
+\hypertarget{serverAndParcer_8c_09_09}{}\section{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/server\+And\+Parcer.c++ File Reference}
+\label{serverAndParcer_8c_09_09}\index{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/server\+And\+Parcer.\+c++@{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/server\+And\+Parcer.\+c++}}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$mutex$>$}\\*
+{\ttfamily \#include $<$map$>$}\\*
+{\ttfamily \#include $<$thread$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/socket.\+h$>$}\\*
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\\*
+{\ttfamily \#include $<$netdb.\+h$>$}\\*
+{\ttfamily \#include $<$netinet/in.\+h$>$}\\*
+{\ttfamily \#include $<$net/if.\+h$>$}\\*
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\\*
+{\ttfamily \#include $<$pthread.\+h$>$}\\*
 Include dependency graph for server\+And\+Parcer.\+c++\+:
-% FIG 0
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{serverAndParcer_8c_09_09__incl}
+\end{center}
+\end{figure}
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -83,153 +89,101 @@ pthread\+\_\+t \hyperlink{serverAndParcer_8c_09_09_a8bbd1b7cb6be922a885d26ec5ce1
 
 
 \subsection{Macro Definition Documentation}
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a614217d263be1fb1a5f76e2ff7be19a2}\label{serverAndParcer_8c_09_09_a614217d263be1fb1a5f76e2ff7be19a2}} 
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!P\+O\+RT@{P\+O\+RT}}
 \index{P\+O\+RT@{P\+O\+RT}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{P\+O\+RT}{PORT}}
-{\footnotesize\ttfamily \#define P\+O\+RT~12123}
-
+\subsubsection[{\texorpdfstring{P\+O\+RT}{PORT}}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+O\+RT~12123}\hypertarget{serverAndParcer_8c_09_09_a614217d263be1fb1a5f76e2ff7be19a2}{}\label{serverAndParcer_8c_09_09_a614217d263be1fb1a5f76e2ff7be19a2}
 
 
 \subsection{Function Documentation}
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{serverAndParcer_8c_09_09_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!main@{main}}
 \index{main@{main}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{main()}{main()}}
-{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a7410e9339d1139f46f6472c89222bb10}\label{serverAndParcer_8c_09_09_a7410e9339d1139f46f6472c89222bb10}} 
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{serverAndParcer_8c_09_09_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{serverAndParcer_8c_09_09_ae66f6b31b5ad750f1fe042a706a4e3d4}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!populate\+Map@{populate\+Map}}
 \index{populate\+Map@{populate\+Map}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{populate\+Map()}{populateMap()}}
-{\footnotesize\ttfamily void populate\+Map (\begin{DoxyParamCaption}\item[{int}]{fd }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a7cb86f6d733933107288b77527664613}\label{serverAndParcer_8c_09_09_a7cb86f6d733933107288b77527664613}} 
+\subsubsection[{\texorpdfstring{populate\+Map(int fd)}{populateMap(int fd)}}]{\setlength{\rightskip}{0pt plus 5cm}void populate\+Map (
+\begin{DoxyParamCaption}
+\item[{int}]{fd}
+\end{DoxyParamCaption}
+)}\hypertarget{serverAndParcer_8c_09_09_a7410e9339d1139f46f6472c89222bb10}{}\label{serverAndParcer_8c_09_09_a7410e9339d1139f46f6472c89222bb10}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!tcp\+Maker@{tcp\+Maker}}
 \index{tcp\+Maker@{tcp\+Maker}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{tcp\+Maker()}{tcpMaker()}}
-{\footnotesize\ttfamily int tcp\+Maker (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a70874537694e95af79420af29ff34ae6}\label{serverAndParcer_8c_09_09_a70874537694e95af79420af29ff34ae6}} 
+\subsubsection[{\texorpdfstring{tcp\+Maker()}{tcpMaker()}}]{\setlength{\rightskip}{0pt plus 5cm}int tcp\+Maker (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{serverAndParcer_8c_09_09_a7cb86f6d733933107288b77527664613}{}\label{serverAndParcer_8c_09_09_a7cb86f6d733933107288b77527664613}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!threaded\+Client@{threaded\+Client}}
 \index{threaded\+Client@{threaded\+Client}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{threaded\+Client()}{threadedClient()}}
-{\footnotesize\ttfamily void $\ast$ threaded\+Client (\begin{DoxyParamCaption}\item[{void $\ast$}]{new\+\_\+socket }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a51a231661435c593eb42172ed608fdb6}\label{serverAndParcer_8c_09_09_a51a231661435c593eb42172ed608fdb6}} 
+\subsubsection[{\texorpdfstring{threaded\+Client(void $\ast$new\+\_\+socket)}{threadedClient(void *new_socket)}}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ threaded\+Client (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{new\+\_\+socket}
+\end{DoxyParamCaption}
+)}\hypertarget{serverAndParcer_8c_09_09_a70874537694e95af79420af29ff34ae6}{}\label{serverAndParcer_8c_09_09_a70874537694e95af79420af29ff34ae6}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!threaded\+Partser@{threaded\+Partser}}
 \index{threaded\+Partser@{threaded\+Partser}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{threaded\+Partser()}{threadedPartser()}}
-{\footnotesize\ttfamily void $\ast$ threaded\+Partser (\begin{DoxyParamCaption}\item[{void $\ast$}]{some }\end{DoxyParamCaption})}
-
+\subsubsection[{\texorpdfstring{threaded\+Partser(void $\ast$some)}{threadedPartser(void *some)}}]{\setlength{\rightskip}{0pt plus 5cm}void $\ast$ threaded\+Partser (
+\begin{DoxyParamCaption}
+\item[{void $\ast$}]{some}
+\end{DoxyParamCaption}
+)}\hypertarget{serverAndParcer_8c_09_09_a51a231661435c593eb42172ed608fdb6}{}\label{serverAndParcer_8c_09_09_a51a231661435c593eb42172ed608fdb6}
 
 
 \subsection{Variable Documentation}
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a28d4d3d8445e73a696b2d6f7eadabd96}\label{serverAndParcer_8c_09_09_a28d4d3d8445e73a696b2d6f7eadabd96}} 
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!buffer@{buffer}}
 \index{buffer@{buffer}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{buffer}{buffer}}
-{\footnotesize\ttfamily char buffer\mbox{[}1024\mbox{]} = \{0\}}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a2a39628b8f82d949fb4514c8f545a1f1}\label{serverAndParcer_8c_09_09_a2a39628b8f82d949fb4514c8f545a1f1}} 
+\subsubsection[{\texorpdfstring{buffer}{buffer}}]{\setlength{\rightskip}{0pt plus 5cm}char buffer\mbox{[}1024\mbox{]} = \{0\}}\hypertarget{serverAndParcer_8c_09_09_a28d4d3d8445e73a696b2d6f7eadabd96}{}\label{serverAndParcer_8c_09_09_a28d4d3d8445e73a696b2d6f7eadabd96}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!client\+Receiver@{client\+Receiver}}
 \index{client\+Receiver@{client\+Receiver}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{client\+Receiver}{clientReceiver}}
-{\footnotesize\ttfamily int client\+Receiver}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_abb7f3464285c3d84163f357cc63ff31d}\label{serverAndParcer_8c_09_09_abb7f3464285c3d84163f357cc63ff31d}} 
+\subsubsection[{\texorpdfstring{client\+Receiver}{clientReceiver}}]{\setlength{\rightskip}{0pt plus 5cm}int client\+Receiver}\hypertarget{serverAndParcer_8c_09_09_a2a39628b8f82d949fb4514c8f545a1f1}{}\label{serverAndParcer_8c_09_09_a2a39628b8f82d949fb4514c8f545a1f1}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!cmd\+Line@{cmd\+Line}}
 \index{cmd\+Line@{cmd\+Line}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{cmd\+Line}{cmdLine}}
-{\footnotesize\ttfamily string cmd\+Line}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a7b52f11370f23127166efe77741fb300}\label{serverAndParcer_8c_09_09_a7b52f11370f23127166efe77741fb300}} 
+\subsubsection[{\texorpdfstring{cmd\+Line}{cmdLine}}]{\setlength{\rightskip}{0pt plus 5cm}string cmd\+Line}\hypertarget{serverAndParcer_8c_09_09_abb7f3464285c3d84163f357cc63ff31d}{}\label{serverAndParcer_8c_09_09_abb7f3464285c3d84163f357cc63ff31d}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!fd\+Map@{fd\+Map}}
 \index{fd\+Map@{fd\+Map}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{fd\+Map}{fdMap}}
-{\footnotesize\ttfamily map$<$string, int$>$ fd\+Map}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_abaa81f4ff239a69a48842b243b10ad90}\label{serverAndParcer_8c_09_09_abaa81f4ff239a69a48842b243b10ad90}} 
+\subsubsection[{\texorpdfstring{fd\+Map}{fdMap}}]{\setlength{\rightskip}{0pt plus 5cm}map$<$string, int$>$ fd\+Map}\hypertarget{serverAndParcer_8c_09_09_a7b52f11370f23127166efe77741fb300}{}\label{serverAndParcer_8c_09_09_a7b52f11370f23127166efe77741fb300}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!file\+C\+MD@{file\+C\+MD}}
 \index{file\+C\+MD@{file\+C\+MD}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{file\+C\+MD}{fileCMD}}
-{\footnotesize\ttfamily string file\+C\+MD}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a11d2731ef567b8160d86c55b499b0ac4}\label{serverAndParcer_8c_09_09_a11d2731ef567b8160d86c55b499b0ac4}} 
+\subsubsection[{\texorpdfstring{file\+C\+MD}{fileCMD}}]{\setlength{\rightskip}{0pt plus 5cm}string file\+C\+MD}\hypertarget{serverAndParcer_8c_09_09_abaa81f4ff239a69a48842b243b10ad90}{}\label{serverAndParcer_8c_09_09_abaa81f4ff239a69a48842b243b10ad90}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!file\+IP@{file\+IP}}
 \index{file\+IP@{file\+IP}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{file\+IP}{fileIP}}
-{\footnotesize\ttfamily string file\+IP}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a7c28ba1e10886eb734b91a0aa78f7f76}\label{serverAndParcer_8c_09_09_a7c28ba1e10886eb734b91a0aa78f7f76}} 
+\subsubsection[{\texorpdfstring{file\+IP}{fileIP}}]{\setlength{\rightskip}{0pt plus 5cm}string file\+IP}\hypertarget{serverAndParcer_8c_09_09_a11d2731ef567b8160d86c55b499b0ac4}{}\label{serverAndParcer_8c_09_09_a11d2731ef567b8160d86c55b499b0ac4}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!file\+Values@{file\+Values}}
 \index{file\+Values@{file\+Values}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{file\+Values}{fileValues}}
-{\footnotesize\ttfamily string file\+Values}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a9ba663e6154cc157828089066f027dcc}\label{serverAndParcer_8c_09_09_a9ba663e6154cc157828089066f027dcc}} 
+\subsubsection[{\texorpdfstring{file\+Values}{fileValues}}]{\setlength{\rightskip}{0pt plus 5cm}string file\+Values}\hypertarget{serverAndParcer_8c_09_09_a7c28ba1e10886eb734b91a0aa78f7f76}{}\label{serverAndParcer_8c_09_09_a7c28ba1e10886eb734b91a0aa78f7f76}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!file\+Worker@{file\+Worker}}
 \index{file\+Worker@{file\+Worker}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{file\+Worker}{fileWorker}}
-{\footnotesize\ttfamily string file\+Worker}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_af720f0c5d7682d27ea06535a0408f010}\label{serverAndParcer_8c_09_09_af720f0c5d7682d27ea06535a0408f010}} 
+\subsubsection[{\texorpdfstring{file\+Worker}{fileWorker}}]{\setlength{\rightskip}{0pt plus 5cm}string file\+Worker}\hypertarget{serverAndParcer_8c_09_09_a9ba663e6154cc157828089066f027dcc}{}\label{serverAndParcer_8c_09_09_a9ba663e6154cc157828089066f027dcc}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!gard\+\_\+file@{gard\+\_\+file}}
 \index{gard\+\_\+file@{gard\+\_\+file}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{gard\+\_\+file}{gard\_file}}
-{\footnotesize\ttfamily mutex gard\+\_\+file}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a8d7df023ae54da17f967ad9cdd6fde61}\label{serverAndParcer_8c_09_09_a8d7df023ae54da17f967ad9cdd6fde61}} 
+\subsubsection[{\texorpdfstring{gard\+\_\+file}{gard_file}}]{\setlength{\rightskip}{0pt plus 5cm}mutex gard\+\_\+file}\hypertarget{serverAndParcer_8c_09_09_af720f0c5d7682d27ea06535a0408f010}{}\label{serverAndParcer_8c_09_09_af720f0c5d7682d27ea06535a0408f010}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!got\+From\+Client@{got\+From\+Client}}
 \index{got\+From\+Client@{got\+From\+Client}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{got\+From\+Client}{gotFromClient}}
-{\footnotesize\ttfamily string got\+From\+Client}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a862b5ef7a7e9bdc9916f0b9db33ba22e}\label{serverAndParcer_8c_09_09_a862b5ef7a7e9bdc9916f0b9db33ba22e}} 
+\subsubsection[{\texorpdfstring{got\+From\+Client}{gotFromClient}}]{\setlength{\rightskip}{0pt plus 5cm}string got\+From\+Client}\hypertarget{serverAndParcer_8c_09_09_a8d7df023ae54da17f967ad9cdd6fde61}{}\label{serverAndParcer_8c_09_09_a8d7df023ae54da17f967ad9cdd6fde61}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!local\+FD@{local\+FD}}
 \index{local\+FD@{local\+FD}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{local\+FD}{localFD}}
-{\footnotesize\ttfamily int local\+FD}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a72270023936003efefbcc525c734a029}\label{serverAndParcer_8c_09_09_a72270023936003efefbcc525c734a029}} 
+\subsubsection[{\texorpdfstring{local\+FD}{localFD}}]{\setlength{\rightskip}{0pt plus 5cm}int local\+FD}\hypertarget{serverAndParcer_8c_09_09_a862b5ef7a7e9bdc9916f0b9db33ba22e}{}\label{serverAndParcer_8c_09_09_a862b5ef7a7e9bdc9916f0b9db33ba22e}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!my\+Thread@{my\+Thread}}
 \index{my\+Thread@{my\+Thread}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{my\+Thread}{myThread}}
-{\footnotesize\ttfamily pthread\+\_\+t my\+Thread}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a8bbd1b7cb6be922a885d26ec5ce117ac}\label{serverAndParcer_8c_09_09_a8bbd1b7cb6be922a885d26ec5ce117ac}} 
+\subsubsection[{\texorpdfstring{my\+Thread}{myThread}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+t my\+Thread}\hypertarget{serverAndParcer_8c_09_09_a72270023936003efefbcc525c734a029}{}\label{serverAndParcer_8c_09_09_a72270023936003efefbcc525c734a029}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!my\+Thread2@{my\+Thread2}}
 \index{my\+Thread2@{my\+Thread2}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{my\+Thread2}{myThread2}}
-{\footnotesize\ttfamily pthread\+\_\+t my\+Thread2}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a3f71f79c62b8a333782d8cfde710bc1e}\label{serverAndParcer_8c_09_09_a3f71f79c62b8a333782d8cfde710bc1e}} 
+\subsubsection[{\texorpdfstring{my\+Thread2}{myThread2}}]{\setlength{\rightskip}{0pt plus 5cm}pthread\+\_\+t my\+Thread2}\hypertarget{serverAndParcer_8c_09_09_a8bbd1b7cb6be922a885d26ec5ce117ac}{}\label{serverAndParcer_8c_09_09_a8bbd1b7cb6be922a885d26ec5ce117ac}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!nowG@{nowG}}
 \index{nowG@{nowG}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{nowG}{nowG}}
-{\footnotesize\ttfamily string nowG}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_aa1793b72906465979b4f03f4f077b330}\label{serverAndParcer_8c_09_09_aa1793b72906465979b4f03f4f077b330}} 
+\subsubsection[{\texorpdfstring{nowG}{nowG}}]{\setlength{\rightskip}{0pt plus 5cm}string nowG}\hypertarget{serverAndParcer_8c_09_09_a3f71f79c62b8a333782d8cfde710bc1e}{}\label{serverAndParcer_8c_09_09_a3f71f79c62b8a333782d8cfde710bc1e}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!nowP@{nowP}}
 \index{nowP@{nowP}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{nowP}{nowP}}
-{\footnotesize\ttfamily string nowP}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a677b8ed49d2bb57ed6a846354f664158}\label{serverAndParcer_8c_09_09_a677b8ed49d2bb57ed6a846354f664158}} 
+\subsubsection[{\texorpdfstring{nowP}{nowP}}]{\setlength{\rightskip}{0pt plus 5cm}string nowP}\hypertarget{serverAndParcer_8c_09_09_aa1793b72906465979b4f03f4f077b330}{}\label{serverAndParcer_8c_09_09_aa1793b72906465979b4f03f4f077b330}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!ss@{ss}}
 \index{ss@{ss}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{ss}{ss}}
-{\footnotesize\ttfamily stringstream ss}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_a89332d7c70244b790f94bf228c1e0a77}\label{serverAndParcer_8c_09_09_a89332d7c70244b790f94bf228c1e0a77}} 
+\subsubsection[{\texorpdfstring{ss}{ss}}]{\setlength{\rightskip}{0pt plus 5cm}stringstream ss}\hypertarget{serverAndParcer_8c_09_09_a677b8ed49d2bb57ed6a846354f664158}{}\label{serverAndParcer_8c_09_09_a677b8ed49d2bb57ed6a846354f664158}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!temp\+FD@{temp\+FD}}
 \index{temp\+FD@{temp\+FD}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{temp\+FD}{tempFD}}
-{\footnotesize\ttfamily int temp\+FD}
-
-\mbox{\Hypertarget{serverAndParcer_8c_09_09_ac680e479dd556dd533714550745728fc}\label{serverAndParcer_8c_09_09_ac680e479dd556dd533714550745728fc}} 
+\subsubsection[{\texorpdfstring{temp\+FD}{tempFD}}]{\setlength{\rightskip}{0pt plus 5cm}int temp\+FD}\hypertarget{serverAndParcer_8c_09_09_a89332d7c70244b790f94bf228c1e0a77}{}\label{serverAndParcer_8c_09_09_a89332d7c70244b790f94bf228c1e0a77}
 \index{server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}!threaded\+FD@{threaded\+FD}}
 \index{threaded\+FD@{threaded\+FD}!server\+And\+Parcer.\+c++@{server\+And\+Parcer.\+c++}}
-\subsubsection{\texorpdfstring{threaded\+FD}{threadedFD}}
-{\footnotesize\ttfamily int$\ast$ threaded\+FD}
-
+\subsubsection[{\texorpdfstring{threaded\+FD}{threadedFD}}]{\setlength{\rightskip}{0pt plus 5cm}int$\ast$ threaded\+FD}\hypertarget{serverAndParcer_8c_09_09_ac680e479dd556dd533714550745728fc}{}\label{serverAndParcer_8c_09_09_ac680e479dd556dd533714550745728fc}

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['olaui',['olaUI',['../namespaceolaUI.html',1,'']]]
+  ['newgui',['newGUI',['../namespacenewGUI.html',1,'']]]
 ];

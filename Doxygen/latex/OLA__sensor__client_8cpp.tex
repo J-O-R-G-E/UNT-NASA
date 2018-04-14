@@ -1,25 +1,31 @@
-\hypertarget{OLA__sensor__client_8cpp}{}\section{/home/pi/\+Desktop/\+U\+N\+T-\/\+N\+A\+S\+A/\+O\+L\+A\+\_\+sensor\+\_\+client.cpp File Reference}
-\label{OLA__sensor__client_8cpp}\index{/home/pi/\+Desktop/\+U\+N\+T-\/\+N\+A\+S\+A/\+O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{/home/pi/\+Desktop/\+U\+N\+T-\/\+N\+A\+S\+A/\+O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}}
-{\ttfamily \#include $<$stdlib.\+h$>$}\newline
-{\ttfamily \#include $<$string$>$}\newline
-{\ttfamily \#include $<$sstream$>$}\newline
-{\ttfamily \#include $<$iostream$>$}\newline
-{\ttfamily \#include $<$time.\+h$>$}\newline
-{\ttfamily \#include $<$stdio.\+h$>$}\newline
-{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
-{\ttfamily \#include $<$sys/types.\+h$>$}\newline
-{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
-{\ttfamily \#include $<$netdb.\+h$>$}\newline
-{\ttfamily \#include $<$string.\+h$>$}\newline
-{\ttfamily \#include $<$unistd.\+h$>$}\newline
-{\ttfamily \#include $<$errno.\+h$>$}\newline
-{\ttfamily \#include \char`\"{}dmx512.\+hpp\char`\"{}}\newline
-{\ttfamily \#include $<$signal.\+h$>$}\newline
-{\ttfamily \#include $<$linux/i2c-\/dev.\+h$>$}\newline
-{\ttfamily \#include $<$sys/ioctl.\+h$>$}\newline
-{\ttfamily \#include $<$fcntl.\+h$>$}\newline
+\hypertarget{OLA__sensor__client_8cpp}{}\section{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/\+O\+L\+A\+\_\+sensor\+\_\+client.cpp File Reference}
+\label{OLA__sensor__client_8cpp}\index{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/\+O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/\+O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}}
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$sys/socket.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$netinet/in.\+h$>$}\\*
+{\ttfamily \#include $<$netdb.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}dmx512.\+hpp\char`\"{}}\\*
+{\ttfamily \#include $<$signal.\+h$>$}\\*
+{\ttfamily \#include $<$linux/i2c-\/dev.\+h$>$}\\*
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\\*
+{\ttfamily \#include $<$fcntl.\+h$>$}\\*
 Include dependency graph for O\+L\+A\+\_\+sensor\+\_\+client.\+cpp\+:
-% FIG 0
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{OLA__sensor__client_8cpp__incl}
+\end{center}
+\end{figure}
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -44,45 +50,42 @@ int \hyperlink{OLA__sensor__client_8cpp_a6fb021f1c9bd6c7fc72f1c0f24b81b38}{file}
 
 
 \subsection{Macro Definition Documentation}
-\mbox{\Hypertarget{OLA__sensor__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}\label{OLA__sensor__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}} 
 \index{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}!buff@{buff}}
 \index{buff@{buff}!O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}}
-\subsubsection{\texorpdfstring{buff}{buff}}
-{\footnotesize\ttfamily \#define buff~128}
-
-\mbox{\Hypertarget{OLA__sensor__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}\label{OLA__sensor__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}} 
+\subsubsection[{\texorpdfstring{buff}{buff}}]{\setlength{\rightskip}{0pt plus 5cm}\#define buff~128}\hypertarget{OLA__sensor__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}{}\label{OLA__sensor__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}
 \index{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}!port@{port}}
 \index{port@{port}!O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}}
-\subsubsection{\texorpdfstring{port}{port}}
-{\footnotesize\ttfamily \#define port~9999}
-
+\subsubsection[{\texorpdfstring{port}{port}}]{\setlength{\rightskip}{0pt plus 5cm}\#define port~9999}\hypertarget{OLA__sensor__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}{}\label{OLA__sensor__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}
 
 
 \subsection{Function Documentation}
-\mbox{\Hypertarget{OLA__sensor__client_8cpp_a45c58508e881910dfc5f421f11be8faa}\label{OLA__sensor__client_8cpp_a45c58508e881910dfc5f421f11be8faa}} 
 \index{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}!display\+\_\+\+R\+GB@{display\+\_\+\+R\+GB}}
 \index{display\+\_\+\+R\+GB@{display\+\_\+\+R\+GB}!O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}}
-\subsubsection{\texorpdfstring{display\+\_\+\+R\+G\+B()}{display\_RGB()}}
-{\footnotesize\ttfamily void display\+\_\+\+R\+GB (\begin{DoxyParamCaption}\item[{int}]{s }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{OLA__sensor__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{OLA__sensor__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
+\subsubsection[{\texorpdfstring{display\+\_\+\+R\+G\+B(int)}{display_RGB(int)}}]{\setlength{\rightskip}{0pt plus 5cm}void display\+\_\+\+R\+GB (
+\begin{DoxyParamCaption}
+\item[{int}]{s}
+\end{DoxyParamCaption}
+)}\hypertarget{OLA__sensor__client_8cpp_a45c58508e881910dfc5f421f11be8faa}{}\label{OLA__sensor__client_8cpp_a45c58508e881910dfc5f421f11be8faa}
 \index{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}!main@{main}}
 \index{main@{main}!O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}}
-\subsubsection{\texorpdfstring{main()}{main()}}
-{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{OLA__sensor__client_8cpp_abab4c1228d52ee787e48f6303bdfb956}\label{OLA__sensor__client_8cpp_abab4c1228d52ee787e48f6303bdfb956}} 
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{OLA__sensor__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{OLA__sensor__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
 \index{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}!send\+O\+LA@{send\+O\+LA}}
 \index{send\+O\+LA@{send\+O\+LA}!O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}}
-\subsubsection{\texorpdfstring{send\+O\+L\+A()}{sendOLA()}}
-{\footnotesize\ttfamily int send\+O\+LA (\begin{DoxyParamCaption}\item[{int}]{,  }\item[{int}]{,  }\item[{int}]{,  }\item[{int}]{ }\end{DoxyParamCaption})}
-
+\subsubsection[{\texorpdfstring{send\+O\+L\+A(int, int, int, int)}{sendOLA(int, int, int, int)}}]{\setlength{\rightskip}{0pt plus 5cm}int send\+O\+LA (
+\begin{DoxyParamCaption}
+\item[{int}]{, }
+\item[{int}]{, }
+\item[{int}]{, }
+\item[{int}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{OLA__sensor__client_8cpp_abab4c1228d52ee787e48f6303bdfb956}{}\label{OLA__sensor__client_8cpp_abab4c1228d52ee787e48f6303bdfb956}
 
 
 \subsection{Variable Documentation}
-\mbox{\Hypertarget{OLA__sensor__client_8cpp_a6fb021f1c9bd6c7fc72f1c0f24b81b38}\label{OLA__sensor__client_8cpp_a6fb021f1c9bd6c7fc72f1c0f24b81b38}} 
 \index{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}!file@{file}}
 \index{file@{file}!O\+L\+A\+\_\+sensor\+\_\+client.\+cpp@{O\+L\+A\+\_\+sensor\+\_\+client.\+cpp}}
-\subsubsection{\texorpdfstring{file}{file}}
-{\footnotesize\ttfamily int file}
-
+\subsubsection[{\texorpdfstring{file}{file}}]{\setlength{\rightskip}{0pt plus 5cm}int file}\hypertarget{OLA__sensor__client_8cpp_a6fb021f1c9bd6c7fc72f1c0f24b81b38}{}\label{OLA__sensor__client_8cpp_a6fb021f1c9bd6c7fc72f1c0f24b81b38}

@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['serverandparcer_2ec_2b_2b',['serverAndParcer.c++',['../serverAndParcer_8c_09_09.html',1,'']]],
-  ['sesor_2ec_2b_2b',['sesor.c++',['../sesor_8c_09_09.html',1,'']]],
-  ['snowboydecoder_2epy',['snowboydecoder.py',['../snowboydecoder_8py.html',1,'']]],
-  ['snowboydetect_2epy',['snowboydetect.py',['../snowboydetect_8py.html',1,'']]],
-  ['snowboyola_2epy',['snowBoyOLA.py',['../snowBoyOLA_8py.html',1,'']]]
+  ['parser_2ec_2b_2b',['parser.c++',['../parser_8c_09_09.html',1,'']]],
+  ['pir_2epy',['PIR.py',['../PIR_8py.html',1,'']]],
+  ['processcolors_2epy',['processColors.py',['../processColors_8py.html',1,'']]]
 ];
