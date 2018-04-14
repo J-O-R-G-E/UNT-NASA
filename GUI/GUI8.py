@@ -874,8 +874,20 @@ class Setting(Screen, GridLayout, BoxLayout):
     def getUser(self, arg1):
         if(self.uInput.text.isdigit()):
             global newDevControl, portsCount
-            self.portsCount = self.uInput.text
+
+            self.portsCount += self.uInput.text
             self.newDevControl = 1
+            
+            curs.execute("UPDATE PORTS SET Amount='" + self.portsCount + "'")
+            conn.commit()
+
+            ############################################################
+            # IF PORTS >= 2048. AKA SOMAXCONN has been reached,        #
+            # Call the script that updates this ammount.               #
+            # Maybe Create another instance of the servere?            #
+            # If SOMAXCONN is updated, I may need to reboot the system #
+            ############################################################
+            
             print("User Entered: {}".format(self.uInput.text))
             
         else:
@@ -887,9 +899,19 @@ class Setting(Screen, GridLayout, BoxLayout):
         
     def getPorts(self):
 
-        self.box = BoxLayout(orientation = 'vertical', padding = (5))
-
         global portsCount
+        for row in curs.execute("SELECT * FROM Ports"):
+		self.portsCount = row[0]                       
+
+        ##############################################################
+        # Taylor, here is where I need to get your Plug And Play value
+        # so I can substract it from the total ports count.
+        # This is how I will be able to show the ports available
+        #
+        # e.g.: self.portsCount -= plugAnPlaCount      
+        #############################################################
+        
+        self.box = BoxLayout(orientation = 'vertical', padding = (5))
         self.myLabel = Label(text = ("There are " + str(self.portsCount) + " Ports Available!"), font_size='25sp')
         self.box.add_widget(self.myLabel)
         #self.box.add_widget(Label(text = ("There are " + str(self.portsCount) + " Ports Available!"), font_size='25sp'))
@@ -1012,8 +1034,13 @@ class TestApp(App):
                 return sm
 		
 if __name__ == "__main__":
-        #os.system('python /home/pi/Desktop/UNT-NASA/voiceOLA/voiceOLA.py &')
+        #Run voice commands at boot up
+        os.system('python /home/pi/Desktop/UNT-NASA/voiceOLA/voiceOLA.py > /dev/null 2>&1 &')
+
+        #For Testing Individual Lights
         os.system("touch testOLA")
+
+        # Run the GUI
         TestApp().run()
 
 conn.close() #close database connection 
