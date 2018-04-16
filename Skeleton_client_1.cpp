@@ -1,14 +1,11 @@
-// Compiles as: g++ -g -std=c++11 Skeleton_client.cpp  dmx512.c++  $(pkg-config --cflags --libs libola) -o C
+// Compiles as: g++ -g -std=c++11 Skeleton_client.cpp  dmx512.c++  $(pkg-config --cflags --libs libola) -o C                                                     
 // Skeleton Code for Jack's TCP client requirement, Jorge's OLA, and Taylors sensor
-
 #include <iostream>
 #include <cstdlib>
-#include <cstring>		//IDK if i actually nead this
+#include <cstring>
 #include <string>		//for strings
-#include <map>			//for mapping an IP to kernel assigned sockerFD and maintaining connections
 #include <fstream>		//for C++ file IO
 #include <sstream>		//for stream string
-#include <mutex> 		//for atomic locking
 #include <cstdio>
 #include <ctime>		//for timestamps
 #include <sys/time.h>	//timeval and timespec (tv_nsec) for nanoseconds but im just using micro for early testing
@@ -24,67 +21,30 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <fcntl.h>
 
-// OLA
 #include "dmx512.hpp"
 
 #define port 9999
 #define buff 128
+//#define HOST "127.0.0.1"
+#define HOST "192.168.1.12"
 
 using namespace std;
-
+int connect_to_server(void);
 string time_processed(void); //timestamping
+
+
+int sockfd, reuse = 1; //only need the one socket on client side
+struct sockaddr_in sADDR;
+struct hostent *host; //this is typically needed for clients to get server information
+string message = "SLNS Client ACK";
 
 int main()
 {
 
-
-  // OLA object to set incomming data into the OLA channels and the transmit
-  // those values  to the LED RGB lights.
   DMX512 ola;
   
-	int sockfd, reuse = 1;; //only need the one socket on client side
-	struct sockaddr_in sADDR;
-	struct hostent *host; //this is typically needed for clients to get server information
-	string message = "SLNS Client ACK";
-
-	if((sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
-	{
-			perror("Error: Socket Not created");
-			exit(EXIT_FAILURE);
-	}
-
-	//host = gethostbyname("127.0.0.1"); //Address for testing on localhost
-	host = gethostbyname("192.168.1.12"); //Server's address
-
-	if(host == NULL)
-	{
-			perror("Host does not exist\n");
-			exit(EXIT_FAILURE);
-	}
-	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(int)) < 0)
-	{
-			perror("setsockopt(SO_REUSEADDR) failed");
-			exit(EXIT_FAILURE);
-	}
-	bzero((char *) &sADDR, sizeof(sADDR));
-	sADDR.sin_family = AF_INET;
-	bcopy((char *) host->h_addr, (char *) &sADDR.sin_addr.s_addr, host->h_length);
-	sADDR.sin_port = htons(port);
-	bcopy((char *)host->h_addr,(char *)&sADDR.sin_addr.s_addr,host->h_length);
-
-	cout << "Created Socket\n";
-
-	int cnt = 0;
-	while(connect(sockfd,(struct sockaddr*)&sADDR, sizeof(sADDR)) < 0)  //connect to server failure, try again
-	{
-			sleep(1);
-			if (cnt == 10)
-				exit(EXIT_FAILURE);
-			cnt++;
-			perror("Error: Failed to connect");
-	}
+	connect_to_server();
 	cout << "Connection made\n"; //connect to server success
 	send(sockfd, message.c_str(), sizeof(message),0);
 
@@ -97,12 +57,12 @@ int main()
 		ss << recv_data;
 		ss >> CMD >> DATA;
 
-		if(n == 0)
+		if(n == 0) // if connection is broken attempt to reconnect to server
 		{
-			cout << "Server Connection lost, Shutting down" << endl;
-			sleep(3);
-			close(sockfd);
-			break;
+			cout << "Server Connection lost, Attempting to Reestablish\n";
+			connect_to_server();
+			cout << "Connection Reestablished\n"; //connect to server success
+			send(sockfd, message.c_str(), sizeof(message),0);
 		}
 		else if(n != 0) //process server commands
 		{
@@ -111,13 +71,13 @@ int main()
 			{
 					if((CMD == "SET")) //server sending GUI CR values or user defined values
 					{
-						cout << "Setting lights to:" << DATA << endl;
-						//OLA(DATA);
-						ola.setData(DATA);
-						DATA = ola.sendOLA(); // The returned value is based on success
-
-						send(sockfd,DATA.c_str(),sizeof(DATA),0); //Send Response
-						DATA.clear();
+					  cout << "Setting lights to:" << DATA << endl;
+					  //OLA(DATA);
+					  ola.setData(DATA);
+					  DATA = ola.sendOLA(); // The returned value is based on success
+					  send(sockfd,DATA.c_str(), sizeof(DATA), 0); //Send Response
+					  DATA.clear();
+					  
 					}
 					else if(CMD == "GET")  //server fetching client sensor values for GUI request
 					{
@@ -130,7 +90,6 @@ int main()
 					{
 						cout << "Send To Server:" << CMD << endl;
 						send(sockfd, CMD.c_str(), sizeof(CMD),0);
-						//This is so the server can keep track of connected clients, please keep and expand on
 					}
 					else if(CMD == "TBS")
 					{
@@ -151,6 +110,47 @@ int main()
 		}
 	}
 return 0;
+}
+
+int connect_to_server()
+{
+	if((sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+	{
+		perror("Error: Socket Not created");
+		exit(EXIT_FAILURE);
+	}
+
+	host = gethostbyname(HOST); //Address for testing on localhost
+	//host = gethostbyname("192.168.1.100"); //Address for testing on remote client
+
+	if(host == NULL)
+	{
+		perror("Host does not exist\n");
+		exit(EXIT_FAILURE);
+	}
+	if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(int)) < 0)
+	{
+		perror("setsockopt(SO_REUSEADDR) failed");
+		exit(EXIT_FAILURE);
+	}
+	bzero((char *) &sADDR, sizeof(sADDR));
+	sADDR.sin_family = AF_INET;
+	bcopy((char *) host->h_addr, (char *) &sADDR.sin_addr.s_addr, host->h_length);
+	sADDR.sin_port = htons(port);
+	bcopy((char *)host->h_addr,(char *)&sADDR.sin_addr.s_addr,host->h_length);
+
+	cout << "Created Socket\n";
+
+	int cnt = 0;
+	while(connect(sockfd,(struct sockaddr*)&sADDR, sizeof(sADDR)) < 0)  //connect to server failure, try again
+	{
+		sleep(1);
+		if (cnt == 10)
+			exit(EXIT_FAILURE);
+		cnt++;
+		perror("Error: Failed to connect");
+	}
+	return sockfd;
 }
 
 string time_processed() //return time in format YYYY/MM/DD_HH:MM:SS:milliseconds
