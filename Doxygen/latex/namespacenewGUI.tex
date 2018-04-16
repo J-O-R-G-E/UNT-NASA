@@ -1,0 +1,124 @@
+\hypertarget{namespacenewGUI}{}\section{new\+G\+UI Namespace Reference}
+\label{namespacenewGUI}\index{new\+G\+UI@{new\+G\+UI}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classnewGUI_1_1ColorSelector}{Color\+Selector}
+\item 
+class \hyperlink{classnewGUI_1_1Health}{Health}
+\item 
+class \hyperlink{classnewGUI_1_1HomePage}{Home\+Page}
+\item 
+class \hyperlink{classnewGUI_1_1LightsView}{Lights\+View}
+\item 
+class \hyperlink{classnewGUI_1_1LoginScreen}{Login\+Screen}
+\item 
+class \hyperlink{classnewGUI_1_1Methods}{Methods}
+\item 
+class \hyperlink{classnewGUI_1_1RoomView}{Room\+View}
+\item 
+class \hyperlink{classnewGUI_1_1ScreenManagement}{Screen\+Management}
+\item 
+class \hyperlink{classnewGUI_1_1Setting}{Setting}
+\item 
+class \hyperlink{classnewGUI_1_1SetValues}{Set\+Values}
+\item 
+class \hyperlink{classnewGUI_1_1TestApp}{Test\+App}
+\item 
+class \hyperlink{classnewGUI_1_1TestOLA}{Test\+O\+LA}
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{namespacenewGUI_a91dbb31105fb358875b6fa3553cab079}{conn} = sqlite3.\+connect(\textquotesingle{}/home/pi/2b.\+db\textquotesingle{},check\+\_\+same\+\_\+thread=\+False)
+\item 
+\hyperlink{namespacenewGUI_a5544cf625f6efca1ade3fecd19cae96b}{curs} = conn.\+cursor()
+\item 
+string \hyperlink{namespacenewGUI_aa6053557debf9b425afe60392b0a7ecb}{workfile\+\_\+path} = \textquotesingle{}workfile.\+txt\textquotesingle{}
+\item 
+list \hyperlink{namespacenewGUI_a63d65d01529f766bc8902211966856f8}{btns\+\_\+down} = \mbox{[}$\,$\mbox{]}
+\item 
+list \hyperlink{namespacenewGUI_a2d3315806a79ccd081272c11632e8287}{lights\+\_\+down} = \mbox{[}$\,$\mbox{]}
+\item 
+dictionary \hyperlink{namespacenewGUI_a0d1b5c5572fb3279b11bca7a9e927686}{CR}
+\item 
+\hyperlink{namespacenewGUI_a848be0fa44db58426e494eeac159d0be}{test\+O\+L\+A\+Colors} = None
+\item 
+\hyperlink{namespacenewGUI_aead1b4e98dbd3c8dadf69c1e77f1f15a}{sm} = \hyperlink{classnewGUI_1_1ScreenManagement}{Screen\+Management}()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}By Gladys Hernandez
+   Jorge Cardona*
+   Taylor Shinn**
+
+This is the User's Graphical Interface for our project.
+It communicates with a TCP server written in C++.
+All its information entred and retrieved by the user
+are stored in a database using SQLite3 which means that even
+if the GUI crahsed, all information such as Logins, Passwords, and
+user defined values are kept alive.
+
+...
+
+* = Jorge Cardona only added a small fraction to the entire functionality 
+of this GUI. Under the 'Settings' button, the 'Add New Device', 'Ports Available',
+and 'Test OLA' were implemented.
+
+** = Taylor Shinn ...\end{DoxyVerb}
+ 
+
+\subsection{Variable Documentation}
+\index{new\+G\+UI@{new\+G\+UI}!btns\+\_\+down@{btns\+\_\+down}}
+\index{btns\+\_\+down@{btns\+\_\+down}!new\+G\+UI@{new\+G\+UI}}
+\subsubsection[{\texorpdfstring{btns\+\_\+down}{btns_down}}]{\setlength{\rightskip}{0pt plus 5cm}list new\+G\+U\+I.\+btns\+\_\+down = \mbox{[}$\,$\mbox{]}}\hypertarget{namespacenewGUI_a63d65d01529f766bc8902211966856f8}{}\label{namespacenewGUI_a63d65d01529f766bc8902211966856f8}
+\index{new\+G\+UI@{new\+G\+UI}!conn@{conn}}
+\index{conn@{conn}!new\+G\+UI@{new\+G\+UI}}
+\subsubsection[{\texorpdfstring{conn}{conn}}]{\setlength{\rightskip}{0pt plus 5cm}new\+G\+U\+I.\+conn = sqlite3.\+connect(\textquotesingle{}/home/pi/2b.\+db\textquotesingle{},check\+\_\+same\+\_\+thread=\+False)}\hypertarget{namespacenewGUI_a91dbb31105fb358875b6fa3553cab079}{}\label{namespacenewGUI_a91dbb31105fb358875b6fa3553cab079}
+\index{new\+G\+UI@{new\+G\+UI}!CR@{CR}}
+\index{CR@{CR}!new\+G\+UI@{new\+G\+UI}}
+\subsubsection[{\texorpdfstring{CR}{CR}}]{\setlength{\rightskip}{0pt plus 5cm}dictionary new\+G\+U\+I.\+CR}\hypertarget{namespacenewGUI_a0d1b5c5572fb3279b11bca7a9e927686}{}\label{namespacenewGUI_a0d1b5c5572fb3279b11bca7a9e927686}
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+1 = \{
+2 \textcolor{stringliteral}{'00'}:\textcolor{stringliteral}{'005454FF'},
+3 \textcolor{stringliteral}{'01'}:\textcolor{stringliteral}{'00545454'},
+4 \textcolor{stringliteral}{'02'}:\textcolor{stringliteral}{'00545454'},
+5 \textcolor{stringliteral}{'03'}:\textcolor{stringliteral}{'00545454'},
+6 \textcolor{stringliteral}{'04'}:\textcolor{stringliteral}{'00545454'},
+7 \textcolor{stringliteral}{'05'}:\textcolor{stringliteral}{'88545454'},
+8 \textcolor{stringliteral}{'06'}:\textcolor{stringliteral}{'FF7FFFFF'},
+9 \textcolor{stringliteral}{'07'}:\textcolor{stringliteral}{'FF7FFFFF'},
+10 \textcolor{stringliteral}{'08'}:\textcolor{stringliteral}{'FF7FFFFF'},
+11 \textcolor{stringliteral}{'09'}:\textcolor{stringliteral}{'FF7FFFFF'},
+12 \textcolor{stringliteral}{'10'}:\textcolor{stringliteral}{'FF1E90FF'},
+13 \textcolor{stringliteral}{'11'}:\textcolor{stringliteral}{'FF1E90FF'},
+14 \textcolor{stringliteral}{'12'}:\textcolor{stringliteral}{'FF87CEFA'},
+15 \textcolor{stringliteral}{'13'}:\textcolor{stringliteral}{'FF87CEFA'},
+16 \textcolor{stringliteral}{'14'}:\textcolor{stringliteral}{'FF87CEFB'},
+17 \textcolor{stringliteral}{'15'}:\textcolor{stringliteral}{'FF87CEFC'},
+18 \textcolor{stringliteral}{'16'}:\textcolor{stringliteral}{'FF87CEFA'},
+19 \textcolor{stringliteral}{'17'}:\textcolor{stringliteral}{'88545454'},
+20 \textcolor{stringliteral}{'18'}:\textcolor{stringliteral}{'00545454'},
+21 \textcolor{stringliteral}{'19'}:\textcolor{stringliteral}{'00545454'},
+22 \textcolor{stringliteral}{'20'}:\textcolor{stringliteral}{'00545454'},
+23 \textcolor{stringliteral}{'21'}:\textcolor{stringliteral}{'00545454'},
+24 \textcolor{stringliteral}{'22'}:\textcolor{stringliteral}{'00545454'},
+25 \textcolor{stringliteral}{'23'}:\textcolor{stringliteral}{'00545454'}\}
+\end{DoxyCode}
+\index{new\+G\+UI@{new\+G\+UI}!curs@{curs}}
+\index{curs@{curs}!new\+G\+UI@{new\+G\+UI}}
+\subsubsection[{\texorpdfstring{curs}{curs}}]{\setlength{\rightskip}{0pt plus 5cm}new\+G\+U\+I.\+curs = conn.\+cursor()}\hypertarget{namespacenewGUI_a5544cf625f6efca1ade3fecd19cae96b}{}\label{namespacenewGUI_a5544cf625f6efca1ade3fecd19cae96b}
+\index{new\+G\+UI@{new\+G\+UI}!lights\+\_\+down@{lights\+\_\+down}}
+\index{lights\+\_\+down@{lights\+\_\+down}!new\+G\+UI@{new\+G\+UI}}
+\subsubsection[{\texorpdfstring{lights\+\_\+down}{lights_down}}]{\setlength{\rightskip}{0pt plus 5cm}list new\+G\+U\+I.\+lights\+\_\+down = \mbox{[}$\,$\mbox{]}}\hypertarget{namespacenewGUI_a2d3315806a79ccd081272c11632e8287}{}\label{namespacenewGUI_a2d3315806a79ccd081272c11632e8287}
+\index{new\+G\+UI@{new\+G\+UI}!sm@{sm}}
+\index{sm@{sm}!new\+G\+UI@{new\+G\+UI}}
+\subsubsection[{\texorpdfstring{sm}{sm}}]{\setlength{\rightskip}{0pt plus 5cm}new\+G\+U\+I.\+sm = {\bf Screen\+Management}()}\hypertarget{namespacenewGUI_aead1b4e98dbd3c8dadf69c1e77f1f15a}{}\label{namespacenewGUI_aead1b4e98dbd3c8dadf69c1e77f1f15a}
+\index{new\+G\+UI@{new\+G\+UI}!test\+O\+L\+A\+Colors@{test\+O\+L\+A\+Colors}}
+\index{test\+O\+L\+A\+Colors@{test\+O\+L\+A\+Colors}!new\+G\+UI@{new\+G\+UI}}
+\subsubsection[{\texorpdfstring{test\+O\+L\+A\+Colors}{testOLAColors}}]{\setlength{\rightskip}{0pt plus 5cm}new\+G\+U\+I.\+test\+O\+L\+A\+Colors = None}\hypertarget{namespacenewGUI_a848be0fa44db58426e494eeac159d0be}{}\label{namespacenewGUI_a848be0fa44db58426e494eeac159d0be}
+\index{new\+G\+UI@{new\+G\+UI}!workfile\+\_\+path@{workfile\+\_\+path}}
+\index{workfile\+\_\+path@{workfile\+\_\+path}!new\+G\+UI@{new\+G\+UI}}
+\subsubsection[{\texorpdfstring{workfile\+\_\+path}{workfile_path}}]{\setlength{\rightskip}{0pt plus 5cm}string new\+G\+U\+I.\+workfile\+\_\+path = \textquotesingle{}workfile.\+txt\textquotesingle{}}\hypertarget{namespacenewGUI_aa6053557debf9b425afe60392b0a7ecb}{}\label{namespacenewGUI_aa6053557debf9b425afe60392b0a7ecb}

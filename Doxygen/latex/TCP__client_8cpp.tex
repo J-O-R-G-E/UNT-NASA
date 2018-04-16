@@ -1,23 +1,29 @@
-\hypertarget{TCP__client_8cpp}{}\section{/home/pi/\+Desktop/\+U\+N\+T-\/\+N\+A\+S\+A/\+T\+C\+P\+\_\+client.cpp File Reference}
-\label{TCP__client_8cpp}\index{/home/pi/\+Desktop/\+U\+N\+T-\/\+N\+A\+S\+A/\+T\+C\+P\+\_\+client.\+cpp@{/home/pi/\+Desktop/\+U\+N\+T-\/\+N\+A\+S\+A/\+T\+C\+P\+\_\+client.\+cpp}}
-{\ttfamily \#include $<$string$>$}\newline
-{\ttfamily \#include $<$sstream$>$}\newline
-{\ttfamily \#include $<$iostream$>$}\newline
-{\ttfamily \#include $<$stdlib.\+h$>$}\newline
-{\ttfamily \#include $<$time.\+h$>$}\newline
-{\ttfamily \#include $<$stdio.\+h$>$}\newline
-{\ttfamily \#include $<$sys/socket.\+h$>$}\newline
-{\ttfamily \#include $<$sys/types.\+h$>$}\newline
-{\ttfamily \#include $<$netinet/in.\+h$>$}\newline
-{\ttfamily \#include $<$netdb.\+h$>$}\newline
-{\ttfamily \#include $<$string.\+h$>$}\newline
-{\ttfamily \#include $<$unistd.\+h$>$}\newline
-{\ttfamily \#include $<$errno.\+h$>$}\newline
-{\ttfamily \#include $<$ola/\+Dmx\+Buffer.\+h$>$}\newline
-{\ttfamily \#include $<$ola/\+Logging.\+h$>$}\newline
-{\ttfamily \#include $<$ola/client/\+Streaming\+Client.\+h$>$}\newline
+\hypertarget{TCP__client_8cpp}{}\section{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/\+T\+C\+P\+\_\+client.cpp File Reference}
+\label{TCP__client_8cpp}\index{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/\+T\+C\+P\+\_\+client.\+cpp@{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/\+T\+C\+P\+\_\+client.\+cpp}}
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$sys/socket.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$netinet/in.\+h$>$}\\*
+{\ttfamily \#include $<$netdb.\+h$>$}\\*
+{\ttfamily \#include $<$string.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include $<$ola/\+Dmx\+Buffer.\+h$>$}\\*
+{\ttfamily \#include $<$ola/\+Logging.\+h$>$}\\*
+{\ttfamily \#include $<$ola/client/\+Streaming\+Client.\+h$>$}\\*
 Include dependency graph for T\+C\+P\+\_\+client.\+cpp\+:
-% FIG 0
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{TCP__client_8cpp__incl}
+\end{center}
+\end{figure}
 \subsection*{Macros}
 \begin{DoxyCompactItemize}
 \item 
@@ -35,30 +41,29 @@ int \hyperlink{TCP__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
 
 
 \subsection{Macro Definition Documentation}
-\mbox{\Hypertarget{TCP__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}\label{TCP__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}} 
 \index{T\+C\+P\+\_\+client.\+cpp@{T\+C\+P\+\_\+client.\+cpp}!buff@{buff}}
 \index{buff@{buff}!T\+C\+P\+\_\+client.\+cpp@{T\+C\+P\+\_\+client.\+cpp}}
-\subsubsection{\texorpdfstring{buff}{buff}}
-{\footnotesize\ttfamily \#define buff~128}
-
-\mbox{\Hypertarget{TCP__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}\label{TCP__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}} 
+\subsubsection[{\texorpdfstring{buff}{buff}}]{\setlength{\rightskip}{0pt plus 5cm}\#define buff~128}\hypertarget{TCP__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}{}\label{TCP__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}
 \index{T\+C\+P\+\_\+client.\+cpp@{T\+C\+P\+\_\+client.\+cpp}!port@{port}}
 \index{port@{port}!T\+C\+P\+\_\+client.\+cpp@{T\+C\+P\+\_\+client.\+cpp}}
-\subsubsection{\texorpdfstring{port}{port}}
-{\footnotesize\ttfamily \#define port~9999}
-
+\subsubsection[{\texorpdfstring{port}{port}}]{\setlength{\rightskip}{0pt plus 5cm}\#define port~9999}\hypertarget{TCP__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}{}\label{TCP__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}
 
 
 \subsection{Function Documentation}
-\mbox{\Hypertarget{TCP__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}\label{TCP__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}} 
 \index{T\+C\+P\+\_\+client.\+cpp@{T\+C\+P\+\_\+client.\+cpp}!main@{main}}
 \index{main@{main}!T\+C\+P\+\_\+client.\+cpp@{T\+C\+P\+\_\+client.\+cpp}}
-\subsubsection{\texorpdfstring{main()}{main()}}
-{\footnotesize\ttfamily int main (\begin{DoxyParamCaption}\item[{void}]{ }\end{DoxyParamCaption})}
-
-\mbox{\Hypertarget{TCP__client_8cpp_abab4c1228d52ee787e48f6303bdfb956}\label{TCP__client_8cpp_abab4c1228d52ee787e48f6303bdfb956}} 
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{TCP__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{TCP__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
 \index{T\+C\+P\+\_\+client.\+cpp@{T\+C\+P\+\_\+client.\+cpp}!send\+O\+LA@{send\+O\+LA}}
 \index{send\+O\+LA@{send\+O\+LA}!T\+C\+P\+\_\+client.\+cpp@{T\+C\+P\+\_\+client.\+cpp}}
-\subsubsection{\texorpdfstring{send\+O\+L\+A()}{sendOLA()}}
-{\footnotesize\ttfamily int send\+O\+LA (\begin{DoxyParamCaption}\item[{int}]{olaA,  }\item[{int}]{olaR,  }\item[{int}]{olaG,  }\item[{int}]{olaB }\end{DoxyParamCaption})}
-
+\subsubsection[{\texorpdfstring{send\+O\+L\+A(int, int, int, int)}{sendOLA(int, int, int, int)}}]{\setlength{\rightskip}{0pt plus 5cm}int send\+O\+LA (
+\begin{DoxyParamCaption}
+\item[{int}]{olaA, }
+\item[{int}]{olaR, }
+\item[{int}]{olaG, }
+\item[{int}]{olaB}
+\end{DoxyParamCaption}
+)}\hypertarget{TCP__client_8cpp_abab4c1228d52ee787e48f6303bdfb956}{}\label{TCP__client_8cpp_abab4c1228d52ee787e48f6303bdfb956}

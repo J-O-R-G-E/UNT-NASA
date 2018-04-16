@@ -1,9 +1,19 @@
 var searchData=
 [
-  ['screenmanagement',['ScreenManagement',['../classTestingGUI_1_1ScreenManagement.html',1,'TestingGUI.ScreenManagement'],['../classTestApp1_1_1ScreenManagement.html',1,'TestApp1.ScreenManagement'],['../classGUI8J_1_1ScreenManagement.html',1,'GUI8J.ScreenManagement']]],
+  ['screenmanagement',['ScreenManagement',['../classGUI8_1_1ScreenManagement.html',1,'GUI8']]],
+  ['screenmanagement',['ScreenManagement',['../classTestingGUI_1_1ScreenManagement.html',1,'TestingGUI']]],
+  ['screenmanagement',['ScreenManagement',['../classTestApp1_1_1ScreenManagement.html',1,'TestApp1']]],
+  ['screenmanagement',['ScreenManagement',['../classGUI8J_1_1ScreenManagement.html',1,'GUI8J']]],
+  ['screenmanagement',['ScreenManagement',['../classnewGUI_1_1ScreenManagement.html',1,'newGUI']]],
   ['set',['Set',['../classTestingGUI_1_1Set.html',1,'TestingGUI']]],
-  ['setting',['Setting',['../classGUI8J_1_1Setting.html',1,'GUI8J.Setting'],['../classTestApp1_1_1Setting.html',1,'TestApp1.Setting']]],
-  ['setvalues',['SetValues',['../classGUI8J_1_1SetValues.html',1,'GUI8J.SetValues'],['../classTestingGUI_1_1SetValues.html',1,'TestingGUI.SetValues']]],
+  ['setting',['Setting',['../classGUI8J_1_1Setting.html',1,'GUI8J']]],
+  ['setting',['Setting',['../classGUI8_1_1Setting.html',1,'GUI8']]],
+  ['setting',['Setting',['../classTestApp1_1_1Setting.html',1,'TestApp1']]],
+  ['setting',['Setting',['../classnewGUI_1_1Setting.html',1,'newGUI']]],
+  ['setvalues',['SetValues',['../classnewGUI_1_1SetValues.html',1,'newGUI']]],
+  ['setvalues',['SetValues',['../classGUI8_1_1SetValues.html',1,'GUI8']]],
+  ['setvalues',['SetValues',['../classGUI8J_1_1SetValues.html',1,'GUI8J']]],
+  ['setvalues',['SetValues',['../classTestingGUI_1_1SetValues.html',1,'TestingGUI']]],
   ['snowboy',['SnowBoy',['../classvoiceOLA_1_1SnowBoy.html',1,'voiceOLA']]],
   ['snowboydetect',['SnowboyDetect',['../classsnowboydetect_1_1SnowboyDetect.html',1,'snowboydetect']]]
 ];

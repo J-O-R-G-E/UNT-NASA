@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['pir',['PIR',['../namespacePIR.html',1,'']]],
-  ['processcolors',['processColors',['../namespaceprocessColors.html',1,'']]]
+  ['olaui',['olaUI',['../namespaceolaUI.html',1,'']]]
 ];
