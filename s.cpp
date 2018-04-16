@@ -42,7 +42,7 @@ string time_processed(void); //timestamping
 
 //Frequently Used
 struct timeval tv;			//currently set to 5 seconds 
-#fstream wf("/home/pi/archive/workfile.txt"); //create primary workfile
+//fstream wf("/home/pi/archive/workfile.txt"); //create primary workfile
 fstream wf("workfile.txt"); //create primary workfile 
 mutex parselock, addlock, rmvlock;
 
@@ -213,8 +213,8 @@ void parser()
 	fstream wf, tf;
 	tv.tv_sec = 5;			// seconds
 	tv.tv_usec = 000000;	// microseconds
-	system("touch /home/pi/archive/temp.txt");
-	wf.open("/home/pi/archive/workfile.txt");
+	system("touch temp.txt");
+	wf.open("workfile.txt");
 	if(wf.is_open()) //if workfile exists and is open
 	{
 		string line;
@@ -227,7 +227,7 @@ void parser()
 			if(line[0] != 'S') //If the flag is not ment for the server, write processed command into temp and continue
 			{
 				cout << "Do not process:" + line << endl; //write the unprocessed line back into the file
-				tf.open("/home/pi/archive/temp.txt", ios::app);//create file and allow appending 
+				tf.open("temp.txt", ios::app);//create file and allow appending 
 				tf << line << endl;
 				tf.close();
 			}
@@ -264,7 +264,7 @@ void parser()
 							if(n == 0)
 							{
 								perror("Error: Did not Receive SET ack");
-								tf.open("/home/pi/archive/temp.txt", ios::app); 
+								tf.open("temp.txt", ios::app); 
 								tf << line;
 								tf.close();
 								line.clear();
@@ -273,7 +273,7 @@ void parser()
 							{
 								string proc_str2 = processedFlag + " " + IP + " " + CMD + " " + set_RGB+ " " + time_issued + " " + time_processed() + "\n";
 								cout << "Processed :" << proc_str2 << endl;
-								tf.open("/home/pi/archive/temp.txt", ios::app);//create file and allow appending 
+								tf.open("temp.txt", ios::app);//create file and allow appending 
 								tf << proc_str2;
 								tf.close();
 							}
@@ -291,7 +291,7 @@ void parser()
 							if(n == 0)
 							{
 								perror("Error: Did not Receive GET set");
-								tf.open("/home/pi/archive/temp.txt", ios::app); 
+								tf.open("temp.txt", ios::app); 
 								tf << line;
 								tf.close();
 							}
@@ -299,7 +299,7 @@ void parser()
 							{
 								string proc_str3 = guiFlag+ " " + IP + " " + CMD + " " + sensor_data + " " + time_issued + " " + time_processed() + "\n"; //WHAT THE MOTHERF!?
 								cout << "Processed :" << proc_str3 << endl;
-								tf.open("/home/pi/archive/temp.txt", ios::app); 
+								tf.open("temp.txt", ios::app); 
 								tf << proc_str3;
 								tf.close();
 							}
@@ -309,7 +309,7 @@ void parser()
 							cout << "This is an easter egg, I wanted to make one so here it is, yay! NOW KILLING CLIENT\n";
 							send(currentFD, CMD.c_str(), sizeof(CMD), 0);  //send GET request
 							string proc_str4 = guiFlag+ " " + IP + " " + CMD + " " + "00000000" + " " + time_issued + " " + time_processed() + "\n";
-							tf.open("/home/pi/archive/temp.txt", ios::app); 
+							tf.open("temp.txt", ios::app); 
 							tf << proc_str4;
 							cout << "Processed :" << proc_str4 << endl;
 							tf.close();
@@ -319,7 +319,7 @@ void parser()
 					else
 					{
 						perror("Client not found\n");
-						tf.open("/home/pi/archive/temp.txt", ios::app);//create file and allow appending 
+						tf.open("temp.txt", ios::app);//create file and allow appending 
 						tf << line << endl;
 						tf.close();
 					}
@@ -327,14 +327,14 @@ void parser()
 				else
 				{
 					perror("fd than fdmax\n");
-					tf.open("/home/pi/archive/temp.txt", ios::app);//create file and allow appending 
+					tf.open("temp.txt", ios::app);//create file and allow appending 
 					tf << line << endl;
 					tf.close();
 				}
 			}
 			line.clear();
 		}
-		system("cat /home/pi/archive/temp.txt > /home/pi/archive/workfile.txt ; rm /home/pi/archive/temp.txt"); //system call to overwrite workfile with temp file and then remove temp file
+		system("cat temp.txt > workfile.txt ; rm temp.txt"); //system call to overwrite workfile with temp file and then remove temp file
 		wf.close();
 		parselock.unlock();
 	}
