@@ -18,6 +18,11 @@ then
 fi
 
 
+# Lets change the swap memory
+sudo sed -i "s/CONF_SWAPSIZE=100/CONF_SWAPSIZE=1024/g" /etc/dphys-swapfile
+sudo /etc/init.d/dphys-swapfile stop
+sudo /etc/init.d/dphys-swapfile start
+
 echo "Making backup directory: $BACK_UP_DIR"
 mkdir $BACK_UP_DIR
 sleep 2
