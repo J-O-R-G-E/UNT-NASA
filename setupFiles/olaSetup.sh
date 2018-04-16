@@ -1,5 +1,5 @@
 #!/bin/bash
-
+1;2802;0c
 # By Jorge Cardona
 # jac0656@unt.edu
 
@@ -39,9 +39,9 @@ then
     tar -zxvf protobuf-all-3.5.1.tar.gz
     echo -e "\n\n${GREEN}UNZIPPED   ${RESET}\n\n"
 
-    
+ 
     # Lets go there
-    cd protobuf-all-3.5.1/
+    cd protobuf-3.5.1/
     
     ./configure
     echo -e "\n\n${GREEN}./configure       ${RESET}\n\n"
@@ -180,10 +180,10 @@ then
     echo -e "This command will run the olad deamon...\n\n\n"
     echo -e "This command will run the olad deamon...\n\n\n"
     
-    ifconfig | grep "inet 192........."
-    echo -e "Use the highlighted IP address on a browser as: IP:9090 and create a Universe with ID:1"
+    IP=`hostname -I | awk '{print $1}'`
+    echo -e "Use  a web browser and type: $IP:9090 and create a Universe with ID:1"
     
-    sleep 5
+    sleep 10
     
     sudo reboot
 
