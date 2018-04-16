@@ -42,7 +42,8 @@ string time_processed(void); //timestamping
 
 //Frequently Used
 struct timeval tv;			//currently set to 5 seconds 
-fstream wf("/home/pi/archive/workfile.txt"); //create primary workfile 
+#fstream wf("/home/pi/archive/workfile.txt"); //create primary workfile
+fstream wf("workfile.txt"); //create primary workfile 
 mutex parselock, addlock, rmvlock;
 
 //Globals
