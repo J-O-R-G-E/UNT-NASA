@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+//OLA
 #include "dmx512.hpp"
 
 #define port 9999
@@ -161,7 +162,7 @@ string time_processed() //return time in format YYYY/MM/DD_HH:MM:SS:milliseconds
 	time_t curtime;
 	gettimeofday(&ts, NULL);
 	curtime=ts.tv_sec;
-	strftime(time_buff,40,"%Y/%m/%d_%T:",localtime(&curtime));
+	strftime(time_buff,40,"%Y-%m-%d_%T:",localtime(&curtime));
 	sprintf(buf,"[%s%ld]",time_buff, ts.tv_usec);
 	return buf;
 }
