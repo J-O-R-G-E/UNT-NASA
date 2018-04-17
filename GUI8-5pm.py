@@ -8,6 +8,12 @@
 	cross-platform python framework that is used in this application. This file and
 	the .kv should be be stored under the same directory.
 
+       Jorge Cardona colaborated on this GUI by adding the 'Settings' portion.
+       This portion allows for users to add new devices, most importatly, the port count.
+       It also allows the user to see how many ports are not being used aka available.
+       And finally, it allows for the users to test specific color values, selected from a
+      color wheel, to be sent to that particular light.
+
 """
 from kivy.app import App
 from kivy.lang import Builder
@@ -37,12 +43,14 @@ import subprocess
 
 
 """ Establish database connection """
-conn = sqlite3.connect('/home/pi/2b.db',check_same_thread=False) 
+#conn = sqlite3.connect('/home/pi/2b.db',check_same_thread=False)
+conn = sqlite3.connect('/home/pi/UNT-NASA/2b.db',check_same_thread=False) 
 curs = conn.cursor()
 curs2 = conn.cursor()
 
 
-workfile_path = "/home/pi/kivy/examples/workfile.txt"
+#workfile_path = "/home/pi/kivy/examples/workfile.txt"
+workfile_path = "/home/pi/UNT-NASA/workfile.txt"
 
 btns_down = []
 lights_down = []
@@ -50,11 +58,11 @@ instances = []
 
 """Circadian Rhythm values dictionary - VALUES NEED TO BE CHANGED"""
 CR = {
-'00':'005454FF',
-'01':'00545454',
-'02':'00545454',
-'03':'00545454',
-'04':'00545454',
+'00':'FF5454FF',
+'01':'FF545454',
+'02':'FF545454',
+'03':'FF545454',
+'04':'FF545454',
 '05':'88545454',
 '06':'FF7FFFFF',
 '07':'FF7FFFFF',
@@ -68,12 +76,12 @@ CR = {
 '15':'FF87CEFC',
 '16':'FF87CEFA',
 '17':'88545454',
-'18':'00545454',
-'19':'00545454',
-'20':'00545454',
-'21':'00545454',
-'22':'00545454',
-'23':'00545454'}
+'18':'AB545454',
+'19':'BA545454',
+'20':'AC545454',
+'21':'DC545454',
+'22':'EA545454',
+'23':'AE545454'}
 
 class ScreenManagement(ScreenManager):
 	pass
@@ -190,6 +198,7 @@ class Methods(Screen):
 			workfile.write('\n')
 		workfile.close()
 
+                
 	""" method used to process commands """
 	def process_cmd(self,IP, function, any_data):
 		print('Processing...%s, %s, %s ' % (IP, function, any_data))
@@ -212,7 +221,7 @@ class Methods(Screen):
 		except:
 			print "Error in process_cmd"
 				
-			
+	"""This method parses the commands on the workfile"""		
 	def cmdparser(self):
 		print('cmdparser running')
 		
@@ -259,7 +268,7 @@ class Methods(Screen):
 		t1.start()
 		
 
-
+""" Health status, of the light, class"""
 class Health(Screen):
 	time = StringProperty()
 	date = StringProperty()
@@ -282,7 +291,8 @@ class Health(Screen):
 	
 	def __init__(self, **kwargs):
 		super(Health, self).__init__(**kwargs)
-		
+
+        """ This method checks the status of all lights in the DB"""
 	def check_status_ALL(self):
 		data = '00000000'
 		count = 0
@@ -310,6 +320,7 @@ class Health(Screen):
 		t3.start()
 
 
+        """This method does something"""
 	def health_status(self):
 		if len(lights_down) == 1:
 			#lights_down contains user's light selection on the view room screen
@@ -333,7 +344,8 @@ class Health(Screen):
 			
 		elif len(lights_down) > 1 or len(lights_down) == 0:
 			self.health_popup()
-			
+
+        """This method shows the status of the light to the user"""
 	def health_popup(self):
 		box = BoxLayout(orientation = 'vertical', padding = (8))
 		#message on popup
@@ -857,7 +869,7 @@ class RoomView(Screen):
 	def clear_room_name(self):
 		self.room_name = " "
 
-	'''builds a list of lights assigned to the room'''
+	"""builds a list of lights assigned to the room"""
 	def build(self):
 		function_callback = LightsView()
 		self.ids.gridlayout2.clear_widgets()
@@ -892,7 +904,7 @@ class RoomView(Screen):
 class Blank(Screen):
 	pass
 			
-'''login screen will be the first screen to execute, calls function that checks for gui commands'''
+"""login screen will be the first screen to execute, calls function that checks for gui commands"""
 class LoginScreen(Screen):
 	#user = StringProperty()
 	#passw = StringProperty()
@@ -963,6 +975,7 @@ class Troubleshoot(Screen):
 	pass
 
 ############################################ JORGE's GUI Section ##################################################
+"""This class has the buttons to 'Add New Device', 'view Ports' """
 class Setting(Screen, GridLayout, BoxLayout):
     newDevControl = 1
     portsCount = 0 #Should be Plug-And-Play Value
@@ -970,7 +983,7 @@ class Setting(Screen, GridLayout, BoxLayout):
     def __init__(self, **kwargs):
         super(Setting, self).__init__(**kwargs)
     
-    
+    """Popup method that displays input field for adding a new device"""    
     def addPorts(self):
         
         self.box = BoxLayout(orientation = 'vertical', padding = (5))
@@ -998,13 +1011,23 @@ class Setting(Screen, GridLayout, BoxLayout):
    
         self.popup.open()
 
-   
-   
+        
+    """Method that handles user's input from popup"""
     def getUser(self, arg1):
         if(self.uInput.text.isdigit()):
             global newDevControl, portsCount
-            self.portsCount = self.uInput.text
+            
+            # Make sure add them as numbers and not as strings
+            self.old = int(self.portsCount)
+            self.new = int(self.uInput.text)
+            self.new += self.old
+
+            self.portsCount = str(self.new)
             self.newDevControl = 1
+            
+            curs.execute("UPDATE PORTS SET Amount='" + self.portsCount + "'")
+            conn.commit()
+  
             print("User Entered: {}".format(self.uInput.text))
             
         else:
@@ -1013,12 +1036,23 @@ class Setting(Screen, GridLayout, BoxLayout):
             print("Wrong value!")
             return self.addPorts()
 
-        
+    
+    """This method gets the port count from the DB and displays it to the user"""    
     def getPorts(self):
 
-        self.box = BoxLayout(orientation = 'vertical', padding = (5))
-
         global portsCount
+        for row in curs.execute("SELECT * FROM Ports"):
+		self.portsCount = row[0]                       
+
+        ##############################################################
+        # Taylor, here is where I need to get your Plug And Play value
+        # so I can substract it from the total ports count.
+        # This is how I will be able to show the ports available
+        #
+        # e.g.: self.portsCount -= plugAnPlaCount      
+        #############################################################
+        
+        self.box = BoxLayout(orientation = 'vertical', padding = (5))
         self.myLabel = Label(text = ("There are " + str(self.portsCount) + " Ports Available!"), font_size='25sp')
         self.box.add_widget(self.myLabel)
         #self.box.add_widget(Label(text = ("There are " + str(self.portsCount) + " Ports Available!"), font_size='25sp'))
@@ -1032,15 +1066,60 @@ class Setting(Screen, GridLayout, BoxLayout):
         
         self.popup.open()
 
+
+        ############################################################
+        # IF PORTS >= 2048. AKA SOMAXCONN has been reached,        #
+        # Call the script that updates this ammount.               #
+        # Maybe Create another instance of the servere?            #
+        # If SOMAXCONN is updated, I may need to reboot the system #
+        # Maybe Create a warning pop up telling the user what is   #
+        # about to happen so that they dont think they crashed the #
+        # GUI by adding that new devicew                           #
+        ############################################################
+            
+        
         print("{} Ports".format(self.portsCount))
+
+
+# For Color WHeel Only
+testOLAColors = None
+"""This class handles the color wheel popup"""
+class ColorSelector(Popup):
         
+        """This is the method that gets called when the user presses OK on the color wheel. It stores those values on the DB"""	
+        def on_press_dismiss(self, colorPicker, *args):
+                
+                self.dismiss()
+                #Gets as it was selected - x
+                RGBA = list(colorPicker.hex_color[1:])
+                
+                As = str(RGBA[6]) + str(RGBA[7])
+                Rs = str(RGBA[0])  +  str(RGBA[1])
+                Gs = str(RGBA[2]) + str(RGBA[3])
+                Bs = str(RGBA[4]) + str(RGBA[5])
+
+                ARGBs = As+Rs+Gs+Bs + " "
+                
+                (dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+		dt = "%s.%03d" % (dt, int(micro) / 1000)
+		ARGBs  += dt
+		
+		# Finish the Command
+		with open("testOLA", "a") as f:
+			f.write(ARGBs)
+			f.write('\n')
+		f.close()
+
+                
+                # make the file empty
+                os.system("cat testOLA >> workfile.txt ; echo \" \" > testOLA")
+                               
+                return True
         
-        
+"""This class is To test OLA from any of the lights on the DB. Only one a time can be tested."""
 class TestOLA(Screen):
 
-        killWeb = None
-        
-	def build(self):
+        def build(self):
 		self.ids.testolalayout.clear_widgets()
 		
 		for row in curs.execute("SELECT Light_name FROM Lights WHERE Room='X'"):
@@ -1049,49 +1128,44 @@ class TestOLA(Screen):
 			self.ids.testolalayout.add_widget(btn) #add to gridlayout 
 		self.ids.testolalayout.bind(minimum_height=self.ids.testolalayout.setter('height'))
 		
-		'''method checks the state of the toggle buttons for lights section'''
+	"""method checks the state of the toggle buttons for lights section"""
 	def lightscallback(self, instance, value):
 		print('My button <%s> state is %s' % (instance.text, value))
 		if value == 'down':
-			lights_down.append(instance.text) # add to list of buttons with down state
+                      	lights_down.append(instance.text) # add to list of buttons with down state
+                        
+                        
 		elif value == 'normal':
 			lights_down.remove(instance.text) # remove from list if back to normal
 			print('not down')
                         
-
-                        # Lets see if we hacec a child
-			proc = subprocess.Popen(["pidof python olaUI.py"],
-                                                stdout=subprocess.PIPE, shell=True)
-                        
-			(out, err) = proc.communicate()
-
-                        # out = 6, one PID aka parent
-			if( len(out) > 8):
-                                # If they pressed it again, lets kill the current window
-                                # Maybe thats what they ment by pressing it again.
-                                # Otherwise, it will show another windows and there will
-                                # no be two windows for the same thing.
-                                
-				os.system(" kill  $(pidof python olaUI.py | awk '{print $1}')")
-				#os.system("pkill -P $(pidof python olaUI.py)")
-			else:
-				pass          
 		else:
 			pass
-		
+
+        """This method loads the color wheel popup to the screen. It also writes to the workfile"""        
 	def showOLA(self, arg1):
 		if len(lights_down) == 1:
-			for row in curs.execute("SELECT IP_address FROM Lights WHERE Light_name= '" + lights_down[0] + "'"):
-				ip = row[0]
-				#print(ip)
 
-				os.system("python olaUI.py "+ ip + " &")
-				print(TestOLA.killWeb)
-                                        
+                        # Show Color wheel
+                        self.aColor  = ColorSelector()
+                        self.aColor.open()
+
+                        # Prepare for color selection
+                        for row in curs.execute("SELECT IP_address FROM Lights WHERE Light_name='" + lights_down[0] + "'"):
+			        cmd = "S "  + row[0] +  " " + "SET" + " "
+		                ip = row[0]
+				#print(ip)
+                                
+
+                        with open("testOLA","a") as f:
+				f.write(cmd)
+                        f.close()
+                                
+                        			        
 		else:
 			pass
 
-############################################# End of Jorge's Section #######################################################
+#####################################END of JORGE's GUI Section ##################################################
 
 
 Builder.load_file("gui8.kv")
@@ -1099,10 +1173,22 @@ sm = ScreenManagement()
 
 class TestApp(App):
 	title = "Spacecraft Lighting Network System"
-	def build(self):		
-		return sm
+	def build(self):
+		# return ScreenManagement()
+
+                # Need for TestOla class
+                self.color_selector = ColorSelector()
+                
+                return sm
 		
 if __name__ == "__main__":
-	TestApp().run()
+        #Run voice commands at boot up
+        #os.system('python /home/pi/Desktop/UNT-NASA/voiceOLA/voiceOLA.py > /dev/null 2>&1 &')
+
+        # NEEDED For Testing Individual Lights
+        os.system("touch testOLA")
+
+        # Run the GUI
+        TestApp().run()
 
 conn.close() #close database connection 
