@@ -1,5 +1,10 @@
 \hypertarget{namespaceGUI8}{}\section{G\+U\+I8 Namespace Reference}
 \label{namespaceGUI8}\index{G\+U\+I8@{G\+U\+I8}}
+
+
+-\/5pm  
+
+
 \subsection*{Classes}
 \begin{DoxyCompactItemize}
 \item 
@@ -34,13 +39,13 @@ class \hyperlink{classGUI8_1_1TestOLA}{Test\+O\+LA}
 \item 
 \hyperlink{namespaceGUI8_a9d14617d09e50247fc7d7b65ea35c514}{curs} = conn.\+cursor()
 \item 
-string \hyperlink{namespaceGUI8_af0654d56d4c69d04e37a97e1240d257c}{workfile\+\_\+path} = \textquotesingle{}workfile.\+txt\textquotesingle{}
+string \hyperlink{namespaceGUI8_a6292bd16380bb1ee0c304104f3360d88}{workfile\+\_\+path} = \textquotesingle{}workfile.\+txt\textquotesingle{}
 \item 
-list \hyperlink{namespaceGUI8_a1178839be878c3171e22a33b1a00c9c1}{btns\+\_\+down} = \mbox{[}$\,$\mbox{]}
+list \hyperlink{namespaceGUI8_ad654a4cc579f4fa13d6c2e88100e51e7}{btns\+\_\+down} = \mbox{[}$\,$\mbox{]}
 \item 
-list \hyperlink{namespaceGUI8_a2be349e413c2c9022ec2b4b50bdeb547}{lights\+\_\+down} = \mbox{[}$\,$\mbox{]}
+list \hyperlink{namespaceGUI8_ad7496b54dfb9e4694dd3d0185d232526}{lights\+\_\+down} = \mbox{[}$\,$\mbox{]}
 \item 
-dictionary \hyperlink{namespaceGUI8_a431c9ff481f8df6f970a9227b18630ec}{CR}
+dictionary \hyperlink{namespaceGUI8_ac8f0ade69b245f322c069be72b159d1b}{CR}
 \item 
 \hyperlink{namespaceGUI8_a9452e2e26352526a966150d962e784e7}{test\+O\+L\+A\+Colors} = None
 \item 
@@ -49,6 +54,8 @@ dictionary \hyperlink{namespaceGUI8_a431c9ff481f8df6f970a9227b18630ec}{CR}
 
 
 \subsection{Detailed Description}
+-\/5pm 
+
 \begin{DoxyVerb}By Gladys Hernandez
    Jorge Cardona*
    Taylor Shinn**
@@ -67,18 +74,35 @@ of this GUI. Under the 'Settings' button, the 'Add New Device', 'Ports Available
 and 'Test OLA' were implemented.
 
 ** = Taylor Shinn ...\end{DoxyVerb}
+
+
+\begin{DoxyVerb}SLNS Graphical User Interface 2018
+Written by Gladys Hernandez-Amaya   gh0151@unt.edu
+Course: CSCE 4915
+Faculty Advisor: Robin P.
+File Description: This python program displays the menu functions for the SLNS. 
+It issues commands for the server and writes them to workfile.txt, and processes 
+commands from the server by reading workfile.txt. Kivy is an open source,
+cross-platform python framework that is used in this application. This file and
+the .kv should be be stored under the same directory.
+
+   Jorge Cardona colaborated on this GUI by adding the 'Settings' portion.
+   This portion allows for users to add new devices, most importatly, the port count.
+   It also allows the user to see how many ports are not being used aka available.
+   And finally, it allows for the users to test specific color values, selected from a
+  color wheel, to be sent to that particular light.\end{DoxyVerb}
  
 
 \subsection{Variable Documentation}
 \index{G\+U\+I8@{G\+U\+I8}!btns\+\_\+down@{btns\+\_\+down}}
 \index{btns\+\_\+down@{btns\+\_\+down}!G\+U\+I8@{G\+U\+I8}}
-\subsubsection[{\texorpdfstring{btns\+\_\+down}{btns_down}}]{\setlength{\rightskip}{0pt plus 5cm}list G\+U\+I8.\+btns\+\_\+down = \mbox{[}$\,$\mbox{]}}\hypertarget{namespaceGUI8_a1178839be878c3171e22a33b1a00c9c1}{}\label{namespaceGUI8_a1178839be878c3171e22a33b1a00c9c1}
+\subsubsection[{\texorpdfstring{btns\+\_\+down}{btns_down}}]{\setlength{\rightskip}{0pt plus 5cm}list G\+U\+I8.\+btns\+\_\+down = \mbox{[}$\,$\mbox{]}}\hypertarget{namespaceGUI8_ad654a4cc579f4fa13d6c2e88100e51e7}{}\label{namespaceGUI8_ad654a4cc579f4fa13d6c2e88100e51e7}
 \index{G\+U\+I8@{G\+U\+I8}!conn@{conn}}
 \index{conn@{conn}!G\+U\+I8@{G\+U\+I8}}
 \subsubsection[{\texorpdfstring{conn}{conn}}]{\setlength{\rightskip}{0pt plus 5cm}G\+U\+I8.\+conn = sqlite3.\+connect(\textquotesingle{}/home/pi/2b.\+db\textquotesingle{},check\+\_\+same\+\_\+thread=\+False)}\hypertarget{namespaceGUI8_a49010b9a16980db6e87f54580689492d}{}\label{namespaceGUI8_a49010b9a16980db6e87f54580689492d}
 \index{G\+U\+I8@{G\+U\+I8}!CR@{CR}}
 \index{CR@{CR}!G\+U\+I8@{G\+U\+I8}}
-\subsubsection[{\texorpdfstring{CR}{CR}}]{\setlength{\rightskip}{0pt plus 5cm}dictionary G\+U\+I8.\+CR}\hypertarget{namespaceGUI8_a431c9ff481f8df6f970a9227b18630ec}{}\label{namespaceGUI8_a431c9ff481f8df6f970a9227b18630ec}
+\subsubsection[{\texorpdfstring{CR}{CR}}]{\setlength{\rightskip}{0pt plus 5cm}dictionary G\+U\+I8.\+CR}\hypertarget{namespaceGUI8_ac8f0ade69b245f322c069be72b159d1b}{}\label{namespaceGUI8_ac8f0ade69b245f322c069be72b159d1b}
 {\bfseries Initial value\+:}
 \begin{DoxyCode}
 1 = \{
@@ -112,7 +136,7 @@ and 'Test OLA' were implemented.
 \subsubsection[{\texorpdfstring{curs}{curs}}]{\setlength{\rightskip}{0pt plus 5cm}G\+U\+I8.\+curs = conn.\+cursor()}\hypertarget{namespaceGUI8_a9d14617d09e50247fc7d7b65ea35c514}{}\label{namespaceGUI8_a9d14617d09e50247fc7d7b65ea35c514}
 \index{G\+U\+I8@{G\+U\+I8}!lights\+\_\+down@{lights\+\_\+down}}
 \index{lights\+\_\+down@{lights\+\_\+down}!G\+U\+I8@{G\+U\+I8}}
-\subsubsection[{\texorpdfstring{lights\+\_\+down}{lights_down}}]{\setlength{\rightskip}{0pt plus 5cm}list G\+U\+I8.\+lights\+\_\+down = \mbox{[}$\,$\mbox{]}}\hypertarget{namespaceGUI8_a2be349e413c2c9022ec2b4b50bdeb547}{}\label{namespaceGUI8_a2be349e413c2c9022ec2b4b50bdeb547}
+\subsubsection[{\texorpdfstring{lights\+\_\+down}{lights_down}}]{\setlength{\rightskip}{0pt plus 5cm}list G\+U\+I8.\+lights\+\_\+down = \mbox{[}$\,$\mbox{]}}\hypertarget{namespaceGUI8_ad7496b54dfb9e4694dd3d0185d232526}{}\label{namespaceGUI8_ad7496b54dfb9e4694dd3d0185d232526}
 \index{G\+U\+I8@{G\+U\+I8}!sm@{sm}}
 \index{sm@{sm}!G\+U\+I8@{G\+U\+I8}}
 \subsubsection[{\texorpdfstring{sm}{sm}}]{\setlength{\rightskip}{0pt plus 5cm}G\+U\+I8.\+sm = {\bf Screen\+Management}()}\hypertarget{namespaceGUI8_aa76ce78e0e5cc6e178b5745dae6ee144}{}\label{namespaceGUI8_aa76ce78e0e5cc6e178b5745dae6ee144}
@@ -121,4 +145,4 @@ and 'Test OLA' were implemented.
 \subsubsection[{\texorpdfstring{test\+O\+L\+A\+Colors}{testOLAColors}}]{\setlength{\rightskip}{0pt plus 5cm}G\+U\+I8.\+test\+O\+L\+A\+Colors = None}\hypertarget{namespaceGUI8_a9452e2e26352526a966150d962e784e7}{}\label{namespaceGUI8_a9452e2e26352526a966150d962e784e7}
 \index{G\+U\+I8@{G\+U\+I8}!workfile\+\_\+path@{workfile\+\_\+path}}
 \index{workfile\+\_\+path@{workfile\+\_\+path}!G\+U\+I8@{G\+U\+I8}}
-\subsubsection[{\texorpdfstring{workfile\+\_\+path}{workfile_path}}]{\setlength{\rightskip}{0pt plus 5cm}string G\+U\+I8.\+workfile\+\_\+path = \textquotesingle{}workfile.\+txt\textquotesingle{}}\hypertarget{namespaceGUI8_af0654d56d4c69d04e37a97e1240d257c}{}\label{namespaceGUI8_af0654d56d4c69d04e37a97e1240d257c}
+\subsubsection[{\texorpdfstring{workfile\+\_\+path}{workfile_path}}]{\setlength{\rightskip}{0pt plus 5cm}string G\+U\+I8.\+workfile\+\_\+path = \textquotesingle{}workfile.\+txt\textquotesingle{}}\hypertarget{namespaceGUI8_a6292bd16380bb1ee0c304104f3360d88}{}\label{namespaceGUI8_a6292bd16380bb1ee0c304104f3360d88}
