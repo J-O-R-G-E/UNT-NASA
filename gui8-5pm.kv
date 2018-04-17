@@ -710,7 +710,7 @@
 			on_press: root.manager.current = 'homepage'
 
 
-#################################################################
+
 ########################################
 ########### SETTINGS CLASS #############
 ########################################
@@ -795,20 +795,14 @@
 		bar_width: '8dp'
 			
 		GridLayout:
-			id: testolalayout
-			cols: 1
-			padding: 10
-			spacing: 10
-			size_hint: (None, None)
-			width: 800
-			
-			canvas:
-				Color:
-					rgb: (204/255.0), (204/255.0), (204/255.0)
-				Rectangle:
-					size: self.size
-					pos: self.pos
-			
+		    id: testolalayout
+		    cols: 1
+		    padding: 10
+		    spacing: 10
+		    size_hint: (None, None)
+		    width: 800
+
+
 	BoxLayout:
 		size_hint: (None,None)
 		size: (800,120) #width and height
@@ -836,3 +830,40 @@
             on_press: root.manager.current = 'homepage'
 
 
+##############################################################3
+########################################
+######### ADD FOR JORGE ################
+########################################
+######## Color Wheel Popup  ############
+########################################
+<ColorSelector>:
+    color: 1, 1, 1, 1
+    title: 'Select A Color'
+    content: content
+    id: color_selector
+    
+    BoxLayout:
+        id: content
+        orientation: 'vertical'
+        size_hint_y: 1.0
+        ColorPicker:
+            id: RGBSource
+            color: root.color
+        BoxLayout:
+            size_hint_y: .30
+            #height: '20sp'
+            Button:
+                text: 'Ok'
+                on_release:
+                    # Remember Selection
+                    root.color = RGBSource.color
+                    color_selector.on_press_dismiss(RGBSource)		    
+            Button:
+                text: 'Cancel'
+                on_release: root.dismiss()
+
+###### END OF Color Wheel Popup  #######
+########## END OF SETTINGS CLASS ##############
+###############################################
+######### END OF ADD FOR JORGE ################
+#####################$$$$$$$###################
