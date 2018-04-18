@@ -1,4 +1,4 @@
-// Compiles as: g++ -g -std=c++11 Skeleton_client.cpp  dmx512.c++  $(pkg-config --cflags --libs libola) -o C                                                     
+// g++ -g -Wall -std=c++11 Final_client.cpp  dmx512.c++  $(pkg-config --cflags --libs libola) -o C
 // Skeleton Code for Jack's TCP client requirement, Jorge's OLA, and Taylors sensor
 #include <iostream>
 #include <cstdlib>
@@ -21,40 +21,61 @@
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <signal.h>
+#include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
+#include <fcntl.h>  //ioctl
+
+//Macros
+#define port 9999
+#define buff 128
+#define HOST "127.0.0.1"
 
 //OLA
 #include "dmx512.hpp"
 
-#define port 9999
-#define buff 128
-//#define HOST "127.0.0.1"
-#define HOST "192.168.1.12"
-
 using namespace std;
+
+//Fucntion Prototypes
 int connect_to_server(void);
 string time_processed(void); //timestamping
+void display_RGB(int);
 
-
+//Globals
 int sockfd, reuse = 1; //only need the one socket on client side
 struct sockaddr_in sADDR;
 struct hostent *host; //this is typically needed for clients to get server information
+char aRGB[50];
 string message = "SLNS Client ACK";
 
 int main()
 {
+	DMX512 ola;
 
-  DMX512 ola;
-  
 	connect_to_server();
+
 	cout << "Connection made\n"; //connect to server success
 	send(sockfd, message.c_str(), sizeof(message),0);
+
+	const char *bus = "/dev/i2c-1";
+	if ((file = open(bus, O_RDWR)) < 0)
+	{
+		//printf("Failed to open the bus. \n");
+		cout << "Failed to open the bus\n";
+		exit(1);
+	}
+	ioctl(file, I2C_SLAVE, 0x29);
+	signal(SIGALRM, display_RGB);
+	alarm(5);
 
 	while(1)
 	{
 		char recv_data[buff];
 		stringstream ss;
 		string CMD, DATA;
+
 		int n = recv(sockfd, recv_data, sizeof(recv_data), 0);
+
 		ss << recv_data;
 		ss >> CMD >> DATA;
 
@@ -72,17 +93,15 @@ int main()
 			{
 					if((CMD == "SET")) //server sending GUI CR values or user defined values
 					{
-					  cout << "Setting lights to:" << DATA << endl;
-					  //OLA(DATA);
-					  ola.setData(DATA);
-					  DATA = ola.sendOLA(); // The returned value is based on success
-					  send(sockfd,DATA.c_str(), sizeof(DATA), 0); //Send Response
-					  DATA.clear();
-					  
+						ola.setData(DATA);
+						DATA = ola.sendOLA(); // The returned value is based on success
+						cout << "Setting lights to:" << DATA << endl;//OLA(DATA);
+						send(sockfd,DATA.c_str(),sizeof(DATA),0); //Send Response
+						DATA.clear();
 					}
 					else if(CMD == "GET")  //server fetching client sensor values for GUI request
 					{
-						string sensor_data = "EIGHTLET"; //ARGB(); dummy values
+						char sensor_data[8] = aRGB;
 						cout << "Send To Server:" << sensor_data << endl;
 						send(sockfd,sensor_data.c_str(),sizeof(sensor_data),0); //Send Sensor data to Server
 						sensor_data.clear();
@@ -94,16 +113,19 @@ int main()
 					}
 					else if(CMD == "TBS")
 					{
-						cout << "troubleshooting\n"; 
+						cout << "troubleshooting\n";
 					}
 					else if(CMD == "SHD") //In case we want to add a test function, still pending
 					{
+						string shutdown = "0000000"; //set OLA to "00000000" to update DMX driver here BEFORE shutting down client
 						cout << "Shutting down" <<  time_processed() << endl;
-						//set OLA to "00000000" to update DMX driver here BEFORE shutting down client
+						ola.setData(shutdown);
+						DATA = ola.sendOLA(); // The returned value is based on success
+						cout << "Setting lights to:" << shutdown << endl;//OLA(DATA);
+						send(sockfd,shutdown.c_str(),sizeof(shutdown),0); //Send Response
 						close(sockfd);
 						break; //just to shut down client
 					}
-
 				memset(recv_data, 0, sizeof(recv_data));
 				ss.clear();
 				CMD.clear();
@@ -162,7 +184,69 @@ string time_processed() //return time in format YYYY/MM/DD_HH:MM:SS:milliseconds
 	time_t curtime;
 	gettimeofday(&ts, NULL);
 	curtime=ts.tv_sec;
-	strftime(time_buff,40,"%Y-%m-%d_%T:",localtime(&curtime));
+	strftime(time_buff,40,"%Y/%m/%d_%T:",localtime(&curtime));
 	sprintf(buf,"[%s%ld]",time_buff, ts.tv_usec);
 	return buf;
 }
+
+void display_RGB(int s)
+{
+	cout << endl;
+	// Select enable register(0x80)
+	// Power ON, RGBC enable, wait time disable(0x03)
+	char config[2] = {0};
+	config[0] = 0x80;
+	config[1] = 0x03;
+	write(file, config, 2);
+	// Select ALS time register(0x81)
+	// Atime = 700 ms(0x00)
+	config[0] = 0x81;
+	config[1] = 0x00;
+	write(file, config, 2);
+	// Select Wait Time register(0x83)
+	// WTIME : 2.4ms(0xFF)
+	config[0] = 0x83;
+	config[1] = 0xFF;
+	write(file, config, 2);
+	// Select control register(0x8F)
+	// AGAIN = 1x(0x00)
+	config[0] = 0x8F;
+	config[1] = 0x00;
+	write(file, config, 2);
+	usleep(1000000);
+
+	// Read 8 bytes of data from register(0x94)
+	// cData lsb, cData msb, red lsb, red msb, green lsb, green msb, blue l$
+	char reg[1] = {0x94};
+	write(file, reg, 1);
+	char data[8] = {0};
+	if(read(file, data, 8) != 8)
+	{
+			//printf("Erorr : Input/output Erorr \n");
+			cout << "Error : Input/output Error\n";
+	}
+	else
+	{
+		// Convert the data
+		int cData = (data[1]/* * 256 */| data[0]);
+		int red = (data[3] /* * 256*/ | data[2]);
+		int green = (data[5]/* * 256*/ | data[4]);
+		int blue = (data[7]/* * 256*/ | data[6]);
+
+		// Calculate luminance
+		int luminance = (.2126) * (red) + (.7152) * (green) + (.0722) * (blue);
+
+		//cout <<std::uppercase << std::hex << luminance << " "$
+		if(luminance < 0)
+		{
+			luminance = 0;
+		}
+
+		sprintf(aRGB, "%02X %02X %02X %02X", luminance, red, green, blue);
+		cout << aRGB << endl;
+	}
+	alarm(5);    //for every second
+	signal(SIGALRM, display_RGB);
+}
+
+

@@ -44,13 +44,13 @@ import subprocess
 
 """ Establish database connection """
 #conn = sqlite3.connect('/home/pi/2b.db',check_same_thread=False)
-conn = sqlite3.connect('/home/pi/UNT-NASA/2b.db',check_same_thread=False) 
+conn = sqlite3.connect('2b.db',check_same_thread=False) 
 curs = conn.cursor()
 curs2 = conn.cursor()
 
 
 #workfile_path = "/home/pi/kivy/examples/workfile.txt"
-workfile_path = "/home/pi/UNT-NASA/workfile.txt"
+workfile_path = "workfile.txt"
 
 btns_down = []
 lights_down = []

@@ -59,11 +59,11 @@ lights_down = []
 
 '''Circadian Rhythm dictionary - VALUES NEED TO BE CHANGED'''
 CR = {
-'00':'005454FF',
-'01':'00545454',
-'02':'00545454',
-'03':'00545454',
-'04':'00545454',
+'00':'FF5454FF',
+'01':'FF545454',
+'02':'FF545454',
+'03':'FF545454',
+'04':'FF545454',
 '05':'88545454',
 '06':'FF7FFFFF',
 '07':'FF7FFFFF',
@@ -77,12 +77,12 @@ CR = {
 '15':'FF87CEFC',
 '16':'FF87CEFA',
 '17':'88545454',
-'18':'00545454',
-'19':'00545454',
-'20':'00545454',
-'21':'00545454',
-'22':'00545454',
-'23':'00545454'}
+'18':'FF545454',
+'19':'FF545454',
+'20':'FF545454',
+'21':'FF545454',
+'22':'FF545454',
+'23':'FF545454'}
 
 class ScreenManagement(ScreenManager):
 	pass
@@ -1068,7 +1068,7 @@ class TestApp(App):
 		
 if __name__ == "__main__":
         #Run voice commands at boot up
-        os.system('python /home/pi/Desktop/UNT-NASA/voiceOLA/voiceOLA.py > /dev/null 2>&1 &')
+        #os.system('python /home/pi/Desktop/UNT-NASA/voiceOLA/voiceOLA.py > /dev/null 2>&1 &')
 
         #For Testing Individual Lights
         os.system("touch testOLA")
