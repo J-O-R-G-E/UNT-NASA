@@ -1,11 +1,22 @@
 var searchData=
 [
-  ['testapp',['TestApp',['../classGUI8_1_1TestApp.html',1,'GUI8']]],
-  ['testapp',['TestApp',['../classTestApp1_1_1TestApp.html',1,'TestApp1']]],
-  ['testapp',['TestApp',['../classTestingGUI_1_1TestApp.html',1,'TestingGUI']]],
-  ['testapp',['TestApp',['../classGUI8J_1_1TestApp.html',1,'GUI8J']]],
-  ['testapp',['TestApp',['../classnewGUI_1_1TestApp.html',1,'newGUI']]],
-  ['testola',['TestOLA',['../classnewGUI_1_1TestOLA.html',1,'newGUI']]],
-  ['testola',['TestOLA',['../classGUI8J_1_1TestOLA.html',1,'GUI8J']]],
-  ['testola',['TestOLA',['../classGUI8_1_1TestOLA.html',1,'GUI8']]]
+  ['screenmanagement',['ScreenManagement',['../classGUI8_1_1ScreenManagement.html',1,'GUI8']]],
+  ['screenmanagement',['ScreenManagement',['../classTestApp1_1_1ScreenManagement.html',1,'TestApp1']]],
+  ['screenmanagement',['ScreenManagement',['../classnewGUI_1_1ScreenManagement.html',1,'newGUI']]],
+  ['screenmanagement',['ScreenManagement',['../classGUI8-5pm_1_1ScreenManagement.html',1,'GUI8-5pm']]],
+  ['screenmanagement',['ScreenManagement',['../classTestingGUI_1_1ScreenManagement.html',1,'TestingGUI']]],
+  ['screenmanagement',['ScreenManagement',['../classGUI8J_1_1ScreenManagement.html',1,'GUI8J']]],
+  ['set',['Set',['../classTestingGUI_1_1Set.html',1,'TestingGUI']]],
+  ['setting',['Setting',['../classGUI8-5pm_1_1Setting.html',1,'GUI8-5pm']]],
+  ['setting',['Setting',['../classnewGUI_1_1Setting.html',1,'newGUI']]],
+  ['setting',['Setting',['../classGUI8J_1_1Setting.html',1,'GUI8J']]],
+  ['setting',['Setting',['../classGUI8_1_1Setting.html',1,'GUI8']]],
+  ['setting',['Setting',['../classTestApp1_1_1Setting.html',1,'TestApp1']]],
+  ['setvalues',['SetValues',['../classnewGUI_1_1SetValues.html',1,'newGUI']]],
+  ['setvalues',['SetValues',['../classGUI8_1_1SetValues.html',1,'GUI8']]],
+  ['setvalues',['SetValues',['../classTestingGUI_1_1SetValues.html',1,'TestingGUI']]],
+  ['setvalues',['SetValues',['../classGUI8-5pm_1_1SetValues.html',1,'GUI8-5pm']]],
+  ['setvalues',['SetValues',['../classGUI8J_1_1SetValues.html',1,'GUI8J']]],
+  ['snowboy',['SnowBoy',['../classvoiceOLA_1_1SnowBoy.html',1,'voiceOLA']]],
+  ['snowboydetect',['SnowboyDetect',['../classsnowboydetect_1_1SnowboyDetect.html',1,'snowboydetect']]]
 ];

@@ -1,0 +1,186 @@
+\hypertarget{s_8cpp}{}\section{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/s.cpp File Reference}
+\label{s_8cpp}\index{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/s.\+cpp@{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/s.\+cpp}}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$map$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$mutex$>$}\\*
+{\ttfamily \#include $<$cstdio$>$}\\*
+{\ttfamily \#include $<$ctime$>$}\\*
+{\ttfamily \#include $<$sys/time.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/socket.\+h$>$}\\*
+{\ttfamily \#include $<$netinet/in.\+h$>$}\\*
+{\ttfamily \#include $<$sys/select.\+h$>$}\\*
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$netdb.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$fcntl.\+h$>$}\\*
+Include dependency graph for s.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{s_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{s_8cpp_a614217d263be1fb1a5f76e2ff7be19a2}{P\+O\+RT}~9999
+\item 
+\#define \hyperlink{s_8cpp_a49b4801ec4ecca0932baadffe07d994b}{buff}~128
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{s_8cpp_a4690d997f0f1faffb447fa43fe9ce061}{parser} (void)
+\item 
+char $\ast$ \hyperlink{s_8cpp_a857bc2b8ff1b4336a905516392806f67}{get\+\_\+\+IP} (int)
+\item 
+string \hyperlink{s_8cpp_a63e8afe6076421045c688c7054f62fdb}{time\+\_\+processed} (void)
+\item 
+fstream \hyperlink{s_8cpp_ad88e9053e54e5152dc11c7074c817e0b}{wf} (\char`\"{}workfile.\+txt\char`\"{})
+\item 
+int \hyperlink{s_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+struct timeval \hyperlink{s_8cpp_a9cf96982557d56650f0f4cd3762f05a0}{tv}
+\item 
+mutex \hyperlink{s_8cpp_ad6036d1e5397d489fd0bd86d0cbd798e}{parselock}
+\item 
+mutex \hyperlink{s_8cpp_a8f072578819a46bffa8a730765d339a3}{addlock}
+\item 
+mutex \hyperlink{s_8cpp_a708d17ee131f4aa356daf039711c3c0a}{rmvlock}
+\item 
+int \hyperlink{s_8cpp_ad7d163106c5dbb40dbed9c754462f72e}{listener}
+\item 
+int \hyperlink{s_8cpp_ad2c8fb3df3a737e0685e902870a611d2}{sockfd}
+\item 
+int \hyperlink{s_8cpp_ae4b6440ca3750e54ba1fdd848fcaa59b}{newfd}
+\item 
+int \hyperlink{s_8cpp_a582ad83322acbc5ec4bad57b78cb6d8d}{fdmax}
+\item 
+int \hyperlink{s_8cpp_a8b16086473959a99b2a2964ddc158dd4}{reuse} = 1
+\item 
+string \hyperlink{s_8cpp_a345c20f045f29d285cc629e6a90b66bf}{gui\+Flag} = \char`\"{}G\char`\"{}
+\item 
+string \hyperlink{s_8cpp_af79ed4021813ed0c6e833caf279cad7e}{processed\+Flag} = \char`\"{}P\char`\"{}
+\item 
+string \hyperlink{s_8cpp_adafb2b7dfdae0d07ae233d1b24706bfd}{time\+\_\+issued}
+\item 
+map$<$ string, int $>$ \hyperlink{s_8cpp_a8cf81e6eb2c9433c668c36b35acc6bf7}{I\+Pmap}
+\item 
+fd\+\_\+set \hyperlink{s_8cpp_ae688ce221de0de53500e130618d12b75}{master}
+\item 
+fd\+\_\+set \hyperlink{s_8cpp_ae3856b6e8c2a464ed00f01267760ddaf}{rset}
+\item 
+fd\+\_\+set \hyperlink{s_8cpp_a5ffa4dbe0f377731d9f86fffd6ea4555}{wset}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{s.\+cpp@{s.\+cpp}!buff@{buff}}
+\index{buff@{buff}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{buff}{buff}}]{\setlength{\rightskip}{0pt plus 5cm}\#define buff~128}\hypertarget{s_8cpp_a49b4801ec4ecca0932baadffe07d994b}{}\label{s_8cpp_a49b4801ec4ecca0932baadffe07d994b}
+\index{s.\+cpp@{s.\+cpp}!P\+O\+RT@{P\+O\+RT}}
+\index{P\+O\+RT@{P\+O\+RT}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{P\+O\+RT}{PORT}}]{\setlength{\rightskip}{0pt plus 5cm}\#define P\+O\+RT~9999}\hypertarget{s_8cpp_a614217d263be1fb1a5f76e2ff7be19a2}{}\label{s_8cpp_a614217d263be1fb1a5f76e2ff7be19a2}
+
+
+\subsection{Function Documentation}
+\index{s.\+cpp@{s.\+cpp}!get\+\_\+\+IP@{get\+\_\+\+IP}}
+\index{get\+\_\+\+IP@{get\+\_\+\+IP}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{get\+\_\+\+I\+P(int)}{get_IP(int)}}]{\setlength{\rightskip}{0pt plus 5cm}char $\ast$ get\+\_\+\+IP (
+\begin{DoxyParamCaption}
+\item[{int}]{fd}
+\end{DoxyParamCaption}
+)}\hypertarget{s_8cpp_a857bc2b8ff1b4336a905516392806f67}{}\label{s_8cpp_a857bc2b8ff1b4336a905516392806f67}
+\index{s.\+cpp@{s.\+cpp}!main@{main}}
+\index{main@{main}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{s_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{s_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+\index{s.\+cpp@{s.\+cpp}!parser@{parser}}
+\index{parser@{parser}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{parser(void)}{parser(void)}}]{\setlength{\rightskip}{0pt plus 5cm}void parser (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{s_8cpp_a4690d997f0f1faffb447fa43fe9ce061}{}\label{s_8cpp_a4690d997f0f1faffb447fa43fe9ce061}
+\index{s.\+cpp@{s.\+cpp}!time\+\_\+processed@{time\+\_\+processed}}
+\index{time\+\_\+processed@{time\+\_\+processed}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{time\+\_\+processed(void)}{time_processed(void)}}]{\setlength{\rightskip}{0pt plus 5cm}string time\+\_\+processed (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{s_8cpp_a63e8afe6076421045c688c7054f62fdb}{}\label{s_8cpp_a63e8afe6076421045c688c7054f62fdb}
+\index{s.\+cpp@{s.\+cpp}!wf@{wf}}
+\index{wf@{wf}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{wf(""workfile.\+txt"")}{wf("workfile.txt")}}]{\setlength{\rightskip}{0pt plus 5cm}fstream wf (
+\begin{DoxyParamCaption}
+\item[{\char`\"{}workfile.\+txt\char`\"{}}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{s_8cpp_ad88e9053e54e5152dc11c7074c817e0b}{}\label{s_8cpp_ad88e9053e54e5152dc11c7074c817e0b}
+
+
+\subsection{Variable Documentation}
+\index{s.\+cpp@{s.\+cpp}!addlock@{addlock}}
+\index{addlock@{addlock}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{addlock}{addlock}}]{\setlength{\rightskip}{0pt plus 5cm}mutex addlock}\hypertarget{s_8cpp_a8f072578819a46bffa8a730765d339a3}{}\label{s_8cpp_a8f072578819a46bffa8a730765d339a3}
+\index{s.\+cpp@{s.\+cpp}!fdmax@{fdmax}}
+\index{fdmax@{fdmax}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{fdmax}{fdmax}}]{\setlength{\rightskip}{0pt plus 5cm}int fdmax}\hypertarget{s_8cpp_a582ad83322acbc5ec4bad57b78cb6d8d}{}\label{s_8cpp_a582ad83322acbc5ec4bad57b78cb6d8d}
+\index{s.\+cpp@{s.\+cpp}!gui\+Flag@{gui\+Flag}}
+\index{gui\+Flag@{gui\+Flag}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{gui\+Flag}{guiFlag}}]{\setlength{\rightskip}{0pt plus 5cm}string gui\+Flag = \char`\"{}G\char`\"{}}\hypertarget{s_8cpp_a345c20f045f29d285cc629e6a90b66bf}{}\label{s_8cpp_a345c20f045f29d285cc629e6a90b66bf}
+\index{s.\+cpp@{s.\+cpp}!I\+Pmap@{I\+Pmap}}
+\index{I\+Pmap@{I\+Pmap}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{I\+Pmap}{IPmap}}]{\setlength{\rightskip}{0pt plus 5cm}map$<$string, int$>$ I\+Pmap}\hypertarget{s_8cpp_a8cf81e6eb2c9433c668c36b35acc6bf7}{}\label{s_8cpp_a8cf81e6eb2c9433c668c36b35acc6bf7}
+\index{s.\+cpp@{s.\+cpp}!listener@{listener}}
+\index{listener@{listener}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{listener}{listener}}]{\setlength{\rightskip}{0pt plus 5cm}int listener}\hypertarget{s_8cpp_ad7d163106c5dbb40dbed9c754462f72e}{}\label{s_8cpp_ad7d163106c5dbb40dbed9c754462f72e}
+\index{s.\+cpp@{s.\+cpp}!master@{master}}
+\index{master@{master}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{master}{master}}]{\setlength{\rightskip}{0pt plus 5cm}fd\+\_\+set master}\hypertarget{s_8cpp_ae688ce221de0de53500e130618d12b75}{}\label{s_8cpp_ae688ce221de0de53500e130618d12b75}
+\index{s.\+cpp@{s.\+cpp}!newfd@{newfd}}
+\index{newfd@{newfd}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{newfd}{newfd}}]{\setlength{\rightskip}{0pt plus 5cm}int newfd}\hypertarget{s_8cpp_ae4b6440ca3750e54ba1fdd848fcaa59b}{}\label{s_8cpp_ae4b6440ca3750e54ba1fdd848fcaa59b}
+\index{s.\+cpp@{s.\+cpp}!parselock@{parselock}}
+\index{parselock@{parselock}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{parselock}{parselock}}]{\setlength{\rightskip}{0pt plus 5cm}mutex parselock}\hypertarget{s_8cpp_ad6036d1e5397d489fd0bd86d0cbd798e}{}\label{s_8cpp_ad6036d1e5397d489fd0bd86d0cbd798e}
+\index{s.\+cpp@{s.\+cpp}!processed\+Flag@{processed\+Flag}}
+\index{processed\+Flag@{processed\+Flag}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{processed\+Flag}{processedFlag}}]{\setlength{\rightskip}{0pt plus 5cm}string processed\+Flag = \char`\"{}P\char`\"{}}\hypertarget{s_8cpp_af79ed4021813ed0c6e833caf279cad7e}{}\label{s_8cpp_af79ed4021813ed0c6e833caf279cad7e}
+\index{s.\+cpp@{s.\+cpp}!reuse@{reuse}}
+\index{reuse@{reuse}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{reuse}{reuse}}]{\setlength{\rightskip}{0pt plus 5cm}int reuse = 1}\hypertarget{s_8cpp_a8b16086473959a99b2a2964ddc158dd4}{}\label{s_8cpp_a8b16086473959a99b2a2964ddc158dd4}
+\index{s.\+cpp@{s.\+cpp}!rmvlock@{rmvlock}}
+\index{rmvlock@{rmvlock}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{rmvlock}{rmvlock}}]{\setlength{\rightskip}{0pt plus 5cm}mutex rmvlock}\hypertarget{s_8cpp_a708d17ee131f4aa356daf039711c3c0a}{}\label{s_8cpp_a708d17ee131f4aa356daf039711c3c0a}
+\index{s.\+cpp@{s.\+cpp}!rset@{rset}}
+\index{rset@{rset}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{rset}{rset}}]{\setlength{\rightskip}{0pt plus 5cm}fd\+\_\+set rset}\hypertarget{s_8cpp_ae3856b6e8c2a464ed00f01267760ddaf}{}\label{s_8cpp_ae3856b6e8c2a464ed00f01267760ddaf}
+\index{s.\+cpp@{s.\+cpp}!sockfd@{sockfd}}
+\index{sockfd@{sockfd}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{sockfd}{sockfd}}]{\setlength{\rightskip}{0pt plus 5cm}int sockfd}\hypertarget{s_8cpp_ad2c8fb3df3a737e0685e902870a611d2}{}\label{s_8cpp_ad2c8fb3df3a737e0685e902870a611d2}
+\index{s.\+cpp@{s.\+cpp}!time\+\_\+issued@{time\+\_\+issued}}
+\index{time\+\_\+issued@{time\+\_\+issued}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{time\+\_\+issued}{time_issued}}]{\setlength{\rightskip}{0pt plus 5cm}string time\+\_\+issued}\hypertarget{s_8cpp_adafb2b7dfdae0d07ae233d1b24706bfd}{}\label{s_8cpp_adafb2b7dfdae0d07ae233d1b24706bfd}
+\index{s.\+cpp@{s.\+cpp}!tv@{tv}}
+\index{tv@{tv}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{tv}{tv}}]{\setlength{\rightskip}{0pt plus 5cm}struct timeval tv}\hypertarget{s_8cpp_a9cf96982557d56650f0f4cd3762f05a0}{}\label{s_8cpp_a9cf96982557d56650f0f4cd3762f05a0}
+\index{s.\+cpp@{s.\+cpp}!wset@{wset}}
+\index{wset@{wset}!s.\+cpp@{s.\+cpp}}
+\subsubsection[{\texorpdfstring{wset}{wset}}]{\setlength{\rightskip}{0pt plus 5cm}fd\+\_\+set wset}\hypertarget{s_8cpp_a5ffa4dbe0f377731d9f86fffd6ea4555}{}\label{s_8cpp_a5ffa4dbe0f377731d9f86fffd6ea4555}
