@@ -1,10 +1,11 @@
-/*
- * By Jorge Cardona
- * jac0656@unt.edu
- */
+/**
+   By Jorge Cardona
+   jac0656@unt.edu
+   
+   Compiles with: g++ testDMX512.c++ dmx512.c++ $(pkg-config --cflags --libs libola) -std=c++11 -Wall
+   Here testDMX.c++ is a file that includes this library
+*/
 
-//Compiles with: g++ testDMX512.c++ dmx512.c++ $(pkg-config --cflags --libs libola) -std=c++11 -Wall
-//Here testDMX.c++ is a file that includes this library
 
 #include <iostream>
 #include <string>
@@ -22,6 +23,7 @@
 #include <ola/Logging.h>
 #include <ola/client/StreamingClient.h>
 
+///Constructor. It checks that OLA is up and running. If not, it brings it back up.
 DMX512::DMX512(){
     
   // Lets make sure OLA is up and running
@@ -70,14 +72,20 @@ DMX512::DMX512(){
 }
 
 
+/// This method acts as flag to ensure we got 8 character.
 void DMX512::setOutOfRange(int i ){
   outOfRange = i;
 }
 
+/// This method gets called after the data has been processed
 int DMX512::getOutOfRange( ){
   return outOfRange;
 }
 
+
+/** This method splits the string of data received from the server 
+    into 4 pieces that will become Alpha or intensity, Red, Gree, and Blue
+*/
 void DMX512::setData(std::string DATA){
   try{
     A = DATA.substr(0, 2);
@@ -98,6 +106,7 @@ void DMX512::setData(std::string DATA){
   clientHandler();
 }
 
+/// This method converts the HEX value to INT
 void DMX512::clientHandler(){
   
   std::stringstream ssOLA;
@@ -123,8 +132,10 @@ void DMX512::clientHandler(){
 }
 
 
+/** This method will get called one last time before we attemp to send our values 
+    to the LED lights in the event that OLA went down while we were processing the data */
 void DMX512::checkOLA(){
-  // It doesnt Hurt to re-check...
+
   std::string line = "";
   std::vector<std::string> i;
   system("pidof olad  > tempFile-1");
@@ -146,20 +157,28 @@ void DMX512::checkOLA(){
 }
 
 
+/** This is the method that sends the data through the FTDI USB to the LED Light. 
+    Return types:
+        1 OLA Success
+	-1 OLA Failure
+	-2 Wrong Data Type
+	-3 Empty String
+*/
 std::string  DMX512::sendOLA(){
-  
-  /*NOTE:
-   * Return types:
-   *  1 OLA Success
-   * -1 OLA Failure
-   * -2 Wrong Data Type
-   * -3 Empty String
-   */
-    
+
+  /// This is the univer ID when the universe was created
   unsigned int universe = 1;
-  ola::DmxBuffer buffer; // A DmxBuffer to hold the data.
+
+  /// A DmxBuffer to hold the ARGB values.
+  ola::DmxBuffer buffer;
+
+  /// This object makes the connection to the OLA server
   ola::client::StreamingClient ola_client((ola::client::StreamingClient::Options()));
-  
+
+
+  /** Because we want to avoid errors, lets check each character
+      by making sure it is a HEX value
+   */
   int temp = 0;
   OLA = A+R+G+B;
   std::vector<char> cDATA(OLA.c_str(), OLA.c_str() +(OLA.size()));
@@ -186,18 +205,28 @@ std::string  DMX512::sendOLA(){
     std::cerr << "Setup failed" << std::endl;
     return "-1";
   }
-  
+
+
+  /** This is very important. It must match the values given to the LED light
+      using the dip switch selector. Even if eveything, softwarewise, is working,
+      it will be impossible to get correct outout if these dont match
+      NOTE:
+         In this case, the dip switch is set to 1 or 'listening' on chanel 1 aka 0
+  */
   buffer.SetChannel(0, Ai); // Intensity or Alpha
   buffer.SetChannel(1, Ri); // Red
   buffer.SetChannel(2, Gi); // Green
   buffer.SetChannel(3, Bi); // Blue                                                                                                                                         
+
   if(!ola_client.SendDmx(universe, buffer)){
     return "-1";
   }
   
   std::cout << "\nColor Sent!\n\n";
   std::cout << Ai <<" " <<  Ri <<  " " << Gi << " " << Bi <<std::endl;
-  
+
+
+  /// If this is true, the light got all 0s
   if(getOutOfRange()){
     setOutOfRange(0);
     return "-3";
