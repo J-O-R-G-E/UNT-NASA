@@ -102,15 +102,29 @@ void DMX512::clientHandler(){
   
   std::stringstream ssOLA;
   ssOLA.clear();
-  ssOLA << std::hex << A << " " <<  std::hex << B << " " <<  std::hex << G <<" " << std::hex << B;
+  ssOLA << std::hex << A << " " <<  std::hex << R << " " <<  std::hex << G <<" " << std::hex << B;
   ssOLA >> Ai >> Ri >> Gi >> Bi;
   std::cout <<"Int Equivalent: " << Ai <<" " <<  Ri << " " <<  Gi << " " <<  Bi << std::endl;
+
+  /**
+     A similar implementation will be:
+     std::stringstream ssOLA;
+     ssOLA.clear();
+     ssOLA << stoi(A.c_str(), nullptr, 16) << " " << stoi(R.c_str(), nullptr, 16) << " " <<  stoi(G.c_str(), nullptr, 16)  <<" " << stoi(B.c_str(), nullptr, 16);
+     ssOLA >> Ai >> Ri >> Gi >> Bi;
+
+     OR:
+     Ai = stoi(A.c_str(), nullptr, 16);
+     Ri = stoi(R.c_str(), nullptr, 16);
+     Gi = stoi(G.c_str(), nullptr, 16);
+     Bi = stoi(B.c_str(), nullptr, 16);
+  */
   
 }
 
 
 void DMX512::checkOLA(){
-  // It doesnt Hurt to check...
+  // It doesnt Hurt to re-check...
   std::string line = "";
   std::vector<std::string> i;
   system("pidof olad  > tempFile-1");
