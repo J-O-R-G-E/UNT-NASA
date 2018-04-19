@@ -7,12 +7,23 @@ CFLAGS = -Wall -g -std=c++11
 
 #$(pkg-config --cflags --libs libola)	
 OLA_FLAGS = -pthread -I/usr/local/include -L/usr/local/lib -lola -lolacommon -lprotobuf -pthread -lpthread
-TARGET = Client
 
-SOURCE_FILES = Skeleton_client.cpp  dmx512.c++
+TARGET1 = SLNSClient
+TARGET2 = SLNSServer
 
-$(TARGET): $(SOURCE_FILE)
-	$(CC) $(SOURCE_FILES) $(CFLAGS) $(OLA_FLAGS) -o $(TARGET)
+CLIENT_FILES = SLNS_client.cpp  dmx512.c++
+SERVER_FILES = SLNS_server
+
+
+client:
+	$(CC) $(CLIENT_FILES) $(CFLAGS) $(OLA_FLAGS) -o $(TARGET1)
+
+server:
+	$(CC) $(SERVER_FILES) $(CFLAGS) -o $(TARGET2)
+
+all:
+	$(CC) $(CLIENT_FILES) $(CFLAGS) $(OLA_FLAGS) -o $(TARGET1)
+	$(CC) $(SERVER_FILES) $(CFLAGS) -o $(TARGET2)
 
 clean:
-	$(RM) $(TARGET)
+	$(RM) $(TARGET1) $(TARGET2)
