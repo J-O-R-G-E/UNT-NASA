@@ -33,17 +33,19 @@ dataArr = array.array('B')
 dataArr2 = array.array('B')
 
 
-
 # Snowboy set up
 logging.basicConfig()
 logger = logging.getLogger("snowboy")
 logger.setLevel(logging.INFO)
 TOP_DIR = os.path.dirname(os.path.abspath(__file__))
 
+# These output sounds could be customized. Record your own voice as feedback
 RESOURCE_FILE = os.path.join(TOP_DIR, "resources/common.res")
 DETECT_DING = os.path.join(TOP_DIR, "resources/ding.wav")
 DETECT_DONG = os.path.join(TOP_DIR, "resources/dong.wav")
 
+
+# This method is the sensor's timer
 def olaTimer():
     # OLA
     universe = 1
@@ -161,10 +163,8 @@ class HotwordDetector(object):
               interrupt_check=lambda: False,
               sleep_time=0.03):
 
-
-        ######
+        #This object is responsible for writing to the workfile
         sb = SnowBoy()
-
         
         # OLA and Sensor
         global wrapper
@@ -221,6 +221,7 @@ class HotwordDetector(object):
 
                         motionCounter += 1
 
+                        # The 'Timer' can be anything. Now is just 1024 interations of the while loop
                         if(motionCounter == 1024):
                         
                             # A timer to turn off the lights after some time
@@ -229,10 +230,7 @@ class HotwordDetector(object):
                             dim = 0
                             motionCounter = 0
                             tMinus.start()
-                        
-                    
-                    print("\nmotionCounter: {}\n".format(motionCounter));
-                    
+                                                                             
             except:
                 print("ERROR: Could not read/open Sensor")
                 
@@ -294,13 +292,11 @@ class HotwordDetector(object):
                                 
                                 dataArr = []
                                 dataArr = array.array('B')
-                                
-
+                          
                                 # RED
                                 sb.processColor("FFFF0000")
-                                sleep(4)
-                                
-                                
+
+                                print("Done...\n")
                                 break;
                             
                             elif(cmd == 3):
@@ -313,13 +309,10 @@ class HotwordDetector(object):
                             
                                 dataArr = []
                                 dataArr = array.array('B')
-
-                                print("Done...\n")
-
-
+                                
                                 # GREEN
                                 sb.processColor("FF00FF00")
-                                sleep(4)
+                                print("Done...\n")
                                 
                                 break
                             
@@ -334,12 +327,9 @@ class HotwordDetector(object):
                                 dataArr = []
                                 dataArr = array.array('B')
 
-                                print("Done...\n")
-
-                                
+                                # Blue
                                 sb.processColor("FF0000FF")
-                                sleep(4)
-                                
+                                print("Done...\n")
                                 
                                 break
                                 
@@ -355,11 +345,9 @@ class HotwordDetector(object):
                                     
                                     client.SendDmx(universe, dataArr, DmxSent)
                                     wrapper.Run()
-
                                     
-                                    
+                                    # Red
                                     sb.processColor("FFFF0000")
-                                    #sleep(4)
                                     
                                     sleep(0.5)
                                     
@@ -371,15 +359,10 @@ class HotwordDetector(object):
                                     
                                     client.SendDmx(universe, dataArr, DmxSent)
                                     wrapper.Run()
-                                    
 
-                                    
-                                    
                                     sb.processColor("FF0000FF")
-                                    #sleep(4)
                                     
                                     sleep(0.5)
-                                    
                                     
                                     dataArr = []
                                     dataArr = array.array('B')
@@ -391,13 +374,8 @@ class HotwordDetector(object):
                                     client.SendDmx(universe, dataArr, DmxSent)
                                     wrapper.Run()
 
-
-                                    
-                                    
                                     sb.processColor("FFFF0000")
-                                    #sleep(4)
-                                    
-                                    
+                                                                    
                                     sleep(0.5)
                                     
                                     dataArr = []
@@ -408,12 +386,9 @@ class HotwordDetector(object):
                                     
                                     client.SendDmx(universe, dataArr, DmxSent)
                                     wrapper.Run()
-                                    
 
-                                    
                                     sb.processColor("FF0000FF")
-                                    #sleep(4)
-                                    
+                                                                     
                                     sleep(0.5)
                                     
                                     dataArr = []
@@ -434,11 +409,8 @@ class HotwordDetector(object):
                                 dataArr = []
                                 dataArr = array.array('B')
 
-                                print("Done...\n")
-
-                                
                                 sb.processColor("00000000")
-                                sleep(4)
+                                print("Done...\n")
                                 
                                 break
                             
