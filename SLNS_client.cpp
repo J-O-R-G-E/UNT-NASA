@@ -220,7 +220,7 @@ void display_RGB(int s)
 	else
 	{
 		// Convert the data
-		int red = (data[3] data[2]);
+		int red = (data[3]  | data[2]);
 		int green = (data[5]| data[4]);
 		int blue = (data[7] | data[6]);
 
