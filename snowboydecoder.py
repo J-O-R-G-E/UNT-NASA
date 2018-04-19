@@ -8,7 +8,7 @@ import time
 import wave
 import os
 import logging
-
+from threading import Thread
 from processColors import VoiceToColor as SnowBoy
 
 # OLA SET UP
@@ -44,7 +44,26 @@ RESOURCE_FILE = os.path.join(TOP_DIR, "resources/common.res")
 DETECT_DING = os.path.join(TOP_DIR, "resources/ding.wav")
 DETECT_DONG = os.path.join(TOP_DIR, "resources/dong.wav")
 
+def olaTimer():
+    # OLA
+    universe = 1
+    wrapper = ClientWrapper()
+    client = wrapper.Client()
 
+    dimmer = []
+    dimmer = array.array('B')
+    dimmer.append(25) #Intencity
+    dimmer.append(250) #R
+    dimmer.append(250) #G
+    dimmer.append(250) #B                                                          
+    print("\nDimming Lights To: {}\n".format(dimmer))
+    
+    client.SendDmx(universe, dimmer, DmxSent)
+    wrapper.Run()
+    sleep(4)
+    
+                    
+    
 
 # OLA Callback
 def DmxSent(status):
@@ -172,7 +191,9 @@ class HotwordDetector(object):
 
 
         print("\n\n\n NOW LISTENING FOR HOTWORD\n\n");
-   
+
+        motionCounter = 0;
+        dim = 0
         # While we are listening....
         while True:
 
@@ -181,20 +202,36 @@ class HotwordDetector(object):
                     print("Motion Detected...")
                     dataArr2 = []
                     dataArr2 = array.array('B')
-                    dataArr2.append(100) #Intencity
-                    dataArr2.append(100) #R
-                    dataArr2.append(100) #G
-                    dataArr2.append(100) #B                                                          
+                    dataArr2.append(255) #Intencity
+                    dataArr2.append(255) #R
+                    dataArr2.append(255) #G
+                    dataArr2.append(255) #B                                                          
                     print(dataArr2)
 
                     client.SendDmx(universe, dataArr2, DmxSent)
                     wrapper.Run()
                     sleep(4)
 
+                    dim = 1
+                    #sb.processColor("FFFFFFFF")
+                    #sleep(4)
+                else:
                     
+                    if(motionCounter <= 1024 and dim == 1):
+
+                        motionCounter += 1
+
+                        if(motionCounter == 1024):
+                        
+                            # A timer to turn off the lights after some time
+                            tMinus = Thread(target=olaTimer)
+                            tMinus.daemon = True
+                            dim = 0
+                            motionCounter = 0
+                            tMinus.start()
+                        
                     
-                    sb.processColor("FFFFFFFF")
-                    sleep(4)
+                    print("\nmotionCounter: {}\n".format(motionCounter));
                     
             except:
                 print("ERROR: Could not read/open Sensor")
