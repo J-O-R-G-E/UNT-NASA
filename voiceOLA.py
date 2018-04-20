@@ -36,11 +36,12 @@ class SnowBoy(object):
         
         #self.models = ["Houston.pmdl", "RL.pmdl", "GL.pmdl", "BL.pmdl", "EL.pmdl", "SD.pmdl"]
         self.models = ["Houston.pmdl"]
-        self.models.append("RL.pmdl")
-        self.models.append("GL.pmdl")
-        self.models.append("BL.pmdl")
-        self.models.append("EL.pmdl")
-        self.models.append("SD.pmdl")
+        self.models.append("Red Light.pmdl")
+        self.models.append("Green Light.pmdl")
+        self.models.append("Blue Light.pmdl")
+        self.models.append("Emergency Lights.pmdl")
+        self.models.append("Shutdown.pmdl")
+        self.models.append("Red Alert.pmdl")
         
         print("\n\nMODELS: {}\n\n".format(self.models));
         # capture SIGINT signal, e.g., Ctrl+C
@@ -55,7 +56,8 @@ class SnowBoy(object):
                           lambda: snowboydecoder.play_audio_file(snowboydecoder.DETECT_DING), # G
                           lambda: snowboydecoder.play_audio_file(snowboydecoder.DETECT_DONG), # B
                           lambda: snowboydecoder.play_audio_file(snowboydecoder.DETECT_DONG), # E.L.
-                          lambda: snowboydecoder.play_audio_file(snowboydecoder.DETECT_DONG)] # S.D.
+                          lambda: snowboydecoder.play_audio_file(snowboydecoder.DETECT_DONG), # S.D.
+                          lambda: snowboydecoder.play_audio_file(snowboydecoder.DETECT_DONG)] # R.A.
                         
         
         
