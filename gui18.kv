@@ -34,17 +34,17 @@
 
 <LoginScreen>:
     name: "login_screen"
-   # canvas.before:
-    #    Rectangle:
-     #       pos: self.pos
-      #      size: self.size
-       #     source: 'tech1.jpg'
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
     Label:
         #text: 'Team 2b|!2b'
-        font_size: 50
+        font_size: 60
         pos_hint: {"center_x": 0.5, "center_y": 0.8}
         markup: True 
-        text:'[b][color=008000]Team 2b|!2b[/color][/b]'
+        text:'[b][color=d41125]Team 2b|!2b[/color][/b]'
         
     GridLayout:
         size_hint: (0.6, 0.3)
@@ -90,54 +90,134 @@
             height: 90
             text:'Login'
             font_size: 30
+            background_normal: ''
+            #background_down: 'images/button_down.png'
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
             
             on_press: root.manager.ids.main.login(user_name.text, passw.text)
+            on_release: root.clear_user(user_name, passw)
             
 
 <HomePage>:
     name: 'homepage'
+    on_pre_enter: root.getInfo()
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
     BoxLayout:
         orientation: 'horizontal'
+        
         Label:
-            text: "DMX-512 Interface"
-            pos_hint:{'center_x': 0.5, 'center_y': 0.9}
-            
+			pos_hint:{'center_x': 0.5, 'center_y': 0.80}
+			font_size: 47
+			markup: True 
+			text:'[b][color=d41125]Spacecraft Lighting Network System[/color][/b]'
+
     GridLayout:
-        cols: 5
+        cols: 6
         spacing: '10dp'
         size_hint: (None,None)
-        size: (800, 150)
-		padding: 25
-        
+        size: (780, 130)
+        x: 8
+        y: 175
+		padding: 8
+		canvas:
+			Color:
+				rgb: (38/255.0), (38/255.0), (38/255.0)
+				#rgb: (179/255.0), (179/255.0), (179/255.0)
+			Rectangle:
+				size: self.size
+				pos: self.pos
         
         Button:
             text: 'Settings'
             font_size: 20
             on_press: root.manager.current = 'setting'
+            background_normal: ''
+            #background_down: 'images/button_down.png'
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+            
+        Button:
+			text: 'Demo'
+			font_size: 20
+			on_press: root.run_demo()
+			background_normal: ''
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+            
+        Button:
+			text: 'Troubleshoot'
+			font_size: 20
+			on_press: root.verify()
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
             
         Button:
 			text: 'Lights'
 			font_size: 20
 			on_press: root.manager.current = 'view_lights'
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			
         Button:
             text: 'Logout'
             font_size: 20
             on_press: root.manager.current = 'login_screen'
-         
-		Button:
-			text: 'Troubleshoot'
-			font_size: 20
-			on_press: root.verify()
+            background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			
 		Button:
 			text: 'Shutdown'
+			on_press: root.shutdown()
 			font_size: 20
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+            
+	GridLayout:
+        cols: 2
+        spacing: '10dp'
+        size_hint: (None,None)
+        size: (780, 80)
+        x: 10
+        y: 85
+		padding: 20
+		canvas:
+			Color:
+				rgb: (38/255.0), (38/255.0), (38/255.0)
+			Rectangle:
+				size: self.size
+				pos: self.pos
+				
+		Label:
+			markup: True
+			font_size: 25
+			text: '    Current Date: {} '.format(root.Dateh)
+			size: self.texture_size
+			size_hint: (None,None)
 			
-            
-            
+		
+		Label:
+			markup: True
+			font_size: 25
+			text: '      Time:  {} '.format(root.Timeh)
+			size: self.texture_size
+			size_hint: (None,None)
+			
+			
+		
+		
+
+
+
 <Health>:
+	
 	name: 'health'
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
 	on_pre_enter: root.health_status()
 		
 	BoxLayout:
@@ -389,6 +469,11 @@
             
 <SetValues>:
 	name: 'set_values'
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
 	on_enter: root.build()
 
 	BoxLayout:
@@ -438,7 +523,13 @@
             on_press: root.manager.current = 'homepage'
             
 <LightsView>:
+	
 	name: 'view_lights'
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
 	on_enter: root.buildlist() #calls for update() inside func
 	on_pre_enter: root.update_rooms() #update rooms
 
@@ -509,6 +600,8 @@
 		orientation: 'horizontal'
 		size_hint: (None, None)
 		size: (425, 90)
+		padding: 2
+		spacing: 2
 		x: 370
 		y: 10
 		
@@ -521,12 +614,16 @@
                 
 		Button:
 			text: 'Health Status'
-			background_color: [0, (218/255.0),(18/255.0),1]
+			background_normal: ''
+			#background_color: [0, (218/255.0),(18/255.0),1]
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.health_check_selected()
 			
 		Button:
 			text: 'Set Values'
-			background_color: [0, (218/255.0),(18/255.0),1]
+			#background_color: [0, (218/255.0),(18/255.0),1]
+			background_normal: ''
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.check_lights_selected()
 			#on_release: root.manager.current = 'set_values'
 		
@@ -534,20 +631,24 @@
 			text: 'Remove Light'
 			#size_hint:(None,None)
 			#size:(140,60)
-			background_color: [0, (218/255.0),(18/255.0),1]
+			background_normal: ''
+			#background_color: [0, (218/255.0),(18/255.0),1]
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.remove_light()
 			
 		Button:
 			text: 'Home'
 			#size_hint: (None, None)
 			#size: (100,60)
-			background_color: [0, (218/255.0),(18/255.0),1]
+			background_normal: ''
+			#background_color: [0, (218/255.0),(18/255.0),1]
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.manager.current = 'homepage'
 			
 	BoxLayout:
 		id: roomlayout
 		orientation: 'vertical'
-		padding: 10
+		padding: 5
 		size_hint: (None,None)
 		size: (425, 230)
 		x:370
@@ -565,6 +666,8 @@
 		orientation: 'horizontal'
 		size_hint: (None, None)
 		size: (425,90)
+		padding: 2
+		spacing: 2
 		x:370
 		y:110
 		
@@ -580,7 +683,9 @@
 			on_press: root.add_room()
 			halign: 'center'
 			valign: 'middle'
-			background_color: [0, (218/255.0),(18/255.0),1]
+			background_normal: ''
+			#background_color: [0, (218/255.0),(18/255.0),1]
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_release: root.clear_lights_selection()
 			
 		
@@ -589,24 +694,34 @@
 			on_press: root.remove_room()
 			halign: 'center'
 			valign: 'middle'
-			background_color: [0, (218/255.0),(18/255.0),1]
-			
+			background_normal: ''
+			#background_color: [0, (218/255.0),(18/255.0),1]
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 		Button:
 			text: 'View Room'
 			on_press: root.manager.current = 'view_room'
 			halign: 'center'
-			background_color: [0, (218/255.0),(18/255.0),1]
+			background_normal: ''
+			#background_color: [0, (218/255.0),(18/255.0),1]
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			
 		Button:
 			text: 'Add Light(s)\n to Room'
 			halign: 'center'
 			on_press: root.add_to_room()
-			background_color: [0, (218/255.0),(18/255.0),1]
+			#background_color: [0, (218/255.0),(18/255.0),1]
 			#on_release: root.remove_lights_database()
+			background_normal: ''
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			
 			
 			
 <RoomView>:
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
 	name: 'view_room'
 	on_pre_enter: root.build()
 	on_enter: root.clear_select()
@@ -696,8 +811,18 @@
 
 <Blank>:
 	name: 'blank_screen'
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
 
 <Troubleshoot>:
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
 	name: 'troubleshoot'
 	
 	BoxLayout:
@@ -718,6 +843,11 @@
 <Setting>:
 #Name of this rule
     name: 'setting'
+    canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
 
 #Box Layout for Window
     BoxLayout:
@@ -785,6 +915,11 @@
 
 <TestOLA>:
 	name: 'test_ola'
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
 	on_pre_enter: root.build() #update lights
 	
 	ScrollView:

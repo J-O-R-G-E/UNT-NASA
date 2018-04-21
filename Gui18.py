@@ -41,14 +41,15 @@ import os
 import subprocess
 from kivy.clock import Clock
 
+
 """ Establish database connection """
-#conn = sqlite3.connect('/home/pi/UNT-NASA/2b.db',check_same_thread=False) 
-conn = sqlite3.connect('/home/pi/2b.db',check_same_thread=False) 
+conn = sqlite3.connect('/home/pi/UNT-NASA/2b.db',check_same_thread=False) 
+#conn = sqlite3.connect('/home/pi/2b.db',check_same_thread=False) 
 curs = conn.cursor()
 curs2 = conn.cursor()
 
 workfile_path = "/home/pi/UNT-NASA/workfile.txt"
-workfile_path = "/home/pi/kivy/examples/workfile.txt"
+#workfile_path = "/home/pi/kivy/examples/workfile.txt"
 
 btns_down = []
 lights_down = []
@@ -187,8 +188,6 @@ class Methods(Screen):
 		out = open(file_name, 'w')
 		out.writelines(lines)
 		out.close()
-		
-	
 				
 				
 	"""This method parses the commands on the workfile"""		
@@ -927,19 +926,31 @@ class Blank(Screen):
 '''login screen will be the first screen to execute, calls function that checks for gui commands'''
 class LoginScreen(Screen):
 	
+	def clear_user(self, u, p):
+		print "clearing username and password"
+		u.text = "" 
+		p.text = ""
+	
 	def login(self, username, password):
 		try:
 			user = username
 			passw = password
 			obj = Methods()
+
 			curs.execute("SELECT * FROM users WHERE username = '" + username + "' AND password= '" + password + "'")
 			if curs.fetchone() is not None:
 				print "Successful Login"
 				self.parent.current = 'homepage'
 				#after login, these methods should execute...
+				#event checks workfile every 5 seconds for unprocessed commands 
 				event = Clock.schedule_interval(obj.cmdparser, 5.0)
 				event()
-				#o.update_lights() #updates all lights stored in database with current circadian rhythm values
+				#updates lights stored in database with current circadian rhythm values every minute
+				light_update_event = Clock.schedule_interval(obj.update_lights, 60.0)
+				light_update_event()
+				
+				#checks the health status of every light in the database
+				
 				
 			else:
 				box = BoxLayout(orientation = 'vertical', padding = (8))
@@ -953,6 +964,11 @@ class LoginScreen(Screen):
 			print "error in login screen"
 			
 class HomePage(Screen):
+	Timeh = StringProperty()
+	Dateh = StringProperty()
+	def __init__(self, **kwargs):
+		super(HomePage, self).__init__(**kwargs)
+	
 	def verify(self):
 		#verify password popup
 		box2 = BoxLayout(orientation = 'vertical', padding = (8))
@@ -991,6 +1007,53 @@ class HomePage(Screen):
 				popup.open()
 		except:
 			print "error in check_credentials"
+			
+	def getInfo(self):
+		try:
+			self.Timeh = datetime.now().strftime('%H:%M')
+			day_of_week = datetime.today().strftime('%A')
+			month = datetime.today().strftime('%B')
+			day_of_month = datetime.today().strftime('%d')
+			year = datetime.today().strftime('%Y')
+			image_file = "/home/pi/kivy/screenshot.png"
+			subprocess.call(["scrot", image_file])
+			self.Dateh = day_of_week + ' - ' + month + ' ' + day_of_month + ', ' + year
+			t5 = threading.Timer(10.0, self.getInfo)
+			t5.daemon=True
+			t5.start()
+			
+		except:
+			print "error in getInfo"
+		
+		
+		
+	def shutdown(self):
+		#grab IP address of all lights
+		data = '00000000'
+		for row in curs.execute("SELECT IP_address FROM Lights"):
+			(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+			dt = "%s.%03d" % (dt, int(micro) / 1000)
+			cmd = 'S' + ' ' + row[0] + ' ' + 'SHD' + ' ' + data + ' ' + dt
+			with open("workfile.txt","a") as document:
+					document.write(cmd)
+					document.write('\n')
+			document.close()
+		
+		#popup to notify user of shutdown
+		box_2 = BoxLayout(orientation = 'vertical', padding = (8))
+		#message on popup
+		message = Label(text='Goodbye', font_size=25, valign = 'middle', size_hint=(1,.3))
+		box_2.add_widget(message)
+		popup_2 = Popup(title= 'Shutting down...', content = box_2, title_size =(30),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
+		popup_2.open()
+		
+		app = TestApp()
+		Clock.schedule_once(app.stop,3)
+
+			
+		
+	def run_demo(self):
+		pass
 
 
 class Troubleshoot(Screen):
@@ -1198,10 +1261,10 @@ class TestApp(App):
 	def build(self):
 		# return ScreenManagement()
 
-                # Need for TestOla class
-                self.color_selector = ColorSelector()
-                
-                return sm
+		# Need for TestOla class
+		self.color_selector = ColorSelector()
+
+		return sm
 		
 if __name__ == "__main__":
         #Run voice commands at boot up
