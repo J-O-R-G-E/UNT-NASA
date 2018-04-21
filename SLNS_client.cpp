@@ -108,6 +108,7 @@ int main()
 					scf << "OLA setting:" << DATA << " raw sensor: " << aRGB << " " << time_processed() << endl; //gather Calibration test data
 					scf.close();
 					ola.setData(DATA);
+					ola.sendOLA();
 					cout << "Setting lights to:" << DATA << endl;
 					cout << "Send To Server:" << aRGB << endl;
 					send(sockfd,DATA.c_str(),sizeof(DATA),0); //Send Response
