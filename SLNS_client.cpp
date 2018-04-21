@@ -35,7 +35,13 @@
 //Macros
 #define port 9999
 #define buff 128
+
+//USE THIS FOR PRESENTATIONS:
 #define HOST "192.168.1.12"
+
+//USE THIS FOR TESTING:
+//#define HOST "192.168.1.10"
+
 
 using namespace std;
 
@@ -51,13 +57,14 @@ struct hostent *host; 		//this is typically needed for clients to get server inf
 char aRGB[50];
 string message = "SLNS Client ACK";
 
+fstream scf; //sensor calibration file
+
 int main()
 {
 	DMX512 ola;
 	connect_to_server();
 	cout << "Connection made\n"; //connect to server success
 	send(sockfd, message.c_str(), sizeof(message),0);
-
 	const char *bus = "/dev/i2c-1";
 	if ((file = open(bus, O_RDWR)) < 0)
 	{
@@ -66,14 +73,19 @@ int main()
 	}
 	ioctl(file, I2C_SLAVE, 0x29);
 	signal(SIGALRM, display_RGB);
-	alarm(5);
+	alarm(1);
+	system("touch /home/pi/UNT-NASA/sensor_calibration_data.txt");
+	//scf.open("/home/pi/UNT-NASA/sensor_calibration_data.txt" , ios::app);
 
 	while(1)
 	{
+		scf.open("/home/pi/UNT-NASA/sensor_calibration_data.txt" , ios::app);
+		scf << "raw sensor: " << aRGB << " " << time_processed() << endl; //gather Calibration test data
+		scf.close();
 		char recv_data[buff];
 		stringstream ss;
 		string CMD, DATA;
-		
+		sleep(1);
 		int n = recv(sockfd, recv_data, sizeof(recv_data), 0);
 		ss << recv_data;
 		ss >> CMD >> DATA;
@@ -92,11 +104,13 @@ int main()
 			{
 				if((CMD == "SET")) //server sending GUI CR values or user defined values
 				{
+					scf.open("/home/pi/UNT-NASA/sensor_calibration_data.txt" , ios::app);
+					scf << "OLA setting:" << DATA << " raw sensor: " << aRGB << " " << time_processed() << endl; //gather Calibration test data
+					scf.close();
 					ola.setData(DATA);
-					DATA = ola.sendOLA(); // The returned value is based on success
 					cout << "Setting lights to:" << DATA << endl;
+					cout << "Send To Server:" << aRGB << endl;
 					send(sockfd,DATA.c_str(),sizeof(DATA),0); //Send Response
-					DATA.clear();
 				}
 				else if(CMD == "GET")  //server fetching client sensor values for GUI request
 				{
@@ -122,6 +136,7 @@ int main()
 					send(sockfd,shutdown.c_str(),sizeof(shutdown),0); //Send Response
 					close(sockfd);
 					break; //just to shut down client
+					//system('sudo init 0');
 				}
 				memset(recv_data, 0, sizeof(recv_data));
 				ss.clear();
@@ -160,7 +175,6 @@ int connect_to_server()
 
 	cout << "Created Socket\n";
 
-	int cnt = 0;
 	while(connect(sockfd,(struct sockaddr*)&sADDR, sizeof(sADDR)) < 0)  //connect to server failure, try again
 	{
 		sleep(1);
@@ -220,7 +234,7 @@ void display_RGB(int s)
 	else
 	{
 		// Convert the data
-		int red = (data[3]  | data[2]);
+		int red = (data[3] | data[2]);
 		int green = (data[5]| data[4]);
 		int blue = (data[7] | data[6]);
 
@@ -236,6 +250,6 @@ void display_RGB(int s)
 		sprintf(aRGB, "%02X%02X%02X%02X", luminance, red, green, blue);
 		cout << aRGB << endl;
 	}
-	alarm(5);    //for every second
+	alarm(1);    //for every second
 	signal(SIGALRM, display_RGB);
 }
