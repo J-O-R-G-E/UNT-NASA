@@ -31,18 +31,18 @@ then
     
     ###################### Dependecies for OLA #################################
     # Lets get Google's Protocol Buffer:
-    wget https://github.com/google/protobuf/releases/download/v3.5.1/protobuf-all-3.5.1.tar.gz
+    wget https://github.com/google/protobuf/releases/download/v3.0.0/protobuf-cpp-3.0.0.tar.gz
     echo -e "\n${GREEN}DOWNLOADED PROTOBUF   ${RESET}\n"
 
     
     # Lets extract everything:
-    tar -zxvf protobuf-all-3.5.1.tar.gz
+    tar -zxvf protobuf-cpp-3.0.0.tar.gz
     echo -e "\n\n${GREEN}UNZIPPED   ${RESET}\n\n"
 
  
     # Lets go there
-    cd protobuf-3.5.1/
-    
+    cd protobuf-3.0.0/
+        
     ./configure
     echo -e "\n\n${GREEN}./configure       ${RESET}\n\n"
 

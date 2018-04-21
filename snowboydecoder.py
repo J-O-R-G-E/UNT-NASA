@@ -280,7 +280,8 @@ class HotwordDetector(object):
                             if(cmd == 1):
                                 print("Got Houston instead of CMD")
                                 break
-                            
+
+                            # Red Light Command
                             elif(cmd == 2):
                                 ARGB = [255, 255, 0, 0]
                                 dataArr.extend(ARGB)
@@ -298,7 +299,8 @@ class HotwordDetector(object):
 
                                 print("Done...\n")
                                 break;
-                            
+
+                            # Blue Light Command
                             elif(cmd == 3):
                                 ARGB = [255, 0, 255, 0]
                                 dataArr.extend(ARGB)
@@ -315,7 +317,8 @@ class HotwordDetector(object):
                                 print("Done...\n")
                                 
                                 break
-                            
+
+                            # Green Light Command
                             elif(cmd == 4):
                                 ARGB = [255, 0, 0, 255]
                                 dataArr.extend(ARGB)
@@ -332,7 +335,9 @@ class HotwordDetector(object):
                                 print("Done...\n")
                                 
                                 break
-                                
+
+
+                            # "Emergency Lights" Command
                             elif(cmd == 5):
                                 for i in xrange(5):
                                     
@@ -349,8 +354,6 @@ class HotwordDetector(object):
                                     # Red
                                     sb.processColor("FFFF0000")
                                     
-                                    sleep(0.5)
-                                    
                                     dataArr = []
                                     dataArr = array.array('B')
                                     ARGB = [255, 0, 0, 255]
@@ -361,8 +364,6 @@ class HotwordDetector(object):
                                     wrapper.Run()
 
                                     sb.processColor("FF0000FF")
-                                    
-                                    sleep(0.5)
                                     
                                     dataArr = []
                                     dataArr = array.array('B')
@@ -376,8 +377,6 @@ class HotwordDetector(object):
 
                                     sb.processColor("FFFF0000")
                                                                     
-                                    sleep(0.5)
-                                    
                                     dataArr = []
                                     dataArr = array.array('B')
                                     ARGB = [255, 0, 0, 255]
@@ -389,15 +388,14 @@ class HotwordDetector(object):
 
                                     sb.processColor("FF0000FF")
                                                                      
-                                    sleep(0.5)
-                                    
                                     dataArr = []
                                     dataArr = array.array('B')
                                     
 
                                 print("Done...\n")
                                 break
-                                
+
+                            # Shutdown Command
                             elif(cmd == 6):
                                 ARGB = [0, 0, 0, 0]
                                 dataArr.extend(ARGB)
@@ -412,6 +410,65 @@ class HotwordDetector(object):
                                 sb.processColor("00000000")
                                 print("Done...\n")
                                 
+                                break
+
+                            # Red Alert Command
+                            elif(cmd == 7):
+
+                                for i in xrange(10):
+                                    
+                                    dataArr = []
+                                    dataArr = array.array('B')
+                                    
+                                    #RED 
+                                    ARGB = [255, 255, 0, 0]
+                                    dataArr.extend(ARGB)
+                                    print("RED ALERT:{}".format(dataArr))
+                                    
+                                    client.SendDmx(universe, dataArr, DmxSent)
+                                    wrapper.Run()
+
+                                    sb.processColor("FFFF0000")
+                                    
+                                    dataArr = []
+                                    dataArr = array.array('B')
+                                    
+                                    # OFF. So that it "flashes" red
+                                    ARGB = [0, 0, 0, 0]
+                                    dataArr.extend(ARGB)
+                                    
+                                    client.SendDmx(universe, dataArr, DmxSent)
+                                    wrapper.Run()
+
+                                    sb.processColor("00000000")
+                                    
+                                    dataArr = []
+                                    dataArr = array.array('B')
+                                    
+                                    #RED 
+                                    ARGB = [255, 255, 0, 0]
+                                    dataArr.extend(ARGB)
+                                    print("RED ALERT:{}".format(dataArr))
+                                    
+                                    client.SendDmx(universe, dataArr, DmxSent)
+                                    wrapper.Run()
+
+                                    sb.processColor("FFFF0000")
+                                    
+                                    dataArr = []
+                                    dataArr = array.array('B')
+                                    
+                                    # OFF. So that it "flashes" red
+                                    ARGB = [0, 0, 0, 0]
+                                    dataArr.extend(ARGB)
+                                    
+                                    client.SendDmx(universe, dataArr, DmxSent)
+                                    wrapper.Run()
+                                    
+                                    sb.processColor("00000000")
+                                                                   
+                                print("Done...\n")
+                                     
                                 break
                             
                             # It was not.. Lets start over.. aka go back to wait for Hotword
