@@ -1,7 +1,7 @@
 /* Spacecraft lighting network system Client
  * Takes input from the SLNS server and commands OLA to change light values.
  * Sends sensor values back
- * compile: g++ -g -Wall -std=c++11 SLNS_client.cpp dmx512.cpp $(pkg-config --cflags --libs libola) -o Cli
+ * compile: g++ -g -Wall -std=c++11 SLNS_client.cpp dmx512.cpp $(pkg-config --cflags --libs libola) -o Client
  */
 #include <iostream>
 #include <cstdlib>
@@ -35,13 +35,7 @@
 //Macros
 #define port 9999
 #define buff 128
-
-//USE THIS FOR PRESENTATIONS:
 #define HOST "192.168.1.12"
-
-//USE THIS FOR TESTING:
-//#define HOST "192.168.1.10"
-
 
 using namespace std;
 
@@ -56,9 +50,7 @@ struct sockaddr_in sADDR;
 struct hostent *host; 		//this is typically needed for clients to get server information
 char aRGB[50];
 string message = "SLNS Client ACK";
-
-fstream scf; //sensor calibration file
-
+ 
 int main()
 {
 	DMX512 ola;
@@ -74,41 +66,29 @@ int main()
 	ioctl(file, I2C_SLAVE, 0x29);
 	signal(SIGALRM, display_RGB);
 	alarm(1);
-	system("touch /home/pi/UNT-NASA/sensor_calibration_data.txt");
-	//scf.open("/home/pi/UNT-NASA/sensor_calibration_data.txt" , ios::app);
 
 	while(1)
 	{
-		scf.open("/home/pi/UNT-NASA/sensor_calibration_data.txt" , ios::app);
-		scf << "raw sensor: " << aRGB << " " << time_processed() << endl; //gather Calibration test data
-		scf.close();
 		char recv_data[buff];
 		stringstream ss;
 		string CMD, DATA;
-		sleep(1);
-		int n = recv(sockfd, recv_data, sizeof(recv_data), 0);
-		ss << recv_data;
-		ss >> CMD >> DATA;
-
-		if(n == 0) // if connection is broken attempt to reconnect to server
+		if((recv(sockfd, recv_data, sizeof(recv_data), 0))== 0) // if connection is broken attempt to reconnect to server
 		{
 			cout << "Server Connection lost, Attempting to Reestablish\n";
 			connect_to_server();
 			cout << "Connection Reestablished\n"; //connect to server success
 			send(sockfd, message.c_str(), sizeof(message),0);
 		}
-		else if(n != 0) //process server commands
+		else //process server commands
 		{
+			ss << recv_data;
+			ss >> CMD >> DATA;
 			cout << "Server Says:" << recv_data << endl;
 			if (sizeof(CMD) != 0)
 			{
 				if((CMD == "SET")) //server sending GUI CR values or user defined values
 				{
-					scf.open("/home/pi/UNT-NASA/sensor_calibration_data.txt" , ios::app);
-					scf << "OLA setting:" << DATA << " raw sensor: " << aRGB << " " << time_processed() << endl; //gather Calibration test data
-					scf.close();
 					ola.setData(DATA);
-					ola.sendOLA();
 					cout << "Setting lights to:" << DATA << endl;
 					cout << "Send To Server:" << aRGB << endl;
 					send(sockfd,DATA.c_str(),sizeof(DATA),0); //Send Response
@@ -123,25 +103,19 @@ int main()
 					cout << "Send To Server:" << CMD << endl;
 					send(sockfd, CMD.c_str(), sizeof(CMD),0);
 				}
-				else if(CMD == "TBS")
-				{
-					cout << "troubleshooting\n";
-				}
 				else if(CMD == "SHD") //In case we want to add a test function, still pending
 				{
 					string shutdown = "0000000"; //set OLA to "00000000" to update DMX driver here BEFORE shutting down client
 					cout << "Shutting down" <<  time_processed() << endl;
 					ola.setData(shutdown);
-					DATA = ola.sendOLA(); // The returned value is based on success
+					shutdown = ola.sendOLA(); // The returned value is based on success
 					cout << "Setting lights to:" << shutdown << endl;//OLA(DATA);
 					send(sockfd,shutdown.c_str(),sizeof(shutdown),0); //Send Response
-					close(sockfd);
-					break; //just to shut down client
-					//system('sudo init 0');
 				}
 				memset(recv_data, 0, sizeof(recv_data));
 				ss.clear();
 				CMD.clear();
+				DATA.clear();
 			}
 		}
 	}

@@ -62,7 +62,7 @@ CR = {
 '02':'FF545454',
 '03':'FF545454',
 '04':'FF545454',
-'05':'88545454',
+'05':'FF545454',
 '06':'FF7FFFFF',
 '07':'FF7FFFFF',
 '08':'FF7FFFFF',
@@ -74,13 +74,13 @@ CR = {
 '14':'FF87CEFB',
 '15':'FF87CEFC',
 '16':'FF87CEFA',
-'17':'88545454',
-'18':'AB545454',
-'19':'BA545454',
-'20':'AC545454',
-'21':'DC545454',
-'22':'EA545454',
-'23':'AE545454'}
+'17':'FF545454',
+'18':'FF545454',
+'19':'FF545454',
+'20':'FF545454',
+'21':'FF545454',
+'22':'FF545454',
+'23':'FF545454'}
 
 class ScreenManagement(ScreenManager):
 	pass
@@ -123,42 +123,47 @@ class Methods(Screen):
 	#################################################################################################################################
 
 	#Updates all lights in database to current CR values based on time 
-	def update_lights(self,arg1):
-		print "Updating ALL lights"
-		time = datetime.now()
-		hour = time.hour
+	def update_lights(self, arg1):
+		try:
+			
+			print "Updating ALL lights"
+			time = datetime.now()
+			hour = time.hour
+			
+			if len(str(hour)) == 1: 
+				hour = '0' + str(hour)
+				print "changing"
+			else:
+				pass
+			
+			curs2.execute("SELECT IP_address FROM Lights")
+			addresses = curs2.fetchall()
+			addr =[r[0] for r in addresses]
+			
+			for a in addr:
+				for key in CR.keys():
+					if str(hour) == key:
+						data = CR[key]
+						(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+						dt = "%s.%03d" % (dt, int(micro) / 1000)
+						data = CR[key] #should grab value from CR dictionary
+						cmd = "S" + " " + a + " " + "SET" + " " + data + " " + dt
+						
+						#write commands into workfile
+						with open("workfile.txt", "a") as workfile:
+							workfile.write(cmd)
+							workfile.write('\n')
+						workfile.close()
+					else:
+						pass
+						
+						
+			t2 = threading.Timer(50.0, self.update_lights)
+			t2.daemon=True
+			t2.start()
 		
-		if len(str(hour)) == 1: 
-			hour = '0' + str(hour)
-			print "changing"
-		else:
-			pass
-		
-		curs2.execute("SELECT IP_address FROM Lights")
-		addresses = curs2.fetchall()
-		addr =[r[0] for r in addresses]
-		
-		for a in addr:
-			for key in CR.keys():
-				if str(hour) == key:
-					data = CR[key]
-					(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
-					dt = "%s.%03d" % (dt, int(micro) / 1000)
-					data = CR[key] #should grab value from CR dictionary
-					cmd = "S" + " " + a + " " + "SET" + " " + data + " " + dt
-					
-					#write commands into workfile
-					with open("workfile.txt", "a") as workfile:
-						workfile.write(cmd)
-						workfile.write('\n')
-					workfile.close()
-				else:
-					pass
-					
-					
-		t2 = threading.Timer(50.0, self.update_lights)
-		t2.daemon=True
-		t2.start()
+		except TypeError:
+			print "type error in update_lights"
 
 		
 	""" This method updates the new connected light to the current CR values which is based on time """
@@ -194,93 +199,102 @@ class Methods(Screen):
 	def cmdparser(self, arg1):
 		print('cmdparser running')
 		
-		if(self.cmd_processed == False):
-			print "reading wf"
-			dfile = open(workfile_path, 'r')
-			myfile = dfile.readlines()
-			line_num = -1 #to get line number, starts at 0
-			for line in myfile:
-				print(line)
-				if line == '\n':
-					pass
-				else:
-					line_num +=1 	#keep line count
-					curr_line = line.strip() #strip line to remove whitespaces
-					parts = curr_line.split() #split line
-					if parts[0] == 'G':
-						#Store IP_addr, function and data, if available
-						IP_addr = parts[1]
-						func = parts[2]
-						data = parts[3]
-						
-						if(self.process_cmd == False):
-							
-							self.cmd_processed = True
-							self.process_cmd = True
-							global ip
-							global d
-							ip = IP_addr
-							d = data
-							print "processing"
-							
-							if func == 'ADD':
-								#check if ip_addr exists in database
-								curs.execute("SELECT IP_address FROM Lights WHERE IP_address = '" + ip + "'")
-								if(len(curs.fetchall()) != 0):
-									print("Exists in database")
-									pass
-								else:
-									print "IP address does not exist in database"
-									box = BoxLayout(orientation = 'vertical', padding = (8))
-									box.add_widget(Label(text='Enter a name for {}:'.format(ip), font_size=30, size_hint=(1,.7)))
-									self.textinput = TextInput(text='', font_size=30)
-									box.add_widget(self.textinput)
-									self.popup = Popup(title='New Light Detected', content=box, title_size=30, size_hint=(None, None), size=(450, 300), title_align='center', auto_dismiss=False)
-									#box.add_widget(Button(text='Set',font_size=25, size_hint=(.5,.7), pos_hint={'center_x': .5, 'center_y': 0},on_release=popup.dismiss))
-									box.add_widget(Button(text='Set',font_size=25, size_hint=(.5,.7), pos_hint={'center_x': .5, 'center_y': 0}, on_press= lambda *args: self.store_name(ip,d), on_release = self.popup.dismiss))
-									self.popup.open()
+		try:
+			if(self.cmd_processed == False):
+				print "reading wf"
+				dfile = open(workfile_path, 'r')
+				myfile = dfile.readlines()
+				line_num = -1 #to get line number, starts at 0
+				for line in myfile:
+					print(line)
+					if line == '\n':
+						pass
+					else:
+						line_num +=1 	#keep line count
+						curr_line = line.strip() #strip line to remove whitespaces
+						parts = curr_line.split() #split line
+						try:
+							if parts[0] == 'G':
+								#Store IP_addr, function and data, if available
+								IP_addr = parts[1]
+								func = parts[2]
+								data = parts[3]
 
-									print "updating light"
-									#self.update_new_light(ip)
-									print "replacing line"
-									(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
-									dt = "%s.%03d" % (dt, int(micro) / 1000)
-									new_curr = 'P '+ ' '.join(curr_line.split()[1:]) + " " + dt
-									try:
-										self.replace_line(workfile_path, line_num, new_curr)
-										#self.process_cmd = False
-									except:
-										print "error in replacing"
-							
-							elif func == 'RMV':
-								s = LightsView()
-								s.removeLight(ip)
-								self.cmd_processed = False
-								self.process_cmd = False
-								print "replacing line"
-								(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
-								dt = "%s.%03d" % (dt, int(micro) / 1000)
-								new_curr = 'P '+ ' '.join(curr_line.split()[1:]) + " " + dt
-								try:
-									self.replace_line(workfile_path, line_num, new_curr)
-									#self.process_cmd = False
-								except:
-									print "error in replacing"
+								if(self.process_cmd == False):
+									
+									self.cmd_processed = True
+									self.process_cmd = True
+									global ip
+									global d
+									ip = IP_addr
+									d = data
+									print "processing"
+									
+									if func == 'ADD':
+										#check if ip_addr exists in database
+										curs.execute("SELECT IP_address FROM Lights WHERE IP_address = '" + ip + "'")
+										if(len(curs.fetchall()) != 0):
+											print("Exists in database")
+											pass
+										else:
+											print "IP address does not exist in database"
+											box = BoxLayout(orientation = 'vertical', padding = (8))
+											box.add_widget(Label(text='Enter a name for {}:'.format(ip), font_size=30, size_hint=(1,.7)))
+											self.textinput = TextInput(text='', font_size=30)
+											box.add_widget(self.textinput)
+											self.popup = Popup(title='New Light Detected', content=box, title_size=30, size_hint=(None, None), size=(450, 300), title_align='center', auto_dismiss=False)
+											#box.add_widget(Button(text='Set',font_size=25, size_hint=(.5,.7), pos_hint={'center_x': .5, 'center_y': 0},on_release=popup.dismiss))
+											box.add_widget(Button(text='Set',font_size=25, size_hint=(.5,.7), pos_hint={'center_x': .5, 'center_y': 0}, on_press= lambda *args: self.store_name(ip,d), on_release = self.popup.dismiss))
+											self.popup.open()
+
+											print "updating light"
+											#self.update_new_light(ip)
+											print "replacing line"
+											(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+											dt = "%s.%03d" % (dt, int(micro) / 1000)
+											new_curr = 'P '+ ' '.join(curr_line.split()[1:]) + " " + dt
+											try:
+												self.replace_line(workfile_path, line_num, new_curr)
+												#self.process_cmd = False
+											except:
+												print "error in replacing"
+									
+									elif func == 'RMV':
+										s = LightsView()
+										s.removeLight(ip)
+										self.cmd_processed = False
+										self.process_cmd = False
+										print "replacing line"
+										(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+										dt = "%s.%03d" % (dt, int(micro) / 1000)
+										new_curr = 'P '+ ' '.join(curr_line.split()[1:]) + " " + dt
+										try:
+											self.replace_line(workfile_path, line_num, new_curr)
+											#self.process_cmd = False
+										except:
+											print "error in replacing"
+										
+									else:
+										print "fourth if"
+										pass	
+								else:
+									print "third if"
+									pass
 								
 							else:
-								print "fourth if"
-								pass	
-						else:
-							print "third if"
+								print "second if"
+								pass
+								
+						except IndexError:
 							pass
-						
-							
-					else:
-						print "second if"
-						pass				
-									
-		else:
-			print "first if"
+								
+										
+			else:
+				print "first if"
+				pass
+				
+		except IOError:
+			print "IO Error"
 			pass
 
 
@@ -1053,6 +1067,8 @@ class HomePage(Screen):
 			
 		
 	def run_demo(self):
+		print "running demo"
+		os.system("cat /home/pi/UNT-NASA/RGBdemo.txt > /home/pi/UNT-NASA/workfile.txt")
 		pass
 
 
