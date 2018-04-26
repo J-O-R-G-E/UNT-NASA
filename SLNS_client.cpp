@@ -35,7 +35,8 @@
 //Macros
 #define port 9999
 #define buff 128
-#define HOST "192.168.1.12"
+//#define HOST "192.168.1.12"
+#define HOST "192.168.1.10"
 
 using namespace std;
 
@@ -45,7 +46,7 @@ string time_processed(void); //timestamping
 void display_RGB(int);
 
 //Globals
-int sockfd, reuse = 1,file;	//only need the one socket on client side
+int sockfd, reuse = 1,file, resp;	//only need the one socket on client side
 struct sockaddr_in sADDR;
 struct hostent *host; 		//this is typically needed for clients to get server information
 char aRGB[50];
@@ -77,7 +78,12 @@ int main()
 			cout << "Server Connection lost, Attempting to Reestablish\n";
 			connect_to_server();
 			cout << "Connection Reestablished\n"; //connect to server success
-			send(sockfd, message.c_str(), sizeof(message),0);
+			resp = send(sockfd, message.c_str(), sizeof(message),MSG_NOSIGNAL);
+			if ( resp == -1 && errno == EPIPE ) 
+			{
+				close(sockfd);
+				connect_to_client();
+			}
 		}
 		else //process server commands
 		{
@@ -91,17 +97,32 @@ int main()
 					ola.setData(DATA);
 					cout << "Setting lights to:" << DATA << endl;
 					cout << "Send To Server:" << aRGB << endl;
-					send(sockfd,DATA.c_str(),sizeof(DATA),0); //Send Response
+					resp = send(sockfd,DATA.c_str(),sizeof(DATA),MSG_NOSIGNAL); //Send Response
+					if ( resp == -1 && errno == EPIPE ) 
+					{
+						close(sockfd);
+						connect_to_client();
+					}
 				}
 				else if(CMD == "GET")  //server fetching client sensor values for GUI request
 				{
 					cout << "Send To Server:" << aRGB << endl;
-					send(sockfd,aRGB,sizeof(aRGB),0); //Send Sensor data to Server
+					resp = send(sockfd,aRGB,sizeof(aRGB),MSG_NOSIGNAL); //Send Sensor data to Server
+					if ( resp == -1 && errno == EPIPE ) 
+					{
+						close(sockfd);
+						connect_to_client();
+					}
 				}
 				else if(CMD == "PNG")  //echo when server checks that client is still connected
 				{
 					cout << "Send To Server:" << CMD << endl;
-					send(sockfd, CMD.c_str(), sizeof(CMD),0);
+					resp = send(sockfd, CMD.c_str(), sizeof(CMD),MSG_NOSIGNAL);
+					if ( resp == -1 && errno == EPIPE ) 
+					{
+						close(sockfd);
+						connect_to_client();
+					}
 				}
 				else if(CMD == "SHD") //In case we want to add a test function, still pending
 				{
@@ -110,7 +131,11 @@ int main()
 					ola.setData(shutdown);
 					shutdown = ola.sendOLA(); // The returned value is based on success
 					cout << "Setting lights to:" << shutdown << endl;//OLA(DATA);
-					send(sockfd,shutdown.c_str(),sizeof(shutdown),0); //Send Response
+					resp = send(sockfd,shutdown.c_str(),sizeof(shutdown),MSG_NOSIGNAL); //Send Response
+					{
+						close(sockfd);
+						connect_to_client();
+					}
 				}
 				memset(recv_data, 0, sizeof(recv_data));
 				ss.clear();
