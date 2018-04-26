@@ -33,9 +33,13 @@ echo -e "\n\nsudo apt-get install libatlas-base-dev\n\n"
 
 if [ -f $FILE ]
 then
+    /// Make sure that we have the correct info in the file
+    cat $LOCAL_FILE >> $FILE
     echo -e "\n\n On a new window, type, 'rec t.wav' to test mic\n\n"
 else
-    cat $LOCAL_FILE > $HOME/$LOCAL_FILE
+    
+    /// If the file doesnt exist, Lets make one.
+    cat $LOCAL_FILE > $FILE
 fi
 
 # We should be golden with our mic stuff
