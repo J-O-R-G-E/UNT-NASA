@@ -99,11 +99,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 Inheritance diagram for snowboydecoder.RingBuffer:</div>
 <div class="dyncontent">
 <div class="center"><img src="classsnowboydecoder_1_1RingBuffer__inherit__graph.png" border="0" usemap="#snowboydecoder_8RingBuffer_inherit__map" alt="Inheritance graph"/></div>
+<map name="snowboydecoder_8RingBuffer_inherit__map" id="snowboydecoder_8RingBuffer_inherit__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for snowboydecoder.RingBuffer:</div>
 <div class="dyncontent">
 <div class="center"><img src="classsnowboydecoder_1_1RingBuffer__coll__graph.png" border="0" usemap="#snowboydecoder_8RingBuffer_coll__map" alt="Collaboration graph"/></div>
+<map name="snowboydecoder_8RingBuffer_coll__map" id="snowboydecoder_8RingBuffer_coll__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
@@ -114,9 +118,41 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8abd8bc5da6f36309861332258669790"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad083eb25f13fa3d7947caf62ca0d7353"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsnowboydecoder_1_1RingBuffer.html#ad083eb25f13fa3d7947caf62ca0d7353">get</a> (self)</td></tr>
 <tr class="separator:ad083eb25f13fa3d7947caf62ca0d7353"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e81257f8756886d0fbfb195ccd5b681"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsnowboydecoder_1_1RingBuffer.html#a0e81257f8756886d0fbfb195ccd5b681">__init__</a> (self, size=4096)</td></tr>
+<tr class="separator:a0e81257f8756886d0fbfb195ccd5b681"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8abd8bc5da6f36309861332258669790"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsnowboydecoder_1_1RingBuffer.html#a8abd8bc5da6f36309861332258669790">extend</a> (self, data)</td></tr>
+<tr class="separator:a8abd8bc5da6f36309861332258669790"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad083eb25f13fa3d7947caf62ca0d7353"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classsnowboydecoder_1_1RingBuffer.html#ad083eb25f13fa3d7947caf62ca0d7353">get</a> (self)</td></tr>
+<tr class="separator:ad083eb25f13fa3d7947caf62ca0d7353"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">Ring buffer to hold audio from PortAudio</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a class="anchor" id="a0e81257f8756886d0fbfb195ccd5b681"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def snowboydecoder.RingBuffer.__init__ </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>size</em> = <code>4096</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a class="anchor" id="a0e81257f8756886d0fbfb195ccd5b681"></a>
 <div class="memitem">
 <div class="memproto">
@@ -170,6 +206,48 @@ Public Member Functions</h2></td></tr>
 <pre class="fragment">Adds data to the end of buffer</pre> 
 </div>
 </div>
+<a class="anchor" id="a8abd8bc5da6f36309861332258669790"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def snowboydecoder.RingBuffer.extend </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Adds data to the end of buffer</pre> 
+</div>
+</div>
+<a class="anchor" id="ad083eb25f13fa3d7947caf62ca0d7353"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">def snowboydecoder.RingBuffer.get </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Retrieves data from the beginning of buffer and clears it</pre> 
+</div>
+</div>
 <a class="anchor" id="ad083eb25f13fa3d7947caf62ca0d7353"></a>
 <div class="memitem">
 <div class="memproto">
@@ -187,7 +265,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/jac0656/Desktop/J-O-R-G-E/UNT-NASA/voiceOLA/<a class="el" href="snowboydecoder_8py.html">snowboydecoder.py</a></li>
+<li>/home/jac0656/Desktop/J-O-R-G-E/UNT-NASA/<a class="el" href="snowboydecoder_8py.html">snowboydecoder.py</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

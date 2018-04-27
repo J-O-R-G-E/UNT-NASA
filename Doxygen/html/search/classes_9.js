@@ -13,10 +13,10 @@ var searchData=
   ['setting',['Setting',['../classGUI8_1_1Setting.html',1,'GUI8']]],
   ['setting',['Setting',['../classTestApp1_1_1Setting.html',1,'TestApp1']]],
   ['setvalues',['SetValues',['../classnewGUI_1_1SetValues.html',1,'newGUI']]],
-  ['setvalues',['SetValues',['../classGUI8_1_1SetValues.html',1,'GUI8']]],
   ['setvalues',['SetValues',['../classTestingGUI_1_1SetValues.html',1,'TestingGUI']]],
-  ['setvalues',['SetValues',['../classGUI8-5pm_1_1SetValues.html',1,'GUI8-5pm']]],
   ['setvalues',['SetValues',['../classGUI8J_1_1SetValues.html',1,'GUI8J']]],
+  ['setvalues',['SetValues',['../classGUI8_1_1SetValues.html',1,'GUI8']]],
+  ['setvalues',['SetValues',['../classGUI8-5pm_1_1SetValues.html',1,'GUI8-5pm']]],
   ['snowboy',['SnowBoy',['../classvoiceOLA_1_1SnowBoy.html',1,'voiceOLA']]],
   ['snowboydetect',['SnowboyDetect',['../classsnowboydetect_1_1SnowboyDetect.html',1,'snowboydetect']]]
 ];

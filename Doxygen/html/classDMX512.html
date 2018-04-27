@@ -93,28 +93,39 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 
+<p>This class handles, checks, and processes the data from the server.  
+ <a href="classDMX512.html#details">More...</a></p>
+
 <p><code>#include &lt;<a class="el" href="dmx512_8hpp_source.html">dmx512.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a20a4e33b35609a6e1ac54b5812f6704b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#a20a4e33b35609a6e1ac54b5812f6704b">DMX512</a> ()</td></tr>
+<tr class="memdesc:a20a4e33b35609a6e1ac54b5812f6704b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a20a4e33b35609a6e1ac54b5812f6704b">More...</a><br /></td></tr>
 <tr class="separator:a20a4e33b35609a6e1ac54b5812f6704b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad392198ed2202ea28a78764ba1d9c453"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#ad392198ed2202ea28a78764ba1d9c453">setOutOfRange</a> (int i)</td></tr>
+<tr class="memdesc:ad392198ed2202ea28a78764ba1d9c453"><td class="mdescLeft">&#160;</td><td class="mdescRight">We need to raise a flag if the data is invalid.  <a href="#ad392198ed2202ea28a78764ba1d9c453">More...</a><br /></td></tr>
 <tr class="separator:ad392198ed2202ea28a78764ba1d9c453"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebc0e33cf9e594124b3a48f86bd6a95c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#aebc0e33cf9e594124b3a48f86bd6a95c">getOutOfRange</a> ()</td></tr>
+<tr class="memdesc:aebc0e33cf9e594124b3a48f86bd6a95c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check that the data was or was not valid.  <a href="#aebc0e33cf9e594124b3a48f86bd6a95c">More...</a><br /></td></tr>
 <tr class="separator:aebc0e33cf9e594124b3a48f86bd6a95c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7b430f6b8c50ad34773c2f83eaa3db9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#af7b430f6b8c50ad34773c2f83eaa3db9">setData</a> (std::string DATA)</td></tr>
+<tr class="memdesc:af7b430f6b8c50ad34773c2f83eaa3db9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the only method used in the <a class="el" href="namespaceClient.html">Client</a> to transfer the data.  <a href="#af7b430f6b8c50ad34773c2f83eaa3db9">More...</a><br /></td></tr>
 <tr class="separator:af7b430f6b8c50ad34773c2f83eaa3db9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ae50e79301e42784934bf853c945b45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#a6ae50e79301e42784934bf853c945b45">clientHandler</a> ()</td></tr>
+<tr class="memdesc:a6ae50e79301e42784934bf853c945b45"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method handles the data received.  <a href="#a6ae50e79301e42784934bf853c945b45">More...</a><br /></td></tr>
 <tr class="separator:a6ae50e79301e42784934bf853c945b45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb00c53d6367188e848fea660d31da28"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#adb00c53d6367188e848fea660d31da28">sendOLA</a> ()</td></tr>
+<tr class="memdesc:adb00c53d6367188e848fea660d31da28"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method sends the data to the LED lights.  <a href="#adb00c53d6367188e848fea660d31da28">More...</a><br /></td></tr>
 <tr class="separator:adb00c53d6367188e848fea660d31da28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12731a1553eed443a1ebbc6aa7e92864"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#a12731a1553eed443a1ebbc6aa7e92864">checkOLA</a> ()</td></tr>
+<tr class="memdesc:a12731a1553eed443a1ebbc6aa7e92864"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method checks that OLA is up. If not, it brings it back up.  <a href="#a12731a1553eed443a1ebbc6aa7e92864">More...</a><br /></td></tr>
 <tr class="separator:a12731a1553eed443a1ebbc6aa7e92864"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a51cddf44923b3cd81ad448b461315c1d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#a51cddf44923b3cd81ad448b461315c1d">A</a></td></tr>
+<tr class="memdesc:a51cddf44923b3cd81ad448b461315c1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">When the data is processed, each variable gets its corresponding value.  <a href="#a51cddf44923b3cd81ad448b461315c1d">More...</a><br /></td></tr>
 <tr class="separator:a51cddf44923b3cd81ad448b461315c1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a231a85f100b6b81a202143d858ed26d1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#a231a85f100b6b81a202143d858ed26d1">R</a></td></tr>
 <tr class="separator:a231a85f100b6b81a202143d858ed26d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -125,6 +136,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a266eca0f1d1836e8122edd5efeae3c84"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#a266eca0f1d1836e8122edd5efeae3c84">OLA</a></td></tr>
 <tr class="separator:a266eca0f1d1836e8122edd5efeae3c84"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae450756118a5e3d1173fd564deeb11c3"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#ae450756118a5e3d1173fd564deeb11c3">Ai</a></td></tr>
+<tr class="memdesc:ae450756118a5e3d1173fd564deeb11c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">When the data has been splited, these variables get the converted HEX value.  <a href="#ae450756118a5e3d1173fd564deeb11c3">More...</a><br /></td></tr>
 <tr class="separator:ae450756118a5e3d1173fd564deeb11c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5ffc37b24d0a79180d13663a5cf8379"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#aa5ffc37b24d0a79180d13663a5cf8379">Ri</a></td></tr>
 <tr class="separator:aa5ffc37b24d0a79180d13663a5cf8379"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,7 +145,10 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a8f4300cb289c94e708314c1bb3078ca8"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDMX512.html#a8f4300cb289c94e708314c1bb3078ca8">Bi</a></td></tr>
 <tr class="separator:a8f4300cb289c94e708314c1bb3078ca8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This class handles, checks, and processes the data from the server. </p>
+<p>By Jorge Cardona <a href="#" onclick="location.href='mai'+'lto:'+'jac'+'06'+'56@'+'un'+'t.e'+'du'; return false;">jac06<span style="display: none;">.nosp@m.</span>56@u<span style="display: none;">.nosp@m.</span>nt.ed<span style="display: none;">.nosp@m.</span>u</a> </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a class="anchor" id="a20a4e33b35609a6e1ac54b5812f6704b"></a>
 <div class="memitem">
 <div class="memproto">
@@ -146,6 +161,11 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Constructor. </p>
+<p>Constructor. It checks that OLA is up and running. If not, it brings it back up.</p>
+<p>By Jorge Cardona <a href="#" onclick="location.href='mai'+'lto:'+'jac'+'06'+'56@'+'un'+'t.e'+'du'; return false;">jac06<span style="display: none;">.nosp@m.</span>56@u<span style="display: none;">.nosp@m.</span>nt.ed<span style="display: none;">.nosp@m.</span>u</a></p>
+<p>Compiles with: g++ testDMX512.c++ dmx512.c++ $(pkg-config &ndash;cflags &ndash;libs libola) -std=c++11 -Wall Here testDMX.c++ is a file that includes this library </p>
 
 </div>
 </div>
@@ -163,6 +183,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>This method checks that OLA is up. If not, it brings it back up. </p>
+<p>This method will get called one last time before we attemp to send our values to the LED lights in the event that OLA went down while we were processing the data </p>
+
 </div>
 </div>
 <a class="anchor" id="a6ae50e79301e42784934bf853c945b45"></a>
@@ -177,6 +200,11 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This method handles the data received. </p>
+<p>This method converts the HEX value to INT. </p>
+<p>A similar implementation will be: std::stringstream ssOLA; ssOLA.clear(); ssOLA &lt;&lt; stoi(A.c_str(), nullptr, 16) &lt;&lt; " " &lt;&lt; stoi(R.c_str(), nullptr, 16) &lt;&lt; " " &lt;&lt; stoi(G.c_str(), nullptr, 16) &lt;&lt;" " &lt;&lt; stoi(B.c_str(), nullptr, 16); ssOLA &gt;&gt; Ai &gt;&gt; Ri &gt;&gt; Gi &gt;&gt; Bi;</p>
+<p>OR: Ai = stoi(A.c_str(), nullptr, 16); Ri = stoi(R.c_str(), nullptr, 16); Gi = stoi(G.c_str(), nullptr, 16); Bi = stoi(B.c_str(), nullptr, 16);</p>
 
 </div>
 </div>
@@ -193,6 +221,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Check that the data was or was not valid. </p>
+<p>This method gets called after the data has been processed. </p>
+
 </div>
 </div>
 <a class="anchor" id="adb00c53d6367188e848fea660d31da28"></a>
@@ -207,6 +238,15 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>This method sends the data to the LED lights. </p>
+<p>This is the method that sends the data through the FTDI USB to the LED Light. Return types: 1 OLA Success -1 OLA Failure -2 Wrong Data Type -3 Empty String </p>
+<p>This is the univer ID when the universe was created</p>
+<p>A DmxBuffer to hold the ARGB values.</p>
+<p>This object makes the connection to the OLA server</p>
+<p>Because we want to avoid errors, lets check each character by making sure it is a HEX value</p>
+<p>This is very important. It must match the values given to the LED light using the dip switch selector. Even if eveything, softwarewise, is working, it will be impossible to get correct outout if these dont match NOTE: In this case, the dip switch is set to 1 or 'listening' on chanel 1 aka 0</p>
+<p>If this is true, the light got all 0s </p>
 
 </div>
 </div>
@@ -224,6 +264,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>This is the only method used in the <a class="el" href="namespaceClient.html">Client</a> to transfer the data. </p>
+<p>This method splits the string of data received from the server into 4 pieces that will become Alpha or intensity, Red, Gree, and Blue </p>
+
 </div>
 </div>
 <a class="anchor" id="ad392198ed2202ea28a78764ba1d9c453"></a>
@@ -240,6 +283,9 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>We need to raise a flag if the data is invalid. </p>
+<p>This method acts as flag to ensure we got 8 character. </p>
+
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -253,6 +299,8 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>When the data is processed, each variable gets its corresponding value. </p>
+
 </div>
 </div>
 <a class="anchor" id="ae450756118a5e3d1173fd564deeb11c3"></a>
@@ -264,6 +312,8 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>When the data has been splited, these variables get the converted HEX value. </p>
 
 </div>
 </div>
