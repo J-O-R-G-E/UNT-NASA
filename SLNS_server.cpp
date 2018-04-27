@@ -106,7 +106,7 @@ int main()
 
 	FD_SET(listener, &master); //adds listener to master set
 	fdmax = listener; //keep track of the biggest file descriptor. So far, it's this one 
-	system("touch /home/pi/archive/workfile.txt");
+	system("touch /home/pi/UNT-NASA/workfile.txt; sudo chmod 777 /home/pi/UNT-NASA/workfile.txt");
 	while(1) // run forever
 	{
 		if (listen(listener, SOMAXCONN) < 0) //keep listening for new connection to add, must be in the while loop
@@ -176,12 +176,12 @@ int main()
 					wf.open(WFpath, ios::app); //opens file in append mode
 					if(wf.is_open())
 					{
-						IPmap.erase(fd); //IP and fd from map at location
-						cout << "Pair Erased\n";
+						IPmap.erase(current_IP); //IP and fd from map at location
 						addrmverr =  guiFlag + " " + current_IP + " RMV" + " 00000000 " + time_processed() + "\n";
 						wf << addrmverr;
 						wf.close();
 						rmvlock.unlock(); //remove from workfile
+						cout << "Pair Erased\n";
 						break;
 					}
 					else
@@ -237,10 +237,6 @@ void parser()
 				stream << line;
 				stream >> flag >> IP >> CMD >> data >> time_issued;  //parses the string
 				int currentFD = IPmap.find(IP)->second;
-				cout << "IP: "<< IP << endl;
-				cout << "Command: " << CMD <<endl;
-				cout << "Data: "<< data  << endl;
-				cout << "CurrentFD: "<< currentFD << endl;
 
 				if((currentFD <= fdmax) && ((FD_ISSET(currentFD, &rset)) || (FD_ISSET(currentFD, &wset)))) //check to make sure the connection socket exists in set
 				{
@@ -331,7 +327,7 @@ void parser()
 					}
 					else if(CMD == "SUS") //Suspend the Client 
 					{
-						if((send(currentFD, CMD.c_str(), sizeof(CMD), MSG_NOSIGNAL))== 0)
+						if((send(currentFD, CMD.c_str(), sizeof(CMD), MSG_NOSIGNAL)) == 0)
 						{
 							tf.open(TFpath, ios::app);//create file and allow appending 
 							string rmv =  guiFlag + " " + IP + " SUS" + " 00000000 " + time_processed();

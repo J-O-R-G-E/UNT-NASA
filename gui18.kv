@@ -218,8 +218,8 @@
 			pos: self.pos
 			size: self.size
 			source: 'stars.png'
-	on_pre_enter: root.health_status()
-		
+	on_enter: root.retrieve_data()
+	
 	BoxLayout:
 		size_hint:(None,None)
 		size: (450,30)

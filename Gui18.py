@@ -259,7 +259,7 @@ class Methods(Screen):
 											except:
 												print "error in replacing"
 									
-									elif func == 'RMV':
+									elif func == 'SHD':
 										s = LightsView()
 										s.removeLight(ip)
 										self.cmd_processed = False
@@ -273,7 +273,21 @@ class Methods(Screen):
 											#self.process_cmd = False
 										except:
 											print "error in replacing"
-										
+									
+									elif func == 'GET':
+										#h = Health()
+										#h.retrieveSensor(ip)
+										#store data into database
+										print "updating data on database"
+										curs2.execute("UPDATE Lights SET Data='" + d + "' WHERE IP_address='" + ip + "'")
+										conn.commit()
+										self.cmd_processed = False
+										self.process_cmd = False
+										try:
+											self.replace_line(workfile_path, line_num, new_curr)
+										except:
+											print "error in replacing"
+
 									else:
 										print "fourth if"
 										pass	
@@ -350,31 +364,56 @@ class Health(Screen):
 		t3.daemon=True
 		t3.start()
 
-
-        """This method does something"""
-	def health_status(self):
-		if len(lights_down) == 1:
-			#lights_down contains user's light selection on the view room screen
-			self.light_name = lights_down[0]
+	
+	def retrieve_data(self):
+		self.time = datetime.now().strftime('%H:%M')
+		self.date = datetime.now().strftime('%Y-%m-%d')
+		
+		#hours go by [00-23]
+		hour = str(datetime.now().hour)
+		if len(hour) == 1:
+			hour = '0' + str(datetime.now().hour)
+		else:
+			pass
 			
-			for row in curs.execute("SELECT IP_address FROM Lights WHERE IP_address='" + lights_down[0] + "'"):
-				self.ip = row[0]
-				(dt, micro) = datetime.now().strftime('[%Y-%m-%d %H:%M:%S.%f]').split('.')
-				dt = "%s.%03d" % (dt, int(micro) / 1000)
-				cmd = "S" + " " + row[0] + " " + "GET" + " " + data + " " + dt
+		global A
+		global R
+		global G
+		global B
+		
+		self.light_name = lights_down[0]
+		print "grabbing data"
+		for row in curs.execute("SELECT Data FROM Lights WHERE Light_name='" + lights_down[0] + "'"):
+			print(row[0])
+			d = row[0]
+			if d == '0':
+				A = int(0)
+				R = int(0) 
+				G = int(0)
+				B = int(0)
 				
-				with open("workfile.txt","a") as document:
-					document.write(cmd)
-					document.write('\n')
-				document.close()
+				self.sa = str(A)
+				self.sr = str(R)
+				self.sg = str(G)
+				self.sb = str(B)
 
-			#reads GET command
-			m = Methods()
-			m.cmdparser()
-			self.getTime()
-			
-		elif len(lights_down) > 1 or len(lights_down) == 0:
-			self.health_popup()
+			else:
+				A = int(d[0] + d[1], 16)
+				R = int(d[2] + d[3], 16) 
+				G = int(d[4] + d[5], 16)
+				B = int(d[6] + d[7], 16)
+				
+				self.sa = str(A)
+				self.sr = str(R)
+				self.sg = str(G)
+				self.sb = str(B)
+		
+		for row in curs2.execute("SELECT IP_address FROM Lights WHERE Light_name='" + lights_down[0] + "'"):
+			self.ip = row[0]
+		
+		self.retrieveCR_and_status(hour)
+		print "entering retrieveCR_and_status"
+
 
         """This method shows the status of the light to the user"""
 	def health_popup(self):
@@ -390,39 +429,37 @@ class Health(Screen):
 	def back_to_rv(self, arg1):
 		self.parent.current = 'view_room'
 		
-	""" method retrieves sensor values, this is called after m.cmdparser() """
-	def retrieveSensor(self, ip_addr, d):
-		#self.grab_name(ip_addr)
-		print(' The values received from server: %s , %s' % (ip_addr, d))
+	def send_get_cmd(self, arg1):
+		for row in curs.execute("SELECT IP_address FROM Lights"):
+			(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+			dt = "%s.%03d" % (dt, int(micro) / 1000)
+			cmd = "S" + " " + row[0] +  " " + "GET" + " " + "00000000" + " " + dt
+			
+			with open("workfile.txt","a") as document:
+					document.write(cmd)
+					document.write('\n')
+			document.close()
+			
+	""" method retrieves sensor values """
+	#def retrieveSensor(self, ip_addr):
+		##self.grab_name(ip_addr)
+		#print(' The values received from server: %s , %s' % (ip_addr))
 		
-		global A
-		global R
-		global G
-		global B
+		#global A
+		#global R
+		#global G
+		#global B
 
-		#hex to decimal conversion
-		A = int(d[0] + d[1], 16)
-		R = int(d[2] + d[3], 16) 
-		G = int(d[4] + d[5], 16)
-		B = int(d[6] + d[7], 16)
-		
-		print('%d %d %d %d' % (A,R,G,B)) 
-		
-	""" method retrieves the current time and date """
-	def getTime(self):
-		#determine time and date
-		self.time = datetime.now().strftime('%H:%M')
-		self.date = datetime.now().strftime('%Y-%m-%d')
-		
-		#hours go by [00-23]
-		hour = str(datetime.now().hour)
-		if len(hour) == 1:
-			hour = '0' + str(datetime.now().hour)
-		else:
-			pass
-		
-		self.retrieveCR_and_status(hour)
-	
+		#for row in curs.execute("SELECT Data FROM Lights WHERE IP_address = '" + ip_addr + "'"):
+			##hex to decimal conversion
+			#d = row[0]
+			#A = int(d[0] + d[1], 16)
+			#R = int(d[2] + d[3], 16) 
+			#G = int(d[4] + d[5], 16)
+			#B = int(d[6] + d[7], 16)
+			
+			#print('%d %d %d %d' % (A,R,G,B)) 
+			
 	""" method retrieves current circadian rhythm values and calculates health status """
 	def retrieveCR_and_status(self, hour):
 		#Grabs current circadian rhythm values
@@ -485,11 +522,12 @@ class Health(Screen):
 		global G
 		global B
 		
-		#display sensor valuesa
-		self.sa = str(A)
-		self.sr = str(R)
-		self.sg = str(G)
-		self.sb = str(B)
+		##display sensor values
+		##error, sensor values not present yet. 
+		#self.sa = str(A)
+		#self.sr = str(R)
+		#self.sg = str(G)
+		#self.sb = str(B)
 		
 		#compare CR values and sensor values
 		if ((A >= min_intensity) and (A <= max_intensity)):
@@ -802,7 +840,7 @@ class LightsView(Screen):
 				data = "00000000"
 				(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
 				dt = "%s.%03d" % (dt, int(micro) / 1000)
-				cmd = "S" + " " + row[0] + " " + "RMV" + " " + data + " " + dt
+				cmd = "S" + " " + row[0] + " " + "SHD" + " " + data + " " + dt
 				with open("workfile.txt","a") as document:
 					document.write(cmd)
 					document.write('\n')
@@ -840,7 +878,10 @@ class LightsView(Screen):
 				
 	def health_check_selected(self):
 		try:
-			if(len(lights_down) == 0):
+			if len(lights_down) == 1:
+				sm.current = 'health'
+				
+			elif(len(lights_down) == 0):
 				#popup
 				box_2 = BoxLayout(orientation = 'vertical', padding = (8))
 				#message on popup
@@ -860,7 +901,6 @@ class LightsView(Screen):
 				popup_1.open()
 			else:
 				sm.current = 'health'
-				
 		except:
 			print "Error in health_check_selected"
 			
@@ -950,6 +990,7 @@ class LoginScreen(Screen):
 			user = username
 			passw = password
 			obj = Methods()
+			h = Health()
 
 			curs.execute("SELECT * FROM users WHERE username = '" + username + "' AND password= '" + password + "'")
 			if curs.fetchone() is not None:
@@ -957,11 +998,14 @@ class LoginScreen(Screen):
 				self.parent.current = 'homepage'
 				#after login, these methods should execute...
 				#event checks workfile every 5 seconds for unprocessed commands 
-				event = Clock.schedule_interval(obj.cmdparser, 5.0)
+				event = Clock.schedule_interval(obj.cmdparser, 4.0)
 				event()
 				#updates lights stored in database with current circadian rhythm values every minute
 				light_update_event = Clock.schedule_interval(obj.update_lights, 60.0)
 				light_update_event()
+				
+				get_event = Clock.schedule_interval(h.send_get_cmd, 15.0)
+				get_event()
 				
 				#checks the health status of every light in the database
 				
@@ -980,6 +1024,15 @@ class LoginScreen(Screen):
 class HomePage(Screen):
 	Timeh = StringProperty()
 	Dateh = StringProperty()
+
+        #You're Welcome!
+        day_of_week = datetime.today().strftime('%A')
+	month = datetime.today().strftime('%B')
+	day_of_month = datetime.today().strftime('%d')
+	year = datetime.today().strftime('%Y')
+	Dateh = day_of_week + ' - ' + month + ' ' + day_of_month + ', ' + year
+
+                        
 	def __init__(self, **kwargs):
 		super(HomePage, self).__init__(**kwargs)
 	
@@ -1047,7 +1100,7 @@ class HomePage(Screen):
 		for row in curs.execute("SELECT IP_address FROM Lights"):
 			(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
 			dt = "%s.%03d" % (dt, int(micro) / 1000)
-			cmd = 'S' + ' ' + row[0] + ' ' + 'SHD' + ' ' + data + ' ' + dt
+			cmd = 'S' + ' ' + row[0] + ' ' + 'SUS' + ' ' + data + ' ' + dt
 			with open("workfile.txt","a") as document:
 					document.write(cmd)
 					document.write('\n')
