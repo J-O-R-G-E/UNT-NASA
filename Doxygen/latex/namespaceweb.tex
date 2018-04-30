@@ -1,0 +1,23 @@
+\hypertarget{namespaceweb}{}\section{web Namespace Reference}
+\label{namespaceweb}\index{web@{web}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \hyperlink{classweb_1_1CefBrowserApp}{Cef\+Browser\+App}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\begin{DoxyVerb}from kivy.garden.cefpython import CefBrowser, cefpython
+from kivy.app import App
+from time import sleep
+
+class CefBrowserApp(App):
+def build(self):
+    return CefBrowser(start_url='http://google.com')
+
+CefBrowserApp.run()
+sleep(10)
+cefpython.Shutdown()
+\end{DoxyVerb}
+ 

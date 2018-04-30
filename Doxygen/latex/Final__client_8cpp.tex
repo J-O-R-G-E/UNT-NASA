@@ -1,0 +1,134 @@
+\hypertarget{Final__client_8cpp}{}\section{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/\+Final\+\_\+client.cpp File Reference}
+\label{Final__client_8cpp}\index{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/\+Final\+\_\+client.\+cpp@{/home/jac0656/\+Desktop/\+J-\/\+O-\/\+R-\/\+G-\/\+E/\+U\+N\+T-\/\+N\+A\+S\+A/\+Final\+\_\+client.\+cpp}}
+{\ttfamily \#include $<$iostream$>$}\\*
+{\ttfamily \#include $<$cstdlib$>$}\\*
+{\ttfamily \#include $<$cstring$>$}\\*
+{\ttfamily \#include $<$string$>$}\\*
+{\ttfamily \#include $<$fstream$>$}\\*
+{\ttfamily \#include $<$sstream$>$}\\*
+{\ttfamily \#include $<$cstdio$>$}\\*
+{\ttfamily \#include $<$ctime$>$}\\*
+{\ttfamily \#include $<$sys/time.\+h$>$}\\*
+{\ttfamily \#include $<$sys/types.\+h$>$}\\*
+{\ttfamily \#include $<$sys/socket.\+h$>$}\\*
+{\ttfamily \#include $<$netinet/in.\+h$>$}\\*
+{\ttfamily \#include $<$sys/select.\+h$>$}\\*
+{\ttfamily \#include $<$arpa/inet.\+h$>$}\\*
+{\ttfamily \#include $<$stdlib.\+h$>$}\\*
+{\ttfamily \#include $<$unistd.\+h$>$}\\*
+{\ttfamily \#include $<$netdb.\+h$>$}\\*
+{\ttfamily \#include $<$errno.\+h$>$}\\*
+{\ttfamily \#include $<$time.\+h$>$}\\*
+{\ttfamily \#include $<$stdio.\+h$>$}\\*
+{\ttfamily \#include $<$signal.\+h$>$}\\*
+{\ttfamily \#include $<$linux/i2c-\/dev.\+h$>$}\\*
+{\ttfamily \#include $<$sys/ioctl.\+h$>$}\\*
+{\ttfamily \#include $<$fcntl.\+h$>$}\\*
+{\ttfamily \#include \char`\"{}dmx512.\+hpp\char`\"{}}\\*
+Include dependency graph for Final\+\_\+client.\+cpp\+:
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{Final__client_8cpp__incl}
+\end{center}
+\end{figure}
+\subsection*{Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{Final__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}{port}~9999
+\item 
+\#define \hyperlink{Final__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}{buff}~128
+\item 
+\#define \hyperlink{Final__client_8cpp_abbbcf3c42c997889127cc676754a6fea}{H\+O\+ST}~\char`\"{}127.\+0.\+0.\+1\char`\"{}
+\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Final__client_8cpp_a483a61ccb7f119cdc9c2658102673251}{connect\+\_\+to\+\_\+server} (void)
+\item 
+string \hyperlink{Final__client_8cpp_a63e8afe6076421045c688c7054f62fdb}{time\+\_\+processed} (void)
+\item 
+void \hyperlink{Final__client_8cpp_a45c58508e881910dfc5f421f11be8faa}{display\+\_\+\+R\+GB} (int)
+\item 
+int \hyperlink{Final__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{main} ()
+\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{Final__client_8cpp_ad2c8fb3df3a737e0685e902870a611d2}{sockfd}
+\item 
+int \hyperlink{Final__client_8cpp_a8b16086473959a99b2a2964ddc158dd4}{reuse} = 1
+\item 
+struct sockaddr\+\_\+in \hyperlink{Final__client_8cpp_a4c848334559817ff3c81757f8d9e6c37}{s\+A\+D\+DR}
+\item 
+struct hostent $\ast$ \hyperlink{Final__client_8cpp_a90b19f2a1530ea0919bea0925d79f4c3}{host}
+\item 
+char \hyperlink{Final__client_8cpp_a5866aaaf9e9facb0bd008a3123d9f910}{a\+R\+GB} \mbox{[}50\mbox{]}
+\item 
+string \hyperlink{Final__client_8cpp_ae1ed0d7a6f352c7ee3ad978429822c6f}{message} = \char`\"{}S\+L\+NS Client A\+CK\char`\"{}
+\end{DoxyCompactItemize}
+
+
+\subsection{Macro Definition Documentation}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!buff@{buff}}
+\index{buff@{buff}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{buff}{buff}}]{\setlength{\rightskip}{0pt plus 5cm}\#define buff~128}\hypertarget{Final__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}{}\label{Final__client_8cpp_a49b4801ec4ecca0932baadffe07d994b}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!H\+O\+ST@{H\+O\+ST}}
+\index{H\+O\+ST@{H\+O\+ST}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{H\+O\+ST}{HOST}}]{\setlength{\rightskip}{0pt plus 5cm}\#define H\+O\+ST~\char`\"{}127.\+0.\+0.\+1\char`\"{}}\hypertarget{Final__client_8cpp_abbbcf3c42c997889127cc676754a6fea}{}\label{Final__client_8cpp_abbbcf3c42c997889127cc676754a6fea}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!port@{port}}
+\index{port@{port}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{port}{port}}]{\setlength{\rightskip}{0pt plus 5cm}\#define port~9999}\hypertarget{Final__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}{}\label{Final__client_8cpp_a2ed8e46b717479f8e2ef47a52d28d9ca}
+
+
+\subsection{Function Documentation}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!connect\+\_\+to\+\_\+server@{connect\+\_\+to\+\_\+server}}
+\index{connect\+\_\+to\+\_\+server@{connect\+\_\+to\+\_\+server}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{connect\+\_\+to\+\_\+server(void)}{connect_to_server(void)}}]{\setlength{\rightskip}{0pt plus 5cm}int connect\+\_\+to\+\_\+server (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{Final__client_8cpp_a483a61ccb7f119cdc9c2658102673251}{}\label{Final__client_8cpp_a483a61ccb7f119cdc9c2658102673251}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!display\+\_\+\+R\+GB@{display\+\_\+\+R\+GB}}
+\index{display\+\_\+\+R\+GB@{display\+\_\+\+R\+GB}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{display\+\_\+\+R\+G\+B(int)}{display_RGB(int)}}]{\setlength{\rightskip}{0pt plus 5cm}void display\+\_\+\+R\+GB (
+\begin{DoxyParamCaption}
+\item[{int}]{s}
+\end{DoxyParamCaption}
+)}\hypertarget{Final__client_8cpp_a45c58508e881910dfc5f421f11be8faa}{}\label{Final__client_8cpp_a45c58508e881910dfc5f421f11be8faa}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!main@{main}}
+\index{main@{main}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{main()}{main()}}]{\setlength{\rightskip}{0pt plus 5cm}int main (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{Final__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}{}\label{Final__client_8cpp_ae66f6b31b5ad750f1fe042a706a4e3d4}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!time\+\_\+processed@{time\+\_\+processed}}
+\index{time\+\_\+processed@{time\+\_\+processed}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{time\+\_\+processed(void)}{time_processed(void)}}]{\setlength{\rightskip}{0pt plus 5cm}string time\+\_\+processed (
+\begin{DoxyParamCaption}
+\item[{void}]{}
+\end{DoxyParamCaption}
+)}\hypertarget{Final__client_8cpp_a63e8afe6076421045c688c7054f62fdb}{}\label{Final__client_8cpp_a63e8afe6076421045c688c7054f62fdb}
+
+
+\subsection{Variable Documentation}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!a\+R\+GB@{a\+R\+GB}}
+\index{a\+R\+GB@{a\+R\+GB}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{a\+R\+GB}{aRGB}}]{\setlength{\rightskip}{0pt plus 5cm}char a\+R\+GB\mbox{[}50\mbox{]}}\hypertarget{Final__client_8cpp_a5866aaaf9e9facb0bd008a3123d9f910}{}\label{Final__client_8cpp_a5866aaaf9e9facb0bd008a3123d9f910}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!host@{host}}
+\index{host@{host}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{host}{host}}]{\setlength{\rightskip}{0pt plus 5cm}struct hostent$\ast$ host}\hypertarget{Final__client_8cpp_a90b19f2a1530ea0919bea0925d79f4c3}{}\label{Final__client_8cpp_a90b19f2a1530ea0919bea0925d79f4c3}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!message@{message}}
+\index{message@{message}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{message}{message}}]{\setlength{\rightskip}{0pt plus 5cm}string message = \char`\"{}S\+L\+NS Client A\+CK\char`\"{}}\hypertarget{Final__client_8cpp_ae1ed0d7a6f352c7ee3ad978429822c6f}{}\label{Final__client_8cpp_ae1ed0d7a6f352c7ee3ad978429822c6f}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!reuse@{reuse}}
+\index{reuse@{reuse}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{reuse}{reuse}}]{\setlength{\rightskip}{0pt plus 5cm}int reuse = 1}\hypertarget{Final__client_8cpp_a8b16086473959a99b2a2964ddc158dd4}{}\label{Final__client_8cpp_a8b16086473959a99b2a2964ddc158dd4}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!s\+A\+D\+DR@{s\+A\+D\+DR}}
+\index{s\+A\+D\+DR@{s\+A\+D\+DR}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{s\+A\+D\+DR}{sADDR}}]{\setlength{\rightskip}{0pt plus 5cm}struct sockaddr\+\_\+in s\+A\+D\+DR}\hypertarget{Final__client_8cpp_a4c848334559817ff3c81757f8d9e6c37}{}\label{Final__client_8cpp_a4c848334559817ff3c81757f8d9e6c37}
+\index{Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}!sockfd@{sockfd}}
+\index{sockfd@{sockfd}!Final\+\_\+client.\+cpp@{Final\+\_\+client.\+cpp}}
+\subsubsection[{\texorpdfstring{sockfd}{sockfd}}]{\setlength{\rightskip}{0pt plus 5cm}int sockfd}\hypertarget{Final__client_8cpp_ad2c8fb3df3a737e0685e902870a611d2}{}\label{Final__client_8cpp_ad2c8fb3df3a737e0685e902870a611d2}
