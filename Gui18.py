@@ -1,10 +1,10 @@
 """ SLNS Graphical User Interface 2018
 	Written by Gladys Hernandez-Amaya	gh0151@unt.edu
 	Course: CSCE 4915
-	Faculty Advisor: Robin P.
 	File Description: This python application displays the menu functions for the SLNS. 
 	It issues commands for the server and writes them to workfile.txt, and processes 
-	commands from the server by reading workfile.txt. Kivy is an open source,
+	commands from the server b
+	Faculty Advisor: Robin P.y reading workfile.txt. Kivy is an open source,
 	cross-platform python framework that is used in this application. This file and
 	the .kv should be be stored under the same directory.
 
@@ -613,19 +613,19 @@ class SetValues(Screen):
 			if len(lights_down) == 0:
 				self.build()
 				pass
-			elif len(lights_down) > 1:
-				self.build()
-				pass
+			#elif len(lights_down) > 1:
+			#	self.build()
+			#	pass
 			else:
 				for row in curs.execute("SELECT IP_address FROM Lights WHERE Light_name='" + lights_down[0] + "'"):
 					(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
 					dt = "%s.%03d" % (dt, int(micro) / 1000)
 					cmd = "S" + " " + row[0] +  " " + "SET" + " " + str(ARGB) + " " + dt
 			
-				with open("workfile.txt","a") as document:
-					document.write(cmd)
-					document.write('\n')
-				document.close()
+					with open("workfile.txt","a") as document:
+						document.write(cmd)
+						document.write('\n')
+					document.close()
 		except:
 			print "Error in set_selection"
 
@@ -1176,6 +1176,9 @@ class Setting(Screen, GridLayout, BoxLayout):
             self.new = int(self.uInput.text)
             self.new += self.old
 
+            #This handles the two ports used to connect the new device
+            self.new -= 2
+
             self.portsCount = str(self.new)
             self.newDevControl = 1
             
@@ -1196,7 +1199,8 @@ class Setting(Screen, GridLayout, BoxLayout):
 
         global portsCount
         for row in curs.execute("SELECT * FROM Ports"):
-		self.portsCount = row[0]                       
+                self.portsCount = row[0]
+
 
         ##############################################################
         # Taylor, here is where I need to get your Plug And Play value
@@ -1219,8 +1223,8 @@ class Setting(Screen, GridLayout, BoxLayout):
         self.box.add_widget(self.popButton)
         
         self.popup.open()
-
-
+        
+        
         ############################################################
         # IF PORTS >= 2048. AKA SOMAXCONN has been reached,        #
         # Call the script that updates this ammount.               #
@@ -1230,11 +1234,10 @@ class Setting(Screen, GridLayout, BoxLayout):
         # about to happen so that they dont think they crashed the #
         # GUI by adding that new devicew                           #
         ############################################################
-            
+        
         
         print("{} Ports".format(self.portsCount))
-
-
+                       
 # For Color WHeel Only
 testOLAColors = None
 """This class handles the color wheel popup"""
