@@ -1,10 +1,10 @@
 """ SLNS Graphical User Interface 2018
 	Written by Gladys Hernandez-Amaya	gh0151@unt.edu
 	Course: CSCE 4915
+	Faculty Advisor: Robin P.
 	File Description: This python application displays the menu functions for the SLNS. 
 	It issues commands for the server and writes them to workfile.txt, and processes 
-	commands from the server b
-	Faculty Advisor: Robin P.y reading workfile.txt. Kivy is an open source,
+	commands from the server by reading workfile.txt. Kivy is an open source,
 	cross-platform python framework that is used in this application. This file and
 	the .kv should be be stored under the same directory.
 
@@ -136,7 +136,10 @@ class Methods(Screen):
 			else:
 				pass
 			
-			curs2.execute("SELECT IP_address FROM Lights")
+			try:
+				curs2.execute("SELECT IP_address FROM Lights WHERE SendCR='true'")
+			except:
+				print "error in update lights - ip address may not exist in database"
 			addresses = curs2.fetchall()
 			addr =[r[0] for r in addresses]
 			
@@ -259,7 +262,7 @@ class Methods(Screen):
 											except:
 												print "error in replacing"
 									
-									elif func == 'SHD':
+									elif func == 'RMV':
 										s = LightsView()
 										s.removeLight(ip)
 										self.cmd_processed = False
@@ -334,8 +337,17 @@ class Health(Screen):
 	R = NumericProperty()
 	G = NumericProperty()
 	
+	screen_to_switch = None
+	
+	name_of_light = " "
+	
 	def __init__(self, **kwargs):
 		super(Health, self).__init__(**kwargs)
+		
+	def send_light_name(self, light):
+		global name_of_light
+		name_of_light = light
+		print("replaced name of light")
 
         """ This method checks the status of all lights in the DB"""
 	def check_status_ALL(self):
@@ -440,26 +452,6 @@ class Health(Screen):
 					document.write('\n')
 			document.close()
 			
-	""" method retrieves sensor values """
-	#def retrieveSensor(self, ip_addr):
-		##self.grab_name(ip_addr)
-		#print(' The values received from server: %s , %s' % (ip_addr))
-		
-		#global A
-		#global R
-		#global G
-		#global B
-
-		#for row in curs.execute("SELECT Data FROM Lights WHERE IP_address = '" + ip_addr + "'"):
-			##hex to decimal conversion
-			#d = row[0]
-			#A = int(d[0] + d[1], 16)
-			#R = int(d[2] + d[3], 16) 
-			#G = int(d[4] + d[5], 16)
-			#B = int(d[6] + d[7], 16)
-			
-			#print('%d %d %d %d' % (A,R,G,B)) 
-			
 	""" method retrieves current circadian rhythm values and calculates health status """
 	def retrieveCR_and_status(self, hour):
 		#Grabs current circadian rhythm values
@@ -528,7 +520,7 @@ class Health(Screen):
 		#self.sr = str(R)
 		#self.sg = str(G)
 		#self.sb = str(B)
-		
+		global name_of_light
 		#compare CR values and sensor values
 		if ((A >= min_intensity) and (A <= max_intensity)):
 			print('pass 1')
@@ -544,25 +536,25 @@ class Health(Screen):
 						print('no4')
 						self.status = 'Unhealthy'
 						print('Unhealthy')
-						self.status_popup()
+						self.status_popup(name_of_light)
 
 				else:
 					print('no3')
 					self.status = 'Unhealthy'
 					print('Unhealthy')
-					self.status_popup()
+					self.status_popup(name_of_light)
 
 			else:
 				print('no2')
 				self.status = 'Unhealthy'
 				print('Unhealthy')
-				self.status_popup()
+				self.status_popup(name_of_light)
 
 		else:
 			print('no1')
 			self.status = 'Unhealthy'
 			print('Unhealthy')
-			self.status_popup()
+			self.status_popup(name_of_light)
 
 			
 		self.clear_selection()
@@ -571,16 +563,27 @@ class Health(Screen):
 		global lights_down
 		lights_down = []
 		
-	def status_popup(self):
+	def status_popup(self, ln):
 		#Read and Accept Popup
 		box = BoxLayout(orientation = 'vertical', padding = (8))
 		#message on popup
-		message = Label(text='Warning:', font_size=20, valign = 'middle', size_hint=(1,.3))
+		message = Label(text='Warning: {} does not fall within \n the current CR values range'.format(ln), font_size=25, valign = 'middle', size_hint=(1,.3))
 		box.add_widget(message)
 		#user input
-		_popup = Popup(title= 'Warning', content = box, title_size =(25),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
+		_popup = Popup(title= 'Light Degradation Detected', content = box, title_size =(25),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
 		box.add_widget(Button(text='Read and Accept', size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0},on_press = _popup.dismiss))
 		_popup.open()
+		
+	def switch_to_this(self, screen):
+		global screen_to_switch
+		screen_to_switch = screen
+	
+	def previous_screen(self):
+		global screen_to_switch
+		sm.current = screen_to_switch
+		
+	
+		
 
 class SetValues(Screen):
 	ARGB = ''
@@ -611,27 +614,58 @@ class SetValues(Screen):
 	def set_selection(self):
 		try:
 			if len(lights_down) == 0:
-				self.build()
-				pass
-			#elif len(lights_down) > 1:
-			#	self.build()
-			#	pass
-			else:
-				for row in curs.execute("SELECT IP_address FROM Lights WHERE Light_name='" + lights_down[0] + "'"):
+				print "sending values to room"
+				curs.execute("SELECT IP_address FROM Lights WHERE Room = '" + btns_down[0] + "'")
+				ips = curs.fetchall()
+				ip_addresses =[r[0] for r in ips]
+				
+				for ip in ip_addresses:
 					(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
 					dt = "%s.%03d" % (dt, int(micro) / 1000)
-					cmd = "S" + " " + row[0] +  " " + "SET" + " " + str(ARGB) + " " + dt
-			
+					cmd = "S" + " " + ip +  " " + "SET" + " " + str(ARGB) + " " + dt
+					
 					with open("workfile.txt","a") as document:
 						document.write(cmd)
 						document.write('\n')
 					document.close()
+					try:
+						# disable sending CR values to lights in this room  
+						curs.execute("UPDATE Lights SET SendCR='false' WHERE IP_address = '" + ip + "'")
+						conn.commit()
+					except:
+						print "error in updating SendCR"				
+			
+			elif len(lights_down) >= 1:
+				for l in lights_down:
+					for row in curs.execute("SELECT IP_address FROM Lights WHERE Light_name = '" + l + "'"):
+
+						(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+						dt = "%s.%03d" % (dt, int(micro) / 1000)
+						cmd = "S" + " " + row[0] +  " " + "SET" + " " + str(ARGB) + " " + dt
+						
+						with open("workfile.txt","a") as document:
+							document.write(cmd)
+							document.write('\n')
+						document.close()
+						
+						try:
+							# disable sending CR values to lights in this room  
+							curs.execute("UPDATE Lights SET SendCR='false' WHERE IP_address = '" + row[0] + "'")
+							conn.commit()
+						except:
+							print "error in updating SendCR"
+							pass
+				
+			else:
+				print "error in set_selection"
+				pass
 		except:
 			print "Error in set_selection"
 
 
 """ This screen displays the lights available in form of buttons """
 class LightsView(Screen):
+	#current_screen = StringProperty()
 	def __init__(self, **kwargs):
 		self.layout = None
 		super(LightsView, self).__init__(**kwargs)
@@ -657,17 +691,17 @@ class LightsView(Screen):
 			
 			if curr_screen == 'view_lights':
 				box = BoxLayout(orientation = 'vertical', padding = (8))
-				message = Label(text='Removing IP: {}, Name: {}'.format(ip_addr, name), font_size=25, valign = 'middle', size_hint=(1,.3))
+				message = Label(text='Removing...\nIP: {} \nName: {}'.format(ip_addr, name), font_size=25, valign = 'middle', size_hint=(1,.3))
 				box.add_widget(message)
-				popup = Popup(title= 'Light Removal', content = box, title_size =(30),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
-				box.add_widget(Button(text='Confirm and Refresh', font_size = 20, size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0}, on_press= self.screen_update, on_release = popup.dismiss))
+				popup = Popup(title= 'Light Removal', content = box, title_size =(30), size_hint=(None, None), size=(450,300),title_align='center', auto_dismiss=False)
+				box.add_widget(Button(text='Confirm', font_size = 20, size_hint=(.5,.25), pos_hint={'center_x': .5, 'center_y': 0}, on_press= self.screen_update, on_release = popup.dismiss))
 				popup.open()
 			else:
 				box2 = BoxLayout(orientation = 'vertical', padding = (8))
-				message = Label(text='Removing IP: {}, Name: {}'.format(ip_addr, name), font_size=25, valign = 'middle', size_hint=(1,.3))
+				message = Label(text='Removing...\nIP: {} \nName: {}'.format(ip_addr, name), font_size=25, valign = 'middle', size_hint=(1,.3))
 				box2.add_widget(message)
-				popup2 = Popup(title= 'Light Removal', content = box2, title_size =(30),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
-				box2.add_widget(Button(text='Confirm', font_size = 20, size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0},on_release = popup2.dismiss))
+				popup2 = Popup(title= 'Light Removal', content = box2, title_size =(30), size_hint=(None, None), size=(450,300),title_align='center', auto_dismiss=False)
+				box2.add_widget(Button(text='Confirm', font_size = 20, size_hint=(.5,.25), pos_hint={'center_x': .5, 'center_y': 0},on_release = popup2.dismiss))
 				popup2.open()
 		except:
 			pass
@@ -862,17 +896,10 @@ class LightsView(Screen):
 				popup_2 = Popup(title= 'Error 106', content = box_2, title_size =(30),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
 				box_2.add_widget(Button(text='Return', font_size = 20, size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0}, on_release = popup_2.dismiss))
 				popup_2.open()
-			elif(len(lights_down) > 1):
-				#poup
-				box_1 = BoxLayout(orientation = 'vertical', padding = (8))
-				#message on popup
-				message = Label(text='More than 1 light selected', font_size=25, valign = 'middle', size_hint=(1,.3))
-				box_1.add_widget(message)
-				popup_1 = Popup(title= 'Error 107', content = box_1, title_size =(30),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
-				box_1.add_widget(Button(text='Return', font_size = 20, size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0}, on_release = popup_1.dismiss))
-				popup_1.open()
-			else:
+			elif(len(lights_down) >= 1):
 				sm.current = 'set_values'
+			else:
+				pass
 		except:
 			print "Error in check_lights_selected"
 				
@@ -880,6 +907,8 @@ class LightsView(Screen):
 		try:
 			if len(lights_down) == 1:
 				sm.current = 'health'
+				obj = Health()
+				obj.send_light_name(lights_down[0])
 				
 			elif(len(lights_down) == 0):
 				#popup
@@ -904,6 +933,18 @@ class LightsView(Screen):
 		except:
 			print "Error in health_check_selected"
 			
+	def get_previous_screen(self):
+		try:
+			
+			current_screen = sm.current
+			ob = Health()
+			ob.switch_to_this(current_screen)
+		
+		except:
+			pass
+			
+		
+
 		
 ''' This screen displays the lights assigned to a room (->View Room)'''			
 class RoomView(Screen):
@@ -926,11 +967,12 @@ class RoomView(Screen):
 			if len(btns_down) >= 1:
 				pass
 			else:
+				
 				#popup asking user to select a room to view
 				box = BoxLayout(orientation = 'vertical', padding = (8))
 				message = Label(text="Please select a room to view", font_size=25, valign = 'middle', size_hint=(1,.3))
 				box.add_widget(message)
-				popup = Popup(title= 'Error 103: Room not selected', content = box, title_size =(30),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
+				popup = Popup(title= 'Error 103: A room was not selected', content = box, title_size =(30),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
 				box.add_widget(Button(text='Return', font_size = 20, size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0}, on_press= self.return_to_LV, on_release = popup.dismiss))
 				popup.open()
 		except:
@@ -974,16 +1016,35 @@ class RoomView(Screen):
 				conn.commit()
 			self.build()
 			
+	def get_previous_screen(self):
+		try:
+			current_screen = sm.current
+			ob = Health()
+			ob.switch_to_this(current_screen)
+		except:
+			pass
+			
+			
+	def check_selected(self):
+		obj = Health()
+		obj.send_light_name(lights_down[0])
+		sm.current = 'health'
+		
+		
 class Blank(Screen):
 	pass
 			
 '''login screen will be the first screen to execute, calls function that checks for gui commands'''
-class LoginScreen(Screen):
+class LoginScreen(Screen):	
+	def __init__(self, **kwargs):
+		super(LoginScreen, self).__init__(**kwargs)
 	
 	def clear_user(self, u, p):
 		print "clearing username and password"
 		u.text = "" 
 		p.text = ""
+		
+
 	
 	def login(self, username, password):
 		try:
@@ -992,7 +1053,7 @@ class LoginScreen(Screen):
 			obj = Methods()
 			h = Health()
 
-			curs.execute("SELECT * FROM users WHERE username = '" + username + "' AND password= '" + password + "'")
+			curs.execute("SELECT * FROM Users WHERE username = '" + username + "' AND password= '" + password + "'")
 			if curs.fetchone() is not None:
 				print "Successful Login"
 				self.parent.current = 'homepage'
@@ -1001,15 +1062,16 @@ class LoginScreen(Screen):
 				event = Clock.schedule_interval(obj.cmdparser, 4.0)
 				event()
 				#updates lights stored in database with current circadian rhythm values every minute
-				light_update_event = Clock.schedule_interval(obj.update_lights, 60.0)
+				light_update_event = Clock.schedule_interval(obj.update_lights,7.0)
 				light_update_event()
 				
-				get_event = Clock.schedule_interval(h.send_get_cmd, 15.0)
+				#sends "GET" command to retrieve sensor data
+				get_event = Clock.schedule_interval(h.send_get_cmd, 5.0)
 				get_event()
 				
 				#checks the health status of every light in the database
-				
-				
+	
+
 			else:
 				box = BoxLayout(orientation = 'vertical', padding = (8))
 				message = Label(text='Invalid username or password', font_size=25, valign = 'middle', size_hint=(1,.3))
@@ -1021,18 +1083,11 @@ class LoginScreen(Screen):
 		except:
 			print "error in login screen"
 			
+			
+			
 class HomePage(Screen):
 	Timeh = StringProperty()
 	Dateh = StringProperty()
-
-        #You're Welcome!
-        day_of_week = datetime.today().strftime('%A')
-	month = datetime.today().strftime('%B')
-	day_of_month = datetime.today().strftime('%d')
-	year = datetime.today().strftime('%Y')
-	Dateh = day_of_week + ' - ' + month + ' ' + day_of_month + ', ' + year
-
-                        
 	def __init__(self, **kwargs):
 		super(HomePage, self).__init__(**kwargs)
 	
@@ -1082,8 +1137,6 @@ class HomePage(Screen):
 			month = datetime.today().strftime('%B')
 			day_of_month = datetime.today().strftime('%d')
 			year = datetime.today().strftime('%Y')
-			image_file = "/home/pi/kivy/screenshot.png"
-			subprocess.call(["scrot", image_file])
 			self.Dateh = day_of_week + ' - ' + month + ' ' + day_of_month + ', ' + year
 			t5 = threading.Timer(10.0, self.getInfo)
 			t5.daemon=True
@@ -1092,9 +1145,17 @@ class HomePage(Screen):
 		except:
 			print "error in getInfo"
 		
-		
-		
 	def shutdown(self):
+		
+
+		#Clock.unschedule(light_update_event)
+		#Clock.unschedule(get_event)
+		#Clock.unschedule(event)
+		#not working
+		#light_update_event.cancel()
+		#get_event.cancel()
+		#event.cancel()
+
 		#grab IP address of all lights
 		data = '00000000'
 		for row in curs.execute("SELECT IP_address FROM Lights"):
@@ -1105,6 +1166,8 @@ class HomePage(Screen):
 					document.write(cmd)
 					document.write('\n')
 			document.close()
+			
+		
 		
 		#popup to notify user of shutdown
 		box_2 = BoxLayout(orientation = 'vertical', padding = (8))
@@ -1117,12 +1180,13 @@ class HomePage(Screen):
 		app = TestApp()
 		Clock.schedule_once(app.stop,3)
 
-			
-		
+
 	def run_demo(self):
 		print "running demo"
 		os.system("cat /home/pi/UNT-NASA/RGBdemo.txt > /home/pi/UNT-NASA/workfile.txt")
 		pass
+		
+		
 
 
 class Troubleshoot(Screen):
@@ -1176,9 +1240,6 @@ class Setting(Screen, GridLayout, BoxLayout):
             self.new = int(self.uInput.text)
             self.new += self.old
 
-            #This handles the two ports used to connect the new device
-            self.new -= 2
-
             self.portsCount = str(self.new)
             self.newDevControl = 1
             
@@ -1199,8 +1260,7 @@ class Setting(Screen, GridLayout, BoxLayout):
 
         global portsCount
         for row in curs.execute("SELECT * FROM Ports"):
-                self.portsCount = row[0]
-
+		self.portsCount = row[0]                       
 
         ##############################################################
         # Taylor, here is where I need to get your Plug And Play value
@@ -1223,8 +1283,8 @@ class Setting(Screen, GridLayout, BoxLayout):
         self.box.add_widget(self.popButton)
         
         self.popup.open()
-        
-        
+
+
         ############################################################
         # IF PORTS >= 2048. AKA SOMAXCONN has been reached,        #
         # Call the script that updates this ammount.               #
@@ -1234,10 +1294,11 @@ class Setting(Screen, GridLayout, BoxLayout):
         # about to happen so that they dont think they crashed the #
         # GUI by adding that new devicew                           #
         ############################################################
-        
+            
         
         print("{} Ports".format(self.portsCount))
-                       
+
+
 # For Color WHeel Only
 testOLAColors = None
 """This class handles the color wheel popup"""
