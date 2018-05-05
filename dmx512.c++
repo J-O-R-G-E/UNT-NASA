@@ -98,11 +98,11 @@ void DMX512::setData(std::string DATA){
     R = "00";
     G = "00";
     B = "00";
-    
+  
     setOutOfRange(1);
   }
-  
-  std::cout << A << R << G << B << std::endl;
+
+  //std::cout << A << R << G << B << std::endl;
   clientHandler();
 }
 
@@ -113,12 +113,10 @@ void DMX512::clientHandler(){
   ssOLA.clear();
   ssOLA << std::hex << A << " " <<  std::hex << R << " " <<  std::hex << G <<" " << std::hex << B;
   ssOLA >> Ai >> Ri >> Gi >> Bi;
-
   /// Since we are having some flickering issue, let's avoid that range. Usually (120 - 220)
   ( Ai <= 110) ? Ai = Ai : Ai = 255;
 	
   std::cout <<"Int Equivalent: " << Ai <<"*  " <<  Ri << " " <<  Gi << " " <<  Bi << std::endl;
-
   /**
      A similar implementation will be:
      std::stringstream ssOLA;
@@ -226,8 +224,8 @@ std::string  DMX512::sendOLA(){
     return "-1";
   }
   
-  std::cout << "\nColor Sent!\n\n";
-  std::cout << Ai <<" " <<  Ri <<  " " << Gi << " " << Bi <<std::endl;
+  //std::cout << "\nColor Sent!\n\n";
+  std::cout << "DMX512: "<< Ai <<" " <<  Ri <<  " " << Gi << " " << Bi <<std::endl;
 
 
   /// If this is true, the light got all 0s
