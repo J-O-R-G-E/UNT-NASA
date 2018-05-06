@@ -415,7 +415,7 @@ class HotwordDetector(object):
                             # Red Alert Command
                             elif(cmd == 7):
 
-                                for i in xrange(10):
+                                for i in xrange(3):
                                     
                                     dataArr = []
                                     dataArr = array.array('B')

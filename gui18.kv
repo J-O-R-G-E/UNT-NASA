@@ -11,7 +11,7 @@
     #Health screen
     Health:
 		id: health
-    # Color picker screen
+    # Color picker screen#FFFFFF
     SetValues:
 		id: set_values
     Methods:
@@ -218,8 +218,8 @@
 			pos: self.pos
 			size: self.size
 			source: 'stars.png'
-	on_pre_enter: root.health_status()
-		
+	on_enter: root.retrieve_data()
+	
 	BoxLayout:
 		size_hint:(None,None)
 		size: (450,30)
@@ -451,7 +451,8 @@
 		
 		Button:
 			text: 'previous'
-			on_press: root.manager.current = 'view_room'
+			#on_press: root.manager.current = 'view_room'
+			on_press: root.previous_screen()
 			background_color: [0, (218/255.0),(18/255.0),1]
 			size_hint: (None, None)
 			size: (150, 40)
@@ -617,7 +618,8 @@
 			background_normal: ''
 			#background_color: [0, (218/255.0),(18/255.0),1]
 			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
-			on_press: root.health_check_selected()
+			on_release: root.health_check_selected()
+			on_press: root.get_previous_screen()
 			
 		Button:
 			text: 'Set Values'
@@ -648,7 +650,7 @@
 	BoxLayout:
 		id: roomlayout
 		orientation: 'vertical'
-		padding: 5
+		padding: 10
 		size_hint: (None,None)
 		size: (425, 230)
 		x:370
@@ -783,9 +785,12 @@
 		Button:
 			id: health_button
 			text: "Health Status"
-			on_press: root.manager.current = 'health'
+			#on_release: root.manager.current = 'health'
+			on_release: root.check_selected()
 			#RGBA
 			background_color: [0, (218/255.0),(18/255.0),1]
+			on_press: root.get_previous_screen()
+			
 		
 		Button:
 			id: set_button

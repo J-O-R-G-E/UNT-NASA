@@ -9,6 +9,6 @@ var searchData=
   ['nowg',['nowG',['../serverAndParcer_8c_09_09.html#a3f71f79c62b8a333782d8cfde710bc1e',1,'serverAndParcer.c++']]],
   ['nowp',['nowP',['../serverAndParcer_8c_09_09.html#aa1793b72906465979b4f03f4f077b330',1,'serverAndParcer.c++']]],
   ['num_5fhotwords',['num_hotwords',['../classsnowboydecoder_1_1HotwordDetector.html#a45759e8fb8047abaf3697071cb88364c',1,'snowboydecoder::HotwordDetector']]],
-  ['numchannels',['NumChannels',['../classsnowboydetect_1_1SnowboyDetect.html#a46d9f2d6be050a727731557d7865ec96',1,'snowboydetect::SnowboyDetect']]],
-  ['numhotwords',['NumHotwords',['../classsnowboydetect_1_1SnowboyDetect.html#a281b6281e98d035872f289a4d31041dd',1,'snowboydetect::SnowboyDetect']]]
+  ['numchannels',['NumChannels',['../classsnowboydetect_1_1SnowboyDetect.html#a46d9f2d6be050a727731557d7865ec96',1,'snowboydetect.SnowboyDetect.NumChannels(self)'],['../classsnowboydetect_1_1SnowboyDetect.html#a46d9f2d6be050a727731557d7865ec96',1,'snowboydetect.SnowboyDetect.NumChannels(self)']]],
+  ['numhotwords',['NumHotwords',['../classsnowboydetect_1_1SnowboyDetect.html#a281b6281e98d035872f289a4d31041dd',1,'snowboydetect.SnowboyDetect.NumHotwords(self)'],['../classsnowboydetect_1_1SnowboyDetect.html#a281b6281e98d035872f289a4d31041dd',1,'snowboydetect.SnowboyDetect.NumHotwords(self)']]]
 ];

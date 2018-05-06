@@ -1,14 +1,16 @@
 /* SLNS server
  * Written by John Austin Todd 2018
- * Usage: g++ -g -std=c++11 SLNS_server.cpp -o SLNS
+ * Jorge Cardona helped too
+ * Compilation: g++ -g -std=c++11 SLNS_server.cpp -o server
  * Run: ./SLNS
- * boots up on startup: rc.local ./home/pi/UNT-NASA/SLNS &
+ * boots up on startup: rc.local ./home/pi/archive/SLNS &
  * A single threaded synchronous server which reads/writes from a shared command file with the graphical interface
  * The server accepts new clients, periodically checks to see if any have been removed, and updates the graphical interface
  */
+
 #include <iostream>
 #include <cstdlib>
-#include <cstring>		//IDK if i actually nead this
+#include <cstring>		//IDK if I actually nead this
 #include <string>		//for strings
 #include <map>			//for mapping an IP to kernel assigned sockerFD and maintaining connections
 #include <fstream>		//for C++ file IO
@@ -18,8 +20,8 @@
 #include <ctime>		//for timestamps
 #include <sys/time.h>	//timeval and timespec (tv_nsec) for nanoseconds but im just using micro for early testing
 #include <sys/types.h>	//setsockopt()
-#include <sys/socket.h> //socket SOMAXCOMM
-#include <netinet/in.h> //needed for domain addressses
+#include <sys/socket.h>	//socket SOMAXCOMM
+#include <netinet/in.h>	//needed for domain addressses
 #include <sys/select.h>
 #include <arpa/inet.h>	//inet_ntop for IP address resolution
 #include <stdlib.h>		//standard C library
@@ -87,7 +89,7 @@ int main()
 	fcntl(listener, F_SETFL, O_NONBLOCK); //sets accept to non blocking so it doesn not freeze when there are no new pending clients, continues main while loop
 	sADDR.sin_family = AF_INET;
 	sADDR.sin_port = htons(PORT);
-	sADDR.sin_addr.s_addr = INADDR_ANY; //using any IP address but we are 192.168.1.100
+	sADDR.sin_addr.s_addr = INADDR_ANY; 
 
 	//Options for the socket to prevent "address already in use" error 
 	if (setsockopt(listener, SOL_SOCKET, SO_REUSEPORT, (const char*)&reuse, sizeof(int)) < 0)
@@ -104,7 +106,7 @@ int main()
 
 	FD_SET(listener, &master); //adds listener to master set
 	fdmax = listener; //keep track of the biggest file descriptor. So far, it's this one 
-	system("touch /home/pi/UNT-NASA/workfile.txt");
+	system("touch /home/pi/UNT-NASA/workfile.txt; sudo chmod 777 /home/pi/UNT-NASA/workfile.txt");
 	while(1) // run forever
 	{
 		if (listen(listener, SOMAXCONN) < 0) //keep listening for new connection to add, must be in the while loop
@@ -129,13 +131,13 @@ int main()
 			if (recv(newfd, ack, sizeof(ack),0) != 0)
 			{
 				char *connected_ip = get_IP(newfd);
-				cout << "<< Connection Accepted >>" << ack << endl;
+				cout << "<< Connection Accepted >> " << ack << endl;
 				cout << "[IP: " << connected_ip << " " << newfd << "]\n" ; 
 				IPmap.insert(make_pair(connected_ip, newfd));	//add to the IPmap container
 				FD_SET(newfd, &master);	//add the new file descriptor to the set cause we need it later
 				fstream wf;
 				wf.open( WFpath, ios::app); 		//opens file +
-				string addrmverr =  guiFlag + " " + connected_ip + " ADD"+ " 00000000 " +  time_processed();
+				string addrmverr =  guiFlag + " " + connected_ip + " ADD"+ " 00000000 " +  time_processed() + "\n";
 				addlock.lock();
 				wf << addrmverr;
 				wf.close();
@@ -143,41 +145,47 @@ int main()
 				if (newfd > fdmax) // keep track of the largest FD
 				{
 					fdmax = newfd;
-					cout << "fdmax: " << fdmax << endl;
 				}
 			}
 		}
-		fd = IPmap.begin();
-		if (count == 5) //remove dead clients from workfile
+		if (count == 3) //remove dead clients from workfile
 		{
 			cout << "Reaper Active\n" ;
 			string PING = "PNG";
-			for(fd = IPmap.begin(); fd != IPmap.end(); fd++)//in case a light is removed
+			for(fd = IPmap.begin(); fd != IPmap.end(); ++fd)//in case a light is removed
 			{
 				char echo[buff];
 				string addrmverr;
 				string current_IP = fd->first; //Human readable IP address
 				int current_sock = fd->second; //File descriptor of individual client connection
-				cout << current_IP << " " << current_sock << endl;
 				cout << "Sending PNG message to "<< "IP: " <<  current_IP << " " << current_sock << endl; 
-				send(current_sock, PING.c_str(), sizeof(PING), 0); //send PNG
-
+				if(send(current_sock, PING.c_str(), sizeof(PING), MSG_NOSIGNAL) == 0) //send PNG
+				{
+					IPmap.erase(current_IP);
+					FD_CLR(current_sock, &master);
+					wf.open(WFpath, ios::app);//create file and allow appending 
+					string rmv =  guiFlag + " " + current_IP + " RMV" + " 00000000 " + time_processed() + "\n";
+					wf << rmv;
+					wf.close();
+				}
 				if((recv(current_sock, echo, sizeof(echo),0)) == 0)
 				{
 					cout << "Connection Dropped\n";
-					cout << "[IP:" <<  current_IP << " " << current_sock << "]" << endl;  // IP and file descriptor for 
-					IPmap.erase(fd); //IP and fd from map at location
-					cout << "Pair Erased\n";
+					cout << "[IP:" <<  current_IP << " " << current_sock << "]\n";  // IP and file descriptor for 
+					rmvlock.lock();
 					wf.open(WFpath, ios::app); //opens file in append mode
 					if(wf.is_open())
 					{
-						addrmverr =  guiFlag + " " + current_IP + " RMV" + " 00000000 " + time_processed();
-						rmvlock.lock();
+						IPmap.erase(current_IP); //IP and fd from map at location
+						addrmverr =  guiFlag + " " + current_IP + " RMV" + " 00000000 " + time_processed() + "\n";
 						wf << addrmverr;
 						wf.close();
 						rmvlock.unlock(); //remove from workfile
+						cout << "Pair Erased\n";
 						break;
 					}
+					else
+						break;
 				}
 				else
 				{
@@ -198,8 +206,8 @@ return 0; //end program
 
 void parser()
 {
-	cout << "Parser activated\n";
 	sleep(3);
+	cout << "Parser activated\n";
 	parselock.lock();
 	fstream wf, tf;
 	system("touch /home/pi/UNT-NASA/temp.txt");
@@ -209,13 +217,14 @@ void parser()
 		string line;
 		while(getline(wf, line)) //while reading workfile and lines in
 		{
+			int n;
 			string setLINE, getLINE, flag, IP, CMD, data, set_RGB,sensor_data, time_issued;
 			stringstream stream, client_respond; // easy manipulation of each line
 			rset = master;
 			wset = master;
 			if(line[0] != 'S') //If the flag is not ment for the server, write processed command into temp and continue
 			{
-				cout << "Do not process:" + line << endl; //write the unprocessed line back into the file
+				cout << "Don't process:" + line << endl; //write the unprocessed line back into the file
 				tf.open(TFpath, ios::app);//create file and allow appending 
 				tf << line << endl;
 				tf.close();
@@ -224,128 +233,135 @@ void parser()
 			{
 				cout << "\nProcessing Line: " << line << endl;
 				stream.clear();
-				client_respond.clear();
+
 				stream << line;
 				stream >> flag >> IP >> CMD >> data >> time_issued;  //parses the string
 				int currentFD = IPmap.find(IP)->second;
-				cout << "IP: "<< IP << endl;
-				cout << "Command: " << CMD <<endl;
-				cout << "Data: "<< data  << endl;
-				cout << "CurrentFD: "<< currentFD << endl;
 
-				if(currentFD <= fdmax)//set current client to forward messages to
+				if((currentFD <= fdmax) && ((FD_ISSET(currentFD, &rset)) || (FD_ISSET(currentFD, &wset)))) //check to make sure the connection socket exists in set
 				{
-					if((FD_ISSET(currentFD, &rset)) || (FD_ISSET(currentFD, &wset)))
+					if(CMD == "SET")  //if command is SET either circadian or user defined RGB values
 					{
-						if(CMD == "SET")  //if command is SET either circadian or user defined RGB values
+						char response[buff];
+						cout << "Setting "+ data + " to " << IP << endl;
+						setLINE = CMD + " " + data;
+						if((send(currentFD,setLINE.c_str(),sizeof(setLINE), MSG_NOSIGNAL)) == 0)
 						{
-							char response[buff];
-							cout << "Setting "+ data + " to " << IP << endl;
-							setLINE = CMD + " " + data;	
-							send(currentFD,setLINE.c_str(),sizeof(setLINE),0); //this works
-							cout << "Response from SET command: " << response << endl;
-							if((recv(currentFD,response,sizeof(response),0)) == 0)
-							{
-								perror("Error: Did not Receive SET ack");
-								tf.open(TFpath, ios::app); 
-								tf << line;
-								tf.close();
-								line.clear();
-							}
-							else // command has been executed on client and update the temp file
-							{
-								string proc_str2 = processedFlag + " " + IP + " " + CMD + " " + response + "0000000 " + time_issued + " " + time_processed() + "\n";
-								cout << "Processed :" << proc_str2 << endl;
-								tf.open(TFpath, ios::app);//create file and allow appending 
-								tf << proc_str2;
-								tf.close();
-							}
+							IPmap.erase(IP);
+							tf.open(TFpath, ios::app);//create file and allow appending 
+							string rmv =  guiFlag + " " + IP + " RMV" + " 00000000 " + time_processed() + "\n";
+							tf << rmv;
+							tf.close();
+							break;
 						}
-						else if(CMD == "GET")  //if command is GET sensor values
+						if(recv(currentFD,response,sizeof(response),0) == 0)
 						{
-							char sensor_data[buff];
-							cout << "Sending sensor request to Client " << IP << endl;
-							getLINE = CMD;
-							send(currentFD,getLINE.c_str(),sizeof(getLINE),0);  //send GET request
-
-
-							if((recv(currentFD,sensor_data,sizeof(sensor_data),0)) == 0)
-							{
-								perror("Error: Did not Receive GET set");
-								tf.open(TFpath, ios::app); 
-								tf << line;
-								tf.close();
-							}
-							else // command has been executed on client and update the temp file
-							{
-								cout << "Client Sensor Value: " << sensor_data << endl;
-								string proc_str3 = guiFlag+ " " + IP + " " + CMD + " " + sensor_data + " " + time_issued + " " + time_processed() + "\n";
-								cout << "Processed :" << proc_str3 << endl;
-								tf.open(TFpath, ios::app); 
-								tf << proc_str3;
-								tf.close();
-							}
-						}
-						else if(CMD == "SHD") //In case we want to add a test function, still pending
-						{
-							send(currentFD, CMD.c_str(), sizeof(CMD), 0);
-							string proc_str4 = guiFlag + " " + IP + " " + CMD + " " + "00000000" + " " + time_issued + " " + time_processed() + "\n";
+							perror("Error: Did not Receive SET ack");
 							tf.open(TFpath, ios::app); 
-							tf << proc_str4;
-							cout << "Processed :" << proc_str4 << endl;
+							tf << line << endl;
+							tf.close();
+							line.clear();
+						}
+						else // command has been executed on client and update the temp file
+						{
+							cout << "Response from SET command: " << response << endl;
+							string proc_str2 = processedFlag + " " + IP + " " + CMD + " " + response + " " + time_issued + " " + time_processed() + "\n";
+							cout << "Processed :" << proc_str2 << endl;
+							tf.open(TFpath, ios::app);//create file and allow appending 
+							tf << proc_str2;
 							tf.close();
 						}
-						else if( CMD == "TBS")// Future troubleshooting 
+					}
+					else if(CMD == "GET")  //if command is GET sensor values
+					{
+						char sensor_data[buff];
+						cout << "Sending sensor request to Client " << IP << endl;
+						getLINE = CMD;
+						n = send(currentFD,getLINE.c_str(),sizeof(getLINE),MSG_NOSIGNAL);
+						if(n == 0)
 						{
-							char sensor_data[buff];
-							cout << "Sending sensor request to Client " << IP << endl;
-							getLINE = CMD;
-							send(currentFD,getLINE.c_str(),sizeof(getLINE),0);  //send GET request
-							int n = recv(currentFD,sensor_data, sizeof(sensor_data),0);
-							cout << sensor_data << endl;
-
-							if(n == 0)
-							{
-								perror("Error: Did not Receive GET set");
-								tf.open(TFpath, ios::app); 
-								tf << line;
-								tf.close();
-							}
-							else // command has been executed on client and update the temp file
-							{
-								string proc_str3 = guiFlag+ " " + IP + " " + CMD + " " + sensor_data + " " + time_issued + " " + time_processed() + "\n";
-								cout << "Processed :" << proc_str3 << endl;
-								tf.open(TFpath, ios::app); 
-								tf << proc_str3;
-								tf.close();
-							}
+							IPmap.erase(IP);
+							tf.open(TFpath, ios::app);//create file and allow appending 
+							string rmv =  guiFlag + " " + IP + " RMV" + " 00000000 " + time_processed() + "\n";
+							tf << rmv;
+							tf.close();
+							break;
+						}
+						n = recv(currentFD,sensor_data,sizeof(sensor_data),MSG_NOSIGNAL);
+						if(n == 0)
+						{
+							perror("Error: Did not Receive GET set");
+							tf.open(TFpath, ios::app); 
+							tf << line;
+							tf.close();
+						}
+						else // command has been executed on client and update the temp file
+						{
+							cout << "Client Sensor Value: " << sensor_data << endl;
+							string proc_str3 = guiFlag+ " " + IP + " " + CMD + " " + sensor_data + " " + time_issued + " " + time_processed() + "\n";
+							cout << "Processed :" << proc_str3 << endl;
+							tf.open(TFpath, ios::app); 
+							tf << proc_str3;
+							tf.close();
 						}
 					}
-					else
+					else if(CMD == "SHD") //Shutdown client
 					{
-						perror("Client not found\n");
-						tf.open(TFpath, ios::app);//create file and allow appending 
-						tf << line << endl;
-						tf.close();
+						if(send(currentFD, CMD.c_str(), sizeof(CMD), MSG_NOSIGNAL) == 0)
+						{
+							IPmap.erase(IP);
+							tf.open(TFpath, ios::app);//create file and allow appending 
+							string rmv =  guiFlag + " " + IP + " SHD" + " 00000000 " + time_processed();
+							tf << rmv;
+							tf.close();
+							close(sockfd);
+						}
+						else
+						{
+							string proc_str4 = guiFlag + " " + IP + " " + CMD + " " + "00000000" + " " + time_issued + " " + time_processed();
+							cout << "Processed :" << proc_str4 << endl;
+							tf.open(TFpath, ios::app); 
+							tf << proc_str4;
+							tf.close();
+						}
+					}
+					else if(CMD == "SUS") //Suspend the Client 
+					{
+						if((send(currentFD, CMD.c_str(), sizeof(CMD), MSG_NOSIGNAL)) == 0)
+						{
+							tf.open(TFpath, ios::app);//create file and allow appending 
+							string rmv =  guiFlag + " " + IP + " SUS" + " 00000000 " + time_processed();
+							tf << rmv;
+							tf.close();
+						}
+						else
+						{
+							string proc_str4 = guiFlag + " " + IP + " " + CMD + " " + "00000000" + " " + time_issued + " " + time_processed();
+							cout << "Processed :" << proc_str4 << endl;
+							tf.open(TFpath, ios::app); 
+							tf << proc_str4;
+							tf.close();
+						}
 					}
 				}
 				else
 				{
-					perror("fd than fdmax\n");
+					perror("Client not found\n");
 					tf.open(TFpath, ios::app);//create file and allow appending 
 					tf << line << endl;
 					tf.close();
 				}
 			}
-			line.clear();
 		}
 		system("cat /home/pi/UNT-NASA/temp.txt > /home/pi/UNT-NASA/workfile.txt ; rm /home/pi/UNT-NASA/temp.txt"); //system call to overwrite workfile with temp file and then remove temp file
 		wf.close();
 		parselock.unlock();
 	}
 	else //could not access temp file
+	{	
 		cout << "Workfile not open\n";
-	cout << "\n\nLEAVING PARSER\n\n";
+	}
+	cout << "\nPARSER DEACTIVATED " << time_processed() << endl;
 }//end of parser
 
 char *get_IP(int fd) //returns IP address of freshly connected client as a character array pointer
@@ -353,7 +369,7 @@ char *get_IP(int fd) //returns IP address of freshly connected client as a chara
 	struct sockaddr_in addr;
 	socklen_t addr_size = sizeof(struct sockaddr_in);
 	int res = getpeername(newfd, (struct sockaddr *)&addr, &addr_size);
-	res++;
+	res++; //only need this for the kernel to know who is coming a-knocking
 	char *client_ip = new char[15];
 	strcpy(client_ip, inet_ntoa(addr.sin_addr));
 	return client_ip;

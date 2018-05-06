@@ -2,30 +2,35 @@
 \label{classDMX512}\index{D\+M\+X512@{D\+M\+X512}}
 
 
+This class handles, checks, and processes the data from the server.  
+
+
+
+
 {\ttfamily \#include $<$dmx512.\+hpp$>$}
 
 \subsection*{Public Member Functions}
 \begin{DoxyCompactItemize}
 \item 
 \hyperlink{classDMX512_a20a4e33b35609a6e1ac54b5812f6704b}{D\+M\+X512} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Constructor. \end{DoxyCompactList}\item 
 void \hyperlink{classDMX512_ad392198ed2202ea28a78764ba1d9c453}{set\+Out\+Of\+Range} (int i)
-\item 
+\begin{DoxyCompactList}\small\item\em We need to raise a flag if the data is invalid. \end{DoxyCompactList}\item 
 int \hyperlink{classDMX512_aebc0e33cf9e594124b3a48f86bd6a95c}{get\+Out\+Of\+Range} ()
-\item 
+\begin{DoxyCompactList}\small\item\em Check that the data was or was not valid. \end{DoxyCompactList}\item 
 void \hyperlink{classDMX512_af7b430f6b8c50ad34773c2f83eaa3db9}{set\+Data} (std\+::string D\+A\+TA)
-\item 
+\begin{DoxyCompactList}\small\item\em This is the only method used in the \hyperlink{namespaceClient}{Client} to transfer the data. \end{DoxyCompactList}\item 
 void \hyperlink{classDMX512_a6ae50e79301e42784934bf853c945b45}{client\+Handler} ()
-\item 
+\begin{DoxyCompactList}\small\item\em This method handles the data received. \end{DoxyCompactList}\item 
 std\+::string \hyperlink{classDMX512_adb00c53d6367188e848fea660d31da28}{send\+O\+LA} ()
-\item 
+\begin{DoxyCompactList}\small\item\em This method sends the data to the L\+ED lights. \end{DoxyCompactList}\item 
 void \hyperlink{classDMX512_a12731a1553eed443a1ebbc6aa7e92864}{check\+O\+LA} ()
-\end{DoxyCompactItemize}
+\begin{DoxyCompactList}\small\item\em This method checks that O\+LA is up. If not, it brings it back up. \end{DoxyCompactList}\end{DoxyCompactItemize}
 \subsection*{Public Attributes}
 \begin{DoxyCompactItemize}
 \item 
 std\+::string \hyperlink{classDMX512_a51cddf44923b3cd81ad448b461315c1d}{A}
-\item 
+\begin{DoxyCompactList}\small\item\em When the data is processed, each variable gets its corresponding value. \end{DoxyCompactList}\item 
 std\+::string \hyperlink{classDMX512_a231a85f100b6b81a202143d858ed26d1}{R}
 \item 
 std\+::string \hyperlink{classDMX512_ae7d4142513f8c3978c93f39bf5c1c599}{G}
@@ -35,7 +40,7 @@ std\+::string \hyperlink{classDMX512_af3306a5965828c8eb012e2d570f7614e}{B}
 std\+::string \hyperlink{classDMX512_a266eca0f1d1836e8122edd5efeae3c84}{O\+LA}
 \item 
 unsigned int \hyperlink{classDMX512_ae450756118a5e3d1173fd564deeb11c3}{Ai}
-\item 
+\begin{DoxyCompactList}\small\item\em When the data has been splited, these variables get the converted H\+EX value. \end{DoxyCompactList}\item 
 unsigned int \hyperlink{classDMX512_aa5ffc37b24d0a79180d13663a5cf8379}{Ri}
 \item 
 unsigned int \hyperlink{classDMX512_afa6a4f81386fd8c8fc86a156fc7018e1}{Gi}
@@ -43,6 +48,11 @@ unsigned int \hyperlink{classDMX512_afa6a4f81386fd8c8fc86a156fc7018e1}{Gi}
 unsigned int \hyperlink{classDMX512_a8f4300cb289c94e708314c1bb3078ca8}{Bi}
 \end{DoxyCompactItemize}
 
+
+\subsection{Detailed Description}
+This class handles, checks, and processes the data from the server. 
+
+By Jorge Cardona \href{mailto:jac0656@unt.edu}{\tt jac0656@unt.\+edu} 
 
 \subsection{Constructor \& Destructor Documentation}
 \index{D\+M\+X512@{D\+M\+X512}!D\+M\+X512@{D\+M\+X512}}
@@ -54,6 +64,14 @@ unsigned int \hyperlink{classDMX512_a8f4300cb289c94e708314c1bb3078ca8}{Bi}
 )}\hypertarget{classDMX512_a20a4e33b35609a6e1ac54b5812f6704b}{}\label{classDMX512_a20a4e33b35609a6e1ac54b5812f6704b}
 
 
+Constructor. 
+
+Constructor. It checks that O\+LA is up and running. If not, it brings it back up.
+
+By Jorge Cardona \href{mailto:jac0656@unt.edu}{\tt jac0656@unt.\+edu}
+
+Compiles with\+: g++ test\+D\+M\+X512.\+c++ dmx512.\+c++ \$(pkg-\/config --cflags --libs libola) -\/std=c++11 -\/\+Wall Here test\+D\+M\+X.\+c++ is a file that includes this library 
+
 \subsection{Member Function Documentation}
 \index{D\+M\+X512@{D\+M\+X512}!check\+O\+LA@{check\+O\+LA}}
 \index{check\+O\+LA@{check\+O\+LA}!D\+M\+X512@{D\+M\+X512}}
@@ -62,35 +80,67 @@ unsigned int \hyperlink{classDMX512_a8f4300cb289c94e708314c1bb3078ca8}{Bi}
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{classDMX512_a12731a1553eed443a1ebbc6aa7e92864}{}\label{classDMX512_a12731a1553eed443a1ebbc6aa7e92864}
-\index{D\+M\+X512@{D\+M\+X512}!client\+Handler@{client\+Handler}}
+
+
+This method checks that O\+LA is up. If not, it brings it back up. 
+
+This method will get called one last time before we attemp to send our values to the L\+ED lights in the event that O\+LA went down while we were processing the data \index{D\+M\+X512@{D\+M\+X512}!client\+Handler@{client\+Handler}}
 \index{client\+Handler@{client\+Handler}!D\+M\+X512@{D\+M\+X512}}
 \subsubsection[{\texorpdfstring{client\+Handler()}{clientHandler()}}]{\setlength{\rightskip}{0pt plus 5cm}void D\+M\+X512\+::client\+Handler (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{classDMX512_a6ae50e79301e42784934bf853c945b45}{}\label{classDMX512_a6ae50e79301e42784934bf853c945b45}
-\index{D\+M\+X512@{D\+M\+X512}!get\+Out\+Of\+Range@{get\+Out\+Of\+Range}}
+
+
+This method handles the data received. 
+
+This method converts the H\+EX value to I\+NT. A similar implementation will be\+: std\+::stringstream ss\+O\+LA; ss\+O\+L\+A.\+clear(); ss\+O\+LA $<$$<$ stoi(A.\+c\+\_\+str(), nullptr, 16) $<$$<$ \char`\"{} \char`\"{} $<$$<$ stoi(R.\+c\+\_\+str(), nullptr, 16) $<$$<$ \char`\"{} \char`\"{} $<$$<$ stoi(G.\+c\+\_\+str(), nullptr, 16) $<$$<$\char`\"{} \char`\"{} $<$$<$ stoi(B.\+c\+\_\+str(), nullptr, 16); ss\+O\+LA $>$$>$ Ai $>$$>$ Ri $>$$>$ Gi $>$$>$ Bi;
+
+OR\+: Ai = stoi(A.\+c\+\_\+str(), nullptr, 16); Ri = stoi(R.\+c\+\_\+str(), nullptr, 16); Gi = stoi(G.\+c\+\_\+str(), nullptr, 16); Bi = stoi(B.\+c\+\_\+str(), nullptr, 16);\index{D\+M\+X512@{D\+M\+X512}!get\+Out\+Of\+Range@{get\+Out\+Of\+Range}}
 \index{get\+Out\+Of\+Range@{get\+Out\+Of\+Range}!D\+M\+X512@{D\+M\+X512}}
 \subsubsection[{\texorpdfstring{get\+Out\+Of\+Range()}{getOutOfRange()}}]{\setlength{\rightskip}{0pt plus 5cm}int D\+M\+X512\+::get\+Out\+Of\+Range (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{classDMX512_aebc0e33cf9e594124b3a48f86bd6a95c}{}\label{classDMX512_aebc0e33cf9e594124b3a48f86bd6a95c}
-\index{D\+M\+X512@{D\+M\+X512}!send\+O\+LA@{send\+O\+LA}}
+
+
+Check that the data was or was not valid. 
+
+This method gets called after the data has been processed. \index{D\+M\+X512@{D\+M\+X512}!send\+O\+LA@{send\+O\+LA}}
 \index{send\+O\+LA@{send\+O\+LA}!D\+M\+X512@{D\+M\+X512}}
 \subsubsection[{\texorpdfstring{send\+O\+L\+A()}{sendOLA()}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string D\+M\+X512\+::send\+O\+LA (
 \begin{DoxyParamCaption}
 {}
 \end{DoxyParamCaption}
 )}\hypertarget{classDMX512_adb00c53d6367188e848fea660d31da28}{}\label{classDMX512_adb00c53d6367188e848fea660d31da28}
-\index{D\+M\+X512@{D\+M\+X512}!set\+Data@{set\+Data}}
+
+
+This method sends the data to the L\+ED lights. 
+
+This is the method that sends the data through the F\+T\+DI U\+SB to the L\+ED Light. Return types\+: 1 O\+LA Success -\/1 O\+LA Failure -\/2 Wrong Data Type -\/3 Empty String This is the univer ID when the universe was created
+
+A Dmx\+Buffer to hold the A\+R\+GB values.
+
+This object makes the connection to the O\+LA server
+
+Because we want to avoid errors, lets check each character by making sure it is a H\+EX value
+
+This is very important. It must match the values given to the L\+ED light using the dip switch selector. Even if eveything, softwarewise, is working, it will be impossible to get correct outout if these dont match N\+O\+TE\+: In this case, the dip switch is set to 1 or \textquotesingle{}listening\textquotesingle{} on chanel 1 aka 0
+
+If this is true, the light got all 0s \index{D\+M\+X512@{D\+M\+X512}!set\+Data@{set\+Data}}
 \index{set\+Data@{set\+Data}!D\+M\+X512@{D\+M\+X512}}
 \subsubsection[{\texorpdfstring{set\+Data(std\+::string D\+A\+T\+A)}{setData(std::string DATA)}}]{\setlength{\rightskip}{0pt plus 5cm}void D\+M\+X512\+::set\+Data (
 \begin{DoxyParamCaption}
 \item[{std\+::string}]{D\+A\+TA}
 \end{DoxyParamCaption}
 )}\hypertarget{classDMX512_af7b430f6b8c50ad34773c2f83eaa3db9}{}\label{classDMX512_af7b430f6b8c50ad34773c2f83eaa3db9}
-\index{D\+M\+X512@{D\+M\+X512}!set\+Out\+Of\+Range@{set\+Out\+Of\+Range}}
+
+
+This is the only method used in the \hyperlink{namespaceClient}{Client} to transfer the data. 
+
+This method splits the string of data received from the server into 4 pieces that will become Alpha or intensity, Red, Gree, and Blue \index{D\+M\+X512@{D\+M\+X512}!set\+Out\+Of\+Range@{set\+Out\+Of\+Range}}
 \index{set\+Out\+Of\+Range@{set\+Out\+Of\+Range}!D\+M\+X512@{D\+M\+X512}}
 \subsubsection[{\texorpdfstring{set\+Out\+Of\+Range(int i)}{setOutOfRange(int i)}}]{\setlength{\rightskip}{0pt plus 5cm}void D\+M\+X512\+::set\+Out\+Of\+Range (
 \begin{DoxyParamCaption}
@@ -99,13 +149,25 @@ unsigned int \hyperlink{classDMX512_a8f4300cb289c94e708314c1bb3078ca8}{Bi}
 )}\hypertarget{classDMX512_ad392198ed2202ea28a78764ba1d9c453}{}\label{classDMX512_ad392198ed2202ea28a78764ba1d9c453}
 
 
+We need to raise a flag if the data is invalid. 
+
+This method acts as flag to ensure we got 8 character. 
+
 \subsection{Member Data Documentation}
 \index{D\+M\+X512@{D\+M\+X512}!A@{A}}
 \index{A@{A}!D\+M\+X512@{D\+M\+X512}}
 \subsubsection[{\texorpdfstring{A}{A}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string D\+M\+X512\+::A}\hypertarget{classDMX512_a51cddf44923b3cd81ad448b461315c1d}{}\label{classDMX512_a51cddf44923b3cd81ad448b461315c1d}
+
+
+When the data is processed, each variable gets its corresponding value. 
+
 \index{D\+M\+X512@{D\+M\+X512}!Ai@{Ai}}
 \index{Ai@{Ai}!D\+M\+X512@{D\+M\+X512}}
 \subsubsection[{\texorpdfstring{Ai}{Ai}}]{\setlength{\rightskip}{0pt plus 5cm}unsigned int D\+M\+X512\+::\+Ai}\hypertarget{classDMX512_ae450756118a5e3d1173fd564deeb11c3}{}\label{classDMX512_ae450756118a5e3d1173fd564deeb11c3}
+
+
+When the data has been splited, these variables get the converted H\+EX value. 
+
 \index{D\+M\+X512@{D\+M\+X512}!B@{B}}
 \index{B@{B}!D\+M\+X512@{D\+M\+X512}}
 \subsubsection[{\texorpdfstring{B}{B}}]{\setlength{\rightskip}{0pt plus 5cm}std\+::string D\+M\+X512\+::B}\hypertarget{classDMX512_af3306a5965828c8eb012e2d570f7614e}{}\label{classDMX512_af3306a5965828c8eb012e2d570f7614e}

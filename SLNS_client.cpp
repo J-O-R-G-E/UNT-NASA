@@ -3,8 +3,12 @@
  * OLA combatability written by Jorge Cardona 2018
  * Sensor Interrupt written by Taylor Shinn 2018
  * Takes input from the SLNS server and commands OLA to change light values.
+<<<<<<< HEAD
  * Sends sensor values back.
  * Dependencies: dmx512.cpp , dmx512.hpp for OLA 
+=======
+ * Sends sensor values back
+>>>>>>> 9517989caff407b7d4d7707a4cae40e99f92b848
  * compile: g++ -g -Wall -std=c++11 SLNS_client.cpp dmx512.cpp $(pkg-config --cflags --libs libola) -o Client
  */
  
@@ -41,8 +45,14 @@
 //Macros
 #define port 9999
 #define buff 128
+<<<<<<< HEAD
 #define HOST "192.168.1.12"  //server address hardcoded
 //#define HOST "192.168.1.10" //for test server
+=======
+//#define HOST "192.168.1.12"
+#define HOST "192.168.1.10"
+
+>>>>>>> 9517989caff407b7d4d7707a4cae40e99f92b848
 using namespace std;
 
 //Fucntion Prototypes
@@ -55,10 +65,15 @@ int sockfd, reuse = 1,file, resp;	//only need the one socket on client side
 struct sockaddr_in sADDR;
 struct hostent *host; 		//this is typically needed for clients to get server information
 char aRGB[50];
+<<<<<<< HEAD
 string message = "SLNS Client ACK SENSOR CLIENT FUCKER";
  
 fstream scf; //sensor calibration file 
 
+=======
+string message = "SLNS Client ACK";
+ 
+>>>>>>> 9517989caff407b7d4d7707a4cae40e99f92b848
 int main()
 {
 	DMX512 ola; // Set up OLA (Jorge Cardona)
@@ -74,6 +89,7 @@ int main()
 	}
 	ioctl(file, I2C_SLAVE, 0x29);
 	signal(SIGALRM, display_RGB);
+<<<<<<< HEAD
 	alarm(5);
 	//system("sudo rm sudo /home/pi/Sensor/sensor_calibration_data.txt ;sudo touch /home/pi/Sensor/sensor_calibration_data.txt ; sudo chmod 755 ~/Sensor/sensor_calibration_data.txt");
 	while(1)
@@ -169,6 +185,83 @@ int main()
 							CMD.clear();
 							DATA.clear();
 					}
+=======
+	alarm(1);
+
+	while(1)
+	{
+		char recv_data[buff];
+		stringstream ss;
+		string CMD, DATA;
+		if((recv(sockfd, recv_data, sizeof(recv_data), 0))== 0) // if connection is broken attempt to reconnect to server
+		{
+			cout << "Server Connection lost, Attempting to Reestablish\n";
+			connect_to_server();
+			cout << "Connection Reestablished\n"; //connect to server success
+			resp = send(sockfd, message.c_str(), sizeof(message),MSG_NOSIGNAL);
+			if ( resp == -1 && errno == EPIPE ) 
+			{
+				close(sockfd);
+				connect_to_client();
+			}
+		}
+		else //process server commands
+		{
+			ss << recv_data;
+			ss >> CMD >> DATA;
+			cout << "Server Says:" << recv_data << endl;
+			if (sizeof(CMD) != 0)
+			{
+				if((CMD == "SET")) //server sending GUI CR values or user defined values
+				{
+					ola.setData(DATA);
+					cout << "Setting lights to:" << DATA << endl;
+					cout << "Send To Server:" << aRGB << endl;
+					resp = send(sockfd,DATA.c_str(),sizeof(DATA),MSG_NOSIGNAL); //Send Response
+					if ( resp == -1 && errno == EPIPE ) 
+					{
+						close(sockfd);
+						connect_to_client();
+					}
+				}
+				else if(CMD == "GET")  //server fetching client sensor values for GUI request
+				{
+					cout << "Send To Server:" << aRGB << endl;
+					resp = send(sockfd,aRGB,sizeof(aRGB),MSG_NOSIGNAL); //Send Sensor data to Server
+					if ( resp == -1 && errno == EPIPE ) 
+					{
+						close(sockfd);
+						connect_to_client();
+					}
+				}
+				else if(CMD == "PNG")  //echo when server checks that client is still connected
+				{
+					cout << "Send To Server:" << CMD << endl;
+					resp = send(sockfd, CMD.c_str(), sizeof(CMD),MSG_NOSIGNAL);
+					if ( resp == -1 && errno == EPIPE ) 
+					{
+						close(sockfd);
+						connect_to_client();
+					}
+				}
+				else if(CMD == "SHD") //In case we want to add a test function, still pending
+				{
+					string shutdown = "0000000"; //set OLA to "00000000" to update DMX driver here BEFORE shutting down client
+					cout << "Shutting down" <<  time_processed() << endl;
+					ola.setData(shutdown);
+					shutdown = ola.sendOLA(); // The returned value is based on success
+					cout << "Setting lights to:" << shutdown << endl;//OLA(DATA);
+					resp = send(sockfd,shutdown.c_str(),sizeof(shutdown),MSG_NOSIGNAL); //Send Response
+					{
+						close(sockfd);
+						connect_to_client();
+					}
+				}
+				memset(recv_data, 0, sizeof(recv_data));
+				ss.clear();
+				CMD.clear();
+				DATA.clear();
+>>>>>>> 9517989caff407b7d4d7707a4cae40e99f92b848
 			}
 	}
 return 0;
