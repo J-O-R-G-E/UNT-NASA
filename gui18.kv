@@ -860,7 +860,7 @@
         
         Label:
             id: 'Screen'
-            font_size: 40.0
+            font_size: 47.0
             size_hint_min_y: None
             shorten: False
             text: "System's Settings"
@@ -876,16 +876,30 @@
 #    # BUTON1 #    # BUTTON2#    # BUTON_N #         #
 ######################################################
     GridLayout:
-        cols: 24
-        spacing: '8dp'
-        size_hint: 1, .2
-        pos_hint: {'center_x': .6, 'center_y': 0.1}
+        cols: 4 #24
+        spacing: '10dp' #'8dp'
+        size_hint: (None, None) #size_hint: 1, .2
+        size: (780, 130) #######NEW
+        x: 8
+        y: 175
+        padding: 8
+        #pos_hint: {'center_x': .6, 'center_y': 0.5} #############.1 
+
+        #New
+        canvas:
+            Color:
+                rgb: (38/255.0), (38/255.0), (38/255.0)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+	
 
 	#BUTON1
         Button:
             text: "Add New Device"
             size_hint:(.2, .1)
-            
+            background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
             #event:ruleIDIfAny.windowManager.listOfIds.classID.functionInsideThatClass
             on_release:root.manager.ids.sett.addPorts()
 
@@ -894,6 +908,8 @@
         Button:        
             text:"Ports Available"
             size_hint: (.2, .1)
+            background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
             on_press: root.manager.ids.sett.getPorts()
 
 
@@ -901,6 +917,8 @@
         Button:
             text: "Test OLA"
             size_hint:(.2, .1)
+            background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
             on_release:
                 #app.color_selector.open()
                 #app.color_mode = 'brush' 
@@ -909,6 +927,8 @@
         Button:
             text:"Previous"
             size_hint: (.2, .1)
+            background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
             on_press: root.manager.current = 'homepage'
          
 	#BUTON_N

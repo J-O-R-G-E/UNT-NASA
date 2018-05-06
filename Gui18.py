@@ -55,32 +55,33 @@ btns_down = []
 lights_down = []
 instances = []
 
-"""Circadian Rhythm values dictionary - VALUES NEED TO BE CHANGED"""
+"""Circadian Rhythm values dictionary"""
 CR = {
-'00':'FF5454FF',
-'01':'FF545454',
-'02':'FF545454',
-'03':'FF545454',
-'04':'FF545454',
-'05':'FF545454',
-'06':'FF7FFFFF',
-'07':'FF7FFFFF',
+'00':'FF001A26',
+'01':'FF001A26',
+'02':'FF001A26',
+'03':'FF001A26',
+'04':'FF001A26',
+'05':'FF001A26',
+'06':'FF053752',
+'07':'FFEE810E',
 '08':'FF7FFFFF',
-'09':'FF7FFFFF',
+'09':'FFE5DE44',
 '10':'FF1E90FF',
 '11':'FF1E90FF',
-'12':'FF87CEFA',
-'13':'FF87CEFA',
-'14':'FF87CEFB',
+'12':'FF3C7596',
+'13':'FF3C7596',
+'14':'FF3C7596',
 '15':'FF87CEFC',
 '16':'FF87CEFA',
-'17':'FF545454',
-'18':'FF545454',
-'19':'FF545454',
-'20':'FF545454',
-'21':'FF545454',
-'22':'FF545454',
-'23':'FF545454'}
+'17':'FFEE810E',
+'18':'FF001A26',
+'19':'FF001A26',
+'20':'FF001A26',
+'21':'FF001A26',
+'22':'FF001A26',
+'23':'FF001A26'}
+
 
 class ScreenManagement(ScreenManager):
 	pass
@@ -1197,6 +1198,7 @@ class Troubleshoot(Screen):
 class Setting(Screen, GridLayout, BoxLayout):
     newDevControl = 1
     portsCount = 0 #Should be Plug-And-Play Value
+    deviceCount = 1 # The router
     
     def __init__(self, **kwargs):
         super(Setting, self).__init__(**kwargs)
@@ -1247,7 +1249,9 @@ class Setting(Screen, GridLayout, BoxLayout):
             conn.commit()
   
             print("User Entered: {}".format(self.uInput.text))
-            
+
+            Setting.deviceCount +=1
+
         else:
             global newDeviceControl
             self.newDevControl = 0
@@ -1258,24 +1262,51 @@ class Setting(Screen, GridLayout, BoxLayout):
     """This method gets the port count from the DB and displays it to the user"""    
     def getPorts(self):
 
+        ## To show on the Screen
         global portsCount
         for row in curs.execute("SELECT * FROM Ports"):
 		self.portsCount = row[0]                       
 
-        ##############################################################
-        # Taylor, here is where I need to get your Plug And Play value
-        # so I can substract it from the total ports count.
-        # This is how I will be able to show the ports available
-        #
-        # e.g.: self.portsCount -= plugAnPlaCount      
-        #############################################################
+        self.portsNote = "There are " + str(self.portsCount) + " Ports Available!\n"
+
         
+        ## To show on the Screen
+        self.usedPorts=1
+        self.note = None
+        for row in curs.execute("SELECT * FROM Lights"):
+		#self.portsCount = row[0]                       
+                self.usedPorts +=1
+        
+        if(self.usedPorts == 1):
+                self.note = "There Is  1 Port Used\n"
+        else:
+                self.note = "There Are " + str(self.usedPorts) + " Ports Used\n"
+
+        ## Device Counter
+        self.deviceNote = None
+        if(Setting.deviceCount == 1):
+                self.deviceNote = "There Is " + str(Setting.deviceCount) + " Device\n"
+        else:
+                self.deviceNote = "There Are " + str(Setting.deviceCount) + " Devices\n"
+
+
+        ## Scalability:
+        self.scale = None
+        if( (int(self.portsCount) - int(self.usedPorts)) == 0 ):
+                self.scale = "\nNote:The Network Can Not Be Scaled\n"
+        else:
+                self.scale = "\nNote: The Network Can Be Scaled\n"
+        
+        ## Make a box for our text info
         self.box = BoxLayout(orientation = 'vertical', padding = (5))
-        self.myLabel = Label(text = ("There are " + str(self.portsCount) + " Ports Available!"), font_size='25sp')
+        self.myLabel = Label(
+                     text = (self.portsNote + self.note + self.deviceNote + self.scale),
+                     font_size='25sp')
+        
         self.box.add_widget(self.myLabel)
         #self.box.add_widget(Label(text = ("There are " + str(self.portsCount) + " Ports Available!"), font_size='25sp'))
 
-        self.popup = Popup(title = 'Open Ports',
+        self.popup = Popup(title = 'Network, Devices, And Ports',
                         title_size = (35), title_align = 'center',
                         content = self.box, size = (25,25), auto_dismiss=True)
         
