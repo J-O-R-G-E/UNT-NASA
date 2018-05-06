@@ -3,9 +3,9 @@
 
 CC = g++
 
-CFLAGS = -Wall -g -std=c++11 
+CFLAGS = -Wall -g -std=c++11
 
-#$(pkg-config --cflags --libs libola)	
+#$(pkg-config --cflags --libs libola)
 OLA_FLAGS = -pthread -I/usr/local/include -L/usr/local/lib -lola -lolacommon -lprotobuf -pthread -lpthread
 
 TARGET1 = Client
