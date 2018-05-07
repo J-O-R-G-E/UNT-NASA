@@ -1,5 +1,5 @@
 #!/bin/bash
-1;2802;0c
+
 # By Jorge Cardona
 # jac0656@unt.edu
 
