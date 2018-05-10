@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# By Jorge Cardona
+# jac0656@unt.edu
+
+# ISSUE: if OLA gets killed the universe created will change.
+# e.g.: kill -9 $(pidof olad)
+# Because of that, We need to change the config files in 
+# /home/pi/.ola/ instead of /etc/ola/
+# thie issue lead to two different configurations.
+# That is what this patch fixes.
+
+
 # Lets configure our files for the FTDI USB
 sudo sed -i -e 's/ttyUSB/ttyUSB*/g' /home/pi/.ola/ola-usbserial.conf
 sudo sed -i -e 's/ttyU/ttyU*/g'     /home/pi/.ola/ola-usbserial.conf
