@@ -65,12 +65,12 @@ string message = "SLNS Client Confirmation message";
 int main()
 {
 	//needed for sensor calibration data
-	system("sudo rm ~/UNT-NASA/sensor_calibration_data.txt ; touch ~/UNT-NASA/sensor_calibration_data.txt ; sudo chmod 755 ~/UNT-NASA/sensor_calibration_data.txt");
+	//system("sudo rm ~/UNT-NASA/sensor_calibration_data.txt ; touch ~/UNT-NASA/sensor_calibration_data.txt ; sudo chmod 755 ~/UNT-NASA/sensor_calibration_data.txt");
 
 	DMX512 ola; // Set up OLA (Jorge Cardona)
 	connect_to_server();
 	cout << "Connection made\n"; //connect to server success
-	send(sockfd, message.c_str(), message.size(),MSG_NOSIGNAL); //send ack to server
+	send(sockfd, message.c_str(), message.size(), MSG_DONTWAIT|MSG_NOSIGNAL); //send ack to server
 
 	const char *bus = "/dev/i2c-1"; //set up sensor interupt (Taylor Shinn)
 	if ((file = open(bus, O_RDWR)) < 0)
@@ -88,13 +88,13 @@ int main()
 		char recv_data[buff];
 		stringstream ss;
 		string CMD, DATA;
-		if((recv(sockfd, recv_data, sizeof(recv_data), 0)) == 0) // if connection is broken attempt to reconnect to server
+		if((recv(sockfd, recv_data, sizeof(recv_data), MSG_NOSIGNAL)) == 0) // if connection is broken attempt to reconnect to server
 		{
 			cout << "Server Connection lost, Attempting to Reestablish\n";
 			connect_to_server();
 			cout << "Connection Reestablished\n"; //connect to server success
-			resp = send(sockfd, message.c_str(), message.size(),MSG_NOSIGNAL); //fix this
-			if ( resp == -1 && errno == EPIPE )
+			resp = send(sockfd, message.c_str(), message.size(), MSG_DONTWAIT|MSG_NOSIGNAL); //send Client connection message to Server
+			if ( resp <= 0 && errno == EPIPE )
 			{
 				close(sockfd);
 				connect_to_server();
@@ -109,15 +109,17 @@ int main()
 			{
 				if((CMD == "SET")) //server sending GUI CR values or user defined values
 				{
-					ola.setData(DATA); //SET THE DAMN DATA
-					ola.sendOLA();
+					string echo;
+					ola.setData(DATA); //SET THE DATA
+					echo = ola.sendOLA();
 					cout << "Setting lights to:" << DATA << endl;
 					//fstream scf;
 					//scf.open( scfpath, ios::app);
 					//string sensor_data = "OLA setting " + DATA + " RAW data " + aRGB + "\n";
 					//scf << sensor_data; //gather Calibration test data
 					//scf.close();
-					resp = send(sockfd,DATA.c_str(),sizeof(DATA),MSG_NOSIGNAL); //Send Response
+					cout << "Send to server " << echo << endl; //echo back RGB setting
+					resp = send(sockfd, echo.c_str(),sizeof(echo), MSG_DONTWAIT|MSG_NOSIGNAL); //Send Response
 					if ( resp == -1 && errno == EPIPE )
 					{
 						close(sockfd);
@@ -127,8 +129,8 @@ int main()
 				else if(CMD == "GET")  //server fetching client sensor values for GUI request
 				{
 					cout << "Send To Server:" << aRGB << endl;
-					resp = send(sockfd,aRGB,sizeof(aRGB),MSG_NOSIGNAL); //Send Sensor data to Server
-					if ( resp == -1 && errno == EPIPE )
+					resp = send(sockfd, aRGB, sizeof(aRGB), MSG_DONTWAIT|MSG_NOSIGNAL); //Send Sensor data to Server
+					if ( resp <= 0 && errno == EPIPE )
 					{
 						close(sockfd);
 						connect_to_server();
@@ -137,8 +139,8 @@ int main()
 				else if(CMD == "PNG")  //echo when server checks that client is still connected
 				{
 					cout << "Pinging server\n";
-					resp = send(sockfd, CMD.c_str(), sizeof(CMD),MSG_NOSIGNAL);
-					if ( resp == -1 && errno == EPIPE )
+					resp = send(sockfd, CMD.c_str(), sizeof(CMD), MSG_DONTWAIT|MSG_NOSIGNAL);
+					if ( resp <= 0 && errno == EPIPE )
 					{
 						close(sockfd);
 						connect_to_server();
@@ -150,8 +152,8 @@ int main()
 					cout << "Shutting down\n";
 					ola.setData(shutdown);
 					shutdown = ola.sendOLA(); // The returned value is based on success
-					resp = send(sockfd,shutdown.c_str(),sizeof(shutdown),MSG_NOSIGNAL); //Send Response
-					if ( resp == -1 && errno == EPIPE )
+					resp = send(sockfd, shutdown.c_str(),sizeof(shutdown), MSG_DONTWAIT|MSG_NOSIGNAL); //Send Response
+					if ( resp <= 0 && errno == EPIPE )
 					{
 						close(sockfd);
 						connect_to_server();
@@ -165,8 +167,8 @@ int main()
 					cout << "Sleep Mode\n";
 					ola.setData(shutdown);
 					shutdown = ola.sendOLA(); // The returned value is based on success
-					resp = send(sockfd,shutdown.c_str(),sizeof(shutdown),MSG_NOSIGNAL); //Send Response
-					if ( resp == -1 && errno == EPIPE )
+					resp = send(sockfd, shutdown.c_str(),sizeof(shutdown), MSG_DONTWAIT|MSG_NOSIGNAL); //Send Response
+					if ( resp <= 0 && errno == EPIPE )
 					{
 						close(sockfd);
 						connect_to_server();
@@ -184,7 +186,7 @@ return 0;
 
 int connect_to_server()
 {
-	if((sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
+	if((sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) //TCP socket created
 	{
 		perror("Error: Socket Not created");
 		exit(EXIT_FAILURE);
