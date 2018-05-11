@@ -296,3 +296,16 @@ subnet 192.168.1.0 netmask 255.255.255.0 {
 sudo update-rc.d isc-dhcp-server start
 # To run it: 
 sudo service isc-dhcp-server start
+
+
+# Found an issue at boot up.
+# eth0 is getting the staic IP ADDRESS assigned to it.
+# It requires to manually assigne it AND THEN start
+# DHCP Server.
+
+ifconfig eht0 192.168.1.12 
+sleep 1
+sudo service isc-dhcp-server start
+
+
+
