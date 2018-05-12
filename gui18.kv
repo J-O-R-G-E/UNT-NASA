@@ -14,6 +14,8 @@
     # Color picker screen#FFFFFF
     SetValues:
 		id: set_values
+	SetValues2:
+		id: set_values2
     Methods:
 		id: method
 	#Settings screen
@@ -450,23 +452,28 @@
 			
 		
 		Button:
-			text: 'previous'
-			#on_press: root.manager.current = 'view_room'
-			on_press: root.previous_screen()
-			background_color: [0, (218/255.0),(18/255.0),1]
-			size_hint: (None, None)
-			size: (150, 40)
-			x: 550
-			y: 290
+		    text: 'previous'
+		    on_press: root.previous_screen()
+	        #background_color: [0, (218/255.0),(18/255.0),1]
+		    background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+	        size_hint: (None, None)
+		    size: (150, 60)
+		    spacing: 5
+		    x: 550
+		    y: 270
 
 		Button:
 			text: 'home'
 			on_press: root.manager.current = 'homepage'
-			background_color: [0, (218/255.0),(18/255.0),1]
+			#background_color: [0, (218/255.0),(18/255.0),1]
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			size_hint: (None, None)
-			size: (150,40)
+			size: (150,60)
+			spacing: 5
 			x: 550
-			y: 250
+			y: 200
             
 <SetValues>:
 	name: 'set_values'
@@ -488,27 +495,81 @@
 		size: (250,480)
 		x:500
 		y:0
+        spacing: 2
+        padding: 2
 		
 		Button:
 			text: 'Set'
 			size_hint: (None, None)
-			size: (100,40)
+			size: (100,65)
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.set_selection()
 			#on_release: root.manager.current = 'view_room'
 					
 		Button:
 			text: 'Previous'
 			size_hint: (None, None)
-			size: (100, 40)
+			size: (100, 65)
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.manager.current = 'view_room'
 		
 		Button:
 			text: 'Home'
 			size_hint: (None, None)
-			size: (100, 40)
+			size: (100, 65)
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.manager.current = 'homepage'
+			
+<SetValues2>:
+	name: 'set_values2'
+	canvas.before:
+		Rectangle:
+			pos: self.pos
+			size: self.size
+			source: 'stars.png'
+	on_enter: root.build()
 
-            
+	BoxLayout:
+		id: setbox
+		size_hint: (None,None)
+		size: (550,480)
+			
+	BoxLayout:
+		id: setbox2
+		size_hint: (None,None)
+		size: (250,480)
+		x:500
+		y:0
+        spacing: 2
+        padding: 2
+		
+		Button:
+			text: 'Set'
+			size_hint: (None, None)
+			size: (100,65)
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+			on_press: root.set_selection()
+					
+		Button:
+			text: 'Previous'
+			size_hint: (None, None)
+			size: (100, 65)
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+			on_press: root.manager.current = 'view_lights'
+		
+		Button:
+			text: 'Home'
+			size_hint: (None, None)
+			size: (100, 65)
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+			on_press: root.manager.current = 'homepage'
+           
 <Set>:
     name: 'setting'
     BoxLayout:
@@ -520,6 +581,9 @@
             pos_hint: {'x': 0.7, 'y':0.08}
             size_hint:(.2,.2)
             text: "Previous"
+	        background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+
             #go back to previous screen
             on_press: root.manager.current = 'homepage'
             
@@ -614,23 +678,30 @@
                 pos: self.pos
                 
 		Button:
-			text: 'Health Status'
+			text: 'Health \n Status'
 			background_normal: ''
 			#background_color: [0, (218/255.0),(18/255.0),1]
 			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+			#on_release: root.clear_selection()
 			on_release: root.health_check_selected()
 			on_press: root.get_previous_screen()
 			
 		Button:
-			text: 'Set Values'
+			text: 'Set \n Values'
 			#background_color: [0, (218/255.0),(18/255.0),1]
 			background_normal: ''
 			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.check_lights_selected()
 			#on_release: root.manager.current = 'set_values'
-		
+
+		Button:
+			text: "CR Default"
+            on_press: root.CR_default()
+            background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+
 		Button: 
-			text: 'Remove Light'
+			text: 'Remove \n Light'
 			#size_hint:(None,None)
 			#size:(140,60)
 			background_normal: ''
@@ -767,19 +838,23 @@
 		orientation: 'horizontal'
 		size_hint: (None,None)
 		size: (800, 125)
+        spacing: 2
+        padding: 2
 		x: 0 
 		y: 0
 		
 		Button:
 			text: "Remove light(s) \n from room"
 			halign: 'center'
-			background_color: [0, (218/255.0),(18/255.0),1]
+            background_normal: ''
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.unassign_lights()
 		
 		Button:
 			text: "Remove light(s)\n from database"
 			halign: 'center'
-			background_color: [0, (218/255.0),(18/255.0),1]
+            background_normal: ''
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.remove_from_database()
 		
 		Button:
@@ -788,7 +863,8 @@
 			#on_release: root.manager.current = 'health'
 			on_release: root.check_selected()
 			#RGBA
-			background_color: [0, (218/255.0),(18/255.0),1]
+            background_normal: ''
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.get_previous_screen()
 			
 		
@@ -797,21 +873,32 @@
 			text: "Set Values"
 			on_press: root.manager.current = 'set_values'
 			#RGBA
-			background_color: [0, (218/255.0),(18/255.0),1]
+            background_normal: ''
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+		
+
+
+		Button: 
+			text: "CR Default"
+			on_press: root.CR_default()
+            background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+		
 		
 		Button: 
 			text: "Previous"
 			on_release: root.manager.current = 'view_lights'
 			#clears background back to white
-			#background_normal: ''
+			background_normal: ''
 			#RGBA
-			background_color: [0, (218/255.0),(18/255.0),1]
+		    background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.clear_room_name()
 			
 		Button:
 			text: "Home"
 			on_release: root.manager.current = 'homepage'
-			background_color: [0, (218/255.0),(18/255.0),1]
+            background_normal: ''
+			background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.clear_room_name()
 
 <Blank>:
@@ -834,10 +921,15 @@
 	
 		Button:
 			text: 'Previous'
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
 			on_press: root.manager.current = 'homepage'
 			
 		Button:
 			text: 'Run Troubleshoot'
+			background_normal: ''
+            background_color: [(14/255.0), (47/255.0),(88/255.0),1]
+
 			on_press: root.manager.current = 'homepage'
 
 

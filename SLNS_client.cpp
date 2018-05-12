@@ -41,9 +41,8 @@
 //Macros
 #define port 9999
 #define buff 128
-//#define HOST "192.168.1.10" //for test server
 #define HOST "192.168.1.12"  //server address hardcoded
-#define ALARM 5
+#define ALARM 3
 
 using namespace std;
 
@@ -56,7 +55,7 @@ void display_RGB(int);
 int sockfd, reuse = 1,file, resp;	//only need the one socket on client side
 struct sockaddr_in sADDR;
 struct hostent *host; 		//this is typically needed for clients to get server information
-char aRGB[50];
+char aRGB[9];
 string message = "SLNS Client Confirmation message";
 
 //#define scfpath "/home/pi/UNT-NASA/sensor_calibration_data.txt"
@@ -65,12 +64,12 @@ string message = "SLNS Client Confirmation message";
 int main()
 {
 	//needed for sensor calibration data
-	//system("sudo rm ~/UNT-NASA/sensor_calibration_data.txt ; touch ~/UNT-NASA/sensor_calibration_data.txt ; sudo chmod 755 ~/UNT-NASA/sensor_calibration_data.txt");
+	system("sudo rm ~/UNT-NASA/sensor_calibration_data.txt ; touch ~/UNT-NASA/sensor_calibration_data.txt ; sudo chmod 755 ~/UNT-NASA/sensor_calibration_data.txt");
 
 	DMX512 ola; // Set up OLA (Jorge Cardona)
 	connect_to_server();
 	cout << "Connection made\n"; //connect to server success
-	send(sockfd, message.c_str(), message.size(), MSG_DONTWAIT|MSG_NOSIGNAL); //send ack to server
+	send(sockfd, message.c_str(), message.size(),MSG_NOSIGNAL); //send ack to server
 
 	const char *bus = "/dev/i2c-1"; //set up sensor interupt (Taylor Shinn)
 	if ((file = open(bus, O_RDWR)) < 0)
@@ -88,13 +87,13 @@ int main()
 		char recv_data[buff];
 		stringstream ss;
 		string CMD, DATA;
-		if((recv(sockfd, recv_data, sizeof(recv_data), MSG_NOSIGNAL)) == 0) // if connection is broken attempt to reconnect to server
+		if((recv(sockfd, recv_data, sizeof(recv_data), 0)) == 0) // if connection is broken attempt to reconnect to server
 		{
 			cout << "Server Connection lost, Attempting to Reestablish\n";
 			connect_to_server();
 			cout << "Connection Reestablished\n"; //connect to server success
-			resp = send(sockfd, message.c_str(), message.size(), MSG_DONTWAIT|MSG_NOSIGNAL); //send Client connection message to Server
-			if ( resp <= 0 && errno == EPIPE )
+			resp = send(sockfd, message.c_str(), message.size(),MSG_NOSIGNAL); //fix this
+			if ( resp == -1 && errno == EPIPE )
 			{
 				close(sockfd);
 				connect_to_server();
@@ -109,17 +108,15 @@ int main()
 			{
 				if((CMD == "SET")) //server sending GUI CR values or user defined values
 				{
-					string echo;
 					ola.setData(DATA); //SET THE DATA
-					echo = ola.sendOLA();
+					ola.sendOLA();
 					cout << "Setting lights to:" << DATA << endl;
 					//fstream scf;
 					//scf.open( scfpath, ios::app);
 					//string sensor_data = "OLA setting " + DATA + " RAW data " + aRGB + "\n";
 					//scf << sensor_data; //gather Calibration test data
 					//scf.close();
-					cout << "Send to server " << echo << endl; //echo back RGB setting
-					resp = send(sockfd, echo.c_str(),sizeof(echo), MSG_DONTWAIT|MSG_NOSIGNAL); //Send Response
+					resp = send(sockfd,DATA.c_str(),sizeof(DATA),MSG_NOSIGNAL); //Send Response
 					if ( resp == -1 && errno == EPIPE )
 					{
 						close(sockfd);
@@ -129,8 +126,8 @@ int main()
 				else if(CMD == "GET")  //server fetching client sensor values for GUI request
 				{
 					cout << "Send To Server:" << aRGB << endl;
-					resp = send(sockfd, aRGB, sizeof(aRGB), MSG_DONTWAIT|MSG_NOSIGNAL); //Send Sensor data to Server
-					if ( resp <= 0 && errno == EPIPE )
+					resp = send(sockfd,aRGB,sizeof(aRGB),MSG_NOSIGNAL); //Send Sensor data to Server
+					if ( resp == -1 && errno == EPIPE )
 					{
 						close(sockfd);
 						connect_to_server();
@@ -139,8 +136,8 @@ int main()
 				else if(CMD == "PNG")  //echo when server checks that client is still connected
 				{
 					cout << "Pinging server\n";
-					resp = send(sockfd, CMD.c_str(), sizeof(CMD), MSG_DONTWAIT|MSG_NOSIGNAL);
-					if ( resp <= 0 && errno == EPIPE )
+					resp = send(sockfd, CMD.c_str(), sizeof(CMD),MSG_NOSIGNAL);
+					if ( resp == -1 && errno == EPIPE )
 					{
 						close(sockfd);
 						connect_to_server();
@@ -152,8 +149,8 @@ int main()
 					cout << "Shutting down\n";
 					ola.setData(shutdown);
 					shutdown = ola.sendOLA(); // The returned value is based on success
-					resp = send(sockfd, shutdown.c_str(),sizeof(shutdown), MSG_DONTWAIT|MSG_NOSIGNAL); //Send Response
-					if ( resp <= 0 && errno == EPIPE )
+					resp = send(sockfd,shutdown.c_str(),sizeof(shutdown),MSG_NOSIGNAL); //Send Response
+					if ( resp == -1 && errno == EPIPE )
 					{
 						close(sockfd);
 						connect_to_server();
@@ -167,8 +164,8 @@ int main()
 					cout << "Sleep Mode\n";
 					ola.setData(shutdown);
 					shutdown = ola.sendOLA(); // The returned value is based on success
-					resp = send(sockfd, shutdown.c_str(),sizeof(shutdown), MSG_DONTWAIT|MSG_NOSIGNAL); //Send Response
-					if ( resp <= 0 && errno == EPIPE )
+					resp = send(sockfd,shutdown.c_str(),sizeof(shutdown),MSG_NOSIGNAL); //Send Response
+					if ( resp == -1 && errno == EPIPE )
 					{
 						close(sockfd);
 						connect_to_server();
@@ -186,7 +183,7 @@ return 0;
 
 int connect_to_server()
 {
-	if((sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) //TCP socket created
+	if((sockfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0)
 	{
 		perror("Error: Socket Not created");
 		exit(EXIT_FAILURE);
@@ -231,6 +228,7 @@ string time_processed() //return time in format YYYY/MM/DD_HH:MM:SS:milliseconds
 	return buf;
 }
 
+//Sensor Code written by Taylor Shinn
 void display_RGB(int s) //gets sensor data every 3 seconds and stores into aRGB variable
 {
 	// Select enable register(0x80)
@@ -262,6 +260,7 @@ void display_RGB(int s) //gets sensor data every 3 seconds and stores into aRGB 
 	if(read(file, data, 8) != 8)
 	{
 		cout << "Error: 404 Sensor not found\n";
+		sprintf(aRGB, "00000000");
 	}
 	else
 	{
@@ -270,7 +269,7 @@ void display_RGB(int s) //gets sensor data every 3 seconds and stores into aRGB 
 		int RRaw = ((data[3]<<8)+ data[2]);
 		int GRaw = ((data[5]<<8)+ data[4]);
 		int BRaw = ((data[7]<<8)+ data[6]);
-		//RGB sensor calibration functions
+		//RGB sensor calibration functions 
 		int RCorrected = (((RRaw - 3183)*205)/25569)+25;
 		int GCorrected = (((GRaw - 2820)*205)/24918)+25;
 		int BCorrected = (((BRaw - 4050)*205)/37254)+25;
@@ -282,10 +281,12 @@ void display_RGB(int s) //gets sensor data every 3 seconds and stores into aRGB 
 		{
 			luminance = 0;
 		}
-		//sprintf(aRGB, "%d %d %d %d", luminance, RCorrected, GCorrected, BCorrected);
 		sprintf(aRGB, "%02X%02X%02X%02X", luminance, RCorrected, GCorrected, BCorrected);
-		cout << aRGB << endl;
+
 	}
 	alarm(ALARM);
 	signal(SIGALRM, display_RGB);
 }
+
+
+

@@ -3,7 +3,7 @@
 	Course: CSCE 4915
 	Faculty Advisor: Robin P.
 	File Description: This python application displays the menu functions for the SLNS. 
-	It issues commands for the server and writes them to workfile.txt, and processes 
+	It issues commands for the server to process and writes them to workfile.txt, and processes 
 	commands from the server by reading workfile.txt. Kivy is an open source,
 	cross-platform python framework that is used in this application. This file and
 	the .kv should be be stored under the same directory.
@@ -44,18 +44,21 @@ from kivy.clock import Clock
 
 """ Establish database connection """
 conn = sqlite3.connect('/home/pi/UNT-NASA/2b.db',check_same_thread=False) 
-#conn = sqlite3.connect('/home/pi/2b.db',check_same_thread=False) 
+
 curs = conn.cursor()
 curs2 = conn.cursor()
+curs3 = conn.cursor()
+curs4 = conn.cursor()
 
 workfile_path = "/home/pi/UNT-NASA/workfile.txt"
-#workfile_path = "/home/pi/kivy/examples/workfile.txt"
 
 btns_down = []
 lights_down = []
 instances = []
 
-"""Circadian Rhythm values dictionary"""
+
+
+""" ----------- Jack's Circadian Rhythm Values dictionary --------------"""
 CR = {
 '00':'FF001A26',
 '01':'FF001A26',
@@ -121,7 +124,7 @@ class Methods(Screen):
 		except:
 			pass
 			
-	#################################################################################################################################
+	
 
 	#Updates all lights in database to current CR values based on time 
 	def update_lights(self, arg1):
@@ -138,33 +141,34 @@ class Methods(Screen):
 				pass
 			
 			try:
-				curs2.execute("SELECT IP_address FROM Lights WHERE SendCR='true'")
+				curs2.execute("SELECT IP_address FROM Lights WHERE SendCR='True'")
+				
+				addresses = curs2.fetchall()
+				addr =[r[0] for r in addresses]
+			
+				for a in addr:
+					for key in CR.keys():
+						if str(hour) == key:
+							data = CR[key]
+							(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
+							dt = "%s.%03d" % (dt, int(micro) / 1000)
+							data = CR[key] #should grab value from CR dictionary
+							cmd = "S" + " " + a + " " + "SET" + " " + data + " " + dt
+							
+							#write commands into workfile
+							with open("workfile.txt", "a") as workfile:
+								workfile.write(cmd)
+								workfile.write('\n')
+							workfile.close()
+						else:
+							pass
+							
+				h = Health()
+				h.send_get_cmd()
 			except:
 				print "error in update lights - ip address may not exist in database"
-			addresses = curs2.fetchall()
-			addr =[r[0] for r in addresses]
 			
-			for a in addr:
-				for key in CR.keys():
-					if str(hour) == key:
-						data = CR[key]
-						(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
-						dt = "%s.%03d" % (dt, int(micro) / 1000)
-						data = CR[key] #should grab value from CR dictionary
-						cmd = "S" + " " + a + " " + "SET" + " " + data + " " + dt
-						
-						#write commands into workfile
-						with open("workfile.txt", "a") as workfile:
-							workfile.write(cmd)
-							workfile.write('\n')
-						workfile.close()
-					else:
-						pass
-						
-						
-			t2 = threading.Timer(50.0, self.update_lights)
-			t2.daemon=True
-			t2.start()
+
 		
 		except TypeError:
 			print "type error in update_lights"
@@ -180,7 +184,7 @@ class Methods(Screen):
 			dt = "%s.%03d" % (dt, int(micro) / 1000)
 			if str(time.hour) == key:
 				data = CR[key] #should grab value from CR dictionary
-				cmd = "S" + " " + ip_addr + " " + "SET" + " " + data + " " + dt
+				cmd = "S" + " " + ip_addr + " " + "SET" + " " + data + " " + "[" + dt + "]"
 				
 		#write command to workfile
 		with open("workfile.txt", "a") as workfile:
@@ -191,7 +195,7 @@ class Methods(Screen):
 			
 	#This method changes 'G' to 'P' when command has been processed 
 	def replace_line(self, file_name, line_no, text):
-		print "replacing lines"
+		#print "replacing lines"
 		lines = open(file_name, 'r+').readlines()
 		lines[line_no] = text + '\n'
 		out = open(file_name, 'w')
@@ -201,7 +205,7 @@ class Methods(Screen):
 				
 	"""This method parses the commands on the workfile"""		
 	def cmdparser(self, arg1):
-		print('cmdparser running')
+		print('parser running')
 		
 		try:
 			if(self.cmd_processed == False):
@@ -210,7 +214,6 @@ class Methods(Screen):
 				myfile = dfile.readlines()
 				line_num = -1 #to get line number, starts at 0
 				for line in myfile:
-					print(line)
 					if line == '\n':
 						pass
 					else:
@@ -222,10 +225,11 @@ class Methods(Screen):
 								#Store IP_addr, function and data, if available
 								IP_addr = parts[1]
 								func = parts[2]
+								#print(func)
 								data = parts[3]
+								#print(data)
 
 								if(self.process_cmd == False):
-									
 									self.cmd_processed = True
 									self.process_cmd = True
 									global ip
@@ -236,11 +240,22 @@ class Methods(Screen):
 									
 									if func == 'ADD':
 										#check if ip_addr exists in database
-										curs.execute("SELECT IP_address FROM Lights WHERE IP_address = '" + ip + "'")
-										if(len(curs.fetchall()) != 0):
+										curs4.execute("SELECT COUNT(IP_address) FROM Lights WHERE IP_address = '" + ip + "'")
+										result = curs4.fetchone()
+										r = result[0]
+										
+										if(r != 0):
 											print("Exists in database")
+											self.cmd_processed = False
+											self.process_cmd = False
+											print "replacing line"
+											(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
+											dt = "%s.%03d" % (dt, int(micro) / 1000)
+											new_curr = 'P '+ ' '.join(curr_line.split()[1:]) + " " + dt
+											self.replace_line(workfile_path, line_num, new_curr)
 											pass
 										else:
+											"""---Taylor's Popup ---"""
 											print "IP address does not exist in database"
 											box = BoxLayout(orientation = 'vertical', padding = (8))
 											box.add_widget(Label(text='Enter a name for {}:'.format(ip), font_size=30, size_hint=(1,.7)))
@@ -254,14 +269,14 @@ class Methods(Screen):
 											print "updating light"
 											#self.update_new_light(ip)
 											print "replacing line"
-											(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+											(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
 											dt = "%s.%03d" % (dt, int(micro) / 1000)
 											new_curr = 'P '+ ' '.join(curr_line.split()[1:]) + " " + dt
 											try:
 												self.replace_line(workfile_path, line_num, new_curr)
-												#self.process_cmd = False
 											except:
 												print "error in replacing"
+												pass
 									
 									elif func == 'RMV':
 										s = LightsView()
@@ -269,41 +284,44 @@ class Methods(Screen):
 										self.cmd_processed = False
 										self.process_cmd = False
 										print "replacing line"
-										(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+										(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
 										dt = "%s.%03d" % (dt, int(micro) / 1000)
 										new_curr = 'P '+ ' '.join(curr_line.split()[1:]) + " " + dt
 										try:
 											self.replace_line(workfile_path, line_num, new_curr)
-											#self.process_cmd = False
 										except:
 											print "error in replacing"
+											pass
 									
 									elif func == 'GET':
-										#h = Health()
-										#h.retrieveSensor(ip)
 										#store data into database
-										print "updating data on database"
+										print("This is what i'm receiving from server for sensor data %s" % d)
 										curs2.execute("UPDATE Lights SET Data='" + d + "' WHERE IP_address='" + ip + "'")
 										conn.commit()
 										self.cmd_processed = False
 										self.process_cmd = False
-										try:
-											self.replace_line(workfile_path, line_num, new_curr)
-										except:
-											print "error in replacing"
-
+										(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
+										dt = "%s.%03d" % (dt, int(micro) / 1000)
+										new_curr = 'P '+ ' '.join(curr_line.split()[1:]) + " " + dt
+										self.replace_line(workfile_path, line_num, new_curr)
 									else:
-										print "fourth if"
+										print "third if"
+										self.cmd_processed = False
+										self.process_cmd = False
+										(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
+										dt = "%s.%03d" % (dt, int(micro) / 1000)
+										new_curr = 'P '+ ' '.join(curr_line.split()[1:]) + " " + dt
+										self.replace_line(workfile_path, line_num, new_curr)
 										pass	
 								else:
-									print "third if"
+									print "second if"
 									pass
 								
 							else:
-								print "second if"
 								pass
 								
 						except IndexError:
+							print "Index Error?"
 							pass
 								
 										
@@ -337,8 +355,10 @@ class Health(Screen):
 	B = NumericProperty()
 	R = NumericProperty()
 	G = NumericProperty()
-	
+	count = 0
+	press_count = 0
 	screen_to_switch = None
+	rflag = False
 	
 	name_of_light = " "
 	
@@ -351,82 +371,126 @@ class Health(Screen):
 		print("replaced name of light")
 
         """ This method checks the status of all lights in the DB"""
-	def check_status_ALL(self):
-		data = '00000000'
-		count = 0
+	def check_health_status(self, arg1):
 		
-		for row in curs.execute("SELECT IP_address FROM Lights"):
-			count = count + 1
-			(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
-			dt = "%s.%03d" % (dt, int(micro) / 1000)
-			cmd = "S" + " " + row[0] +  " " + "GET" + " " + data + " " + dt
-		
-			with open("workfile.txt","a") as document:
-				document.write(cmd)
-				document.write('\n')
-			document.close()
-			
-		time.sleep(1)
-		
-		for c in range(count):
-			print "checking health status"
-			ob = Methods()
-			ob.cmdparser()
+		try:
+			if(self.rflag == False):
+				self.rflag = True
+````				self.date = datetime.now().strftime('%Y-%m-%d')
 
-		t3 = threading.Timer(32.0, self.check_status_ALL)
-		t3.daemon=True
-		t3.start()
-
-	
-	def retrieve_data(self):
-		self.time = datetime.now().strftime('%H:%M')
-		self.date = datetime.now().strftime('%Y-%m-%d')
-		
-		#hours go by [00-23]
-		hour = str(datetime.now().hour)
-		if len(hour) == 1:
-			hour = '0' + str(datetime.now().hour)
-		else:
-			pass
-			
-		global A
-		global R
-		global G
-		global B
-		
-		self.light_name = lights_down[0]
-		print "grabbing data"
-		for row in curs.execute("SELECT Data FROM Lights WHERE Light_name='" + lights_down[0] + "'"):
-			print(row[0])
-			d = row[0]
-			if d == '0':
-				A = int(0)
-				R = int(0) 
-				G = int(0)
-				B = int(0)
+				#hours go by [00-23]
+				hour = str(datetime.now().hour)
+				if len(hour) == 1:
+					hour = '0' + str(datetime.now().hour)
+				else:
+					pass
 				
-				self.sa = str(A)
-				self.sr = str(R)
-				self.sg = str(G)
-				self.sb = str(B)
+				#for row in curs.execute("SELECT IP_address FROM Lights"):
+				curs.execute("SELECT IP_address FROM Lights")
+				ips = curs.fetchall()
+				ip_addresses =[r[0] for r in ips]
+				self.count =  len(ip_addresses)
+				print("This is the count %s" % self.count)
+					
+					
+				for ip in ip_addresses:
+					
+					global A
+					global R
+					global G
+					global B
+						
+					#self.send_light_name(row[0])
+					self.send_light_name(ip) #NEW
+					#self.ip = row[0]
+					self.ip = ip #NEW
+					
+					curs2.execute("SELECT Data FROM Lights WHERE IP_address = '" + ip + "'")
+					d = curs2.fetchone()
+					sensor_data =  d[0]
+					
+					if sensor_data  == '0' or sensor_data == '1' or sensor_data == 'PNG':
+						A = int(0)
+						R = int(0)
+						G = int(0)
+						B = int(0)
+						print("sensor_data equals 0,1, or PNG")
+
+					else:
+						A = int(sensor_data[0] + sensor_data[1], 16)
+						R = int(sensor_data[2] + sensor_data[3], 16)
+						G = int(sensor_data[4] + sensor_data[5], 16)
+						B = int(sensor_data[6] + sensor_data[7], 16)
+						
+					print("rflag is %s (should be True)" % self.rflag)
+					self.retrieveCR_and_status(hour)
+					print "entering retrieveCR_and_status"
 
 			else:
-				A = int(d[0] + d[1], 16)
-				R = int(d[2] + d[3], 16) 
-				G = int(d[4] + d[5], 16)
-				B = int(d[6] + d[7], 16)
-				
-				self.sa = str(A)
-				self.sr = str(R)
-				self.sg = str(G)
-				self.sb = str(B)
-		
-		for row in curs2.execute("SELECT IP_address FROM Lights WHERE Light_name='" + lights_down[0] + "'"):
-			self.ip = row[0]
-		
-		self.retrieveCR_and_status(hour)
-		print "entering retrieveCR_and_status"
+				print "pass"
+				pass
+		except:
+			pass
 
+	def retrieve_data(self):
+
+		try:
+			self.time = datetime.now().strftime('%H:%M')
+			self.date = datetime.now().strftime('%Y-%m-%d')
+		
+			#hours go by [00-23]
+			hour = str(datetime.now().hour)
+			if len(hour) == 1:
+					hour = '0' + str(datetime.now().hour)
+			else:
+				pass
+		
+			global A
+			global R
+			global G
+			global B
+		
+			self.light_name = lights_down[0]
+			print(lights_down[0])
+			print "grabbing data"
+			
+			for row in curs.execute("SELECT Data FROM Lights WHERE Light_name='" + lights_down[0] + "'"):
+				print(row[0])
+				d = row[0]
+				if d == '0' or d == "PNG" or d == '1':
+					A = int(0)
+					R = int(0) 
+					G = int(0)
+					B = int(0)
+				
+					self.sa = str(A)
+					self.sr = str(R)
+					self.sg = str(G)
+					self.sb = str(B)
+					print("sensor_data equals 0,1, or PNG")
+
+
+				else:
+					A = int(d[0] + d[1], 16)
+					R = int(d[2] + d[3], 16) 
+					G = int(d[4] + d[5], 16)
+					B = int(d[6] + d[7], 16)
+				
+					self.sa = str(A)
+					self.sr = str(R)
+					self.sg = str(G)
+					self.sb = str(B)
+		
+			for row in curs2.execute("SELECT IP_address FROM Lights WHERE Light_name = '" + lights_down[0] + "'"):
+				self.ip = row[0]
+		
+			self.clear_selection()
+			self.retrieveCR_and_status(hour)
+			print "entering retrieveCR_and_status"
+
+
+		except:
+			pass
 
         """This method shows the status of the light to the user"""
 	def health_popup(self):
@@ -443,15 +507,18 @@ class Health(Screen):
 		self.parent.current = 'view_room'
 		
 	def send_get_cmd(self, arg1):
-		for row in curs.execute("SELECT IP_address FROM Lights"):
-			(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
-			dt = "%s.%03d" % (dt, int(micro) / 1000)
-			cmd = "S" + " " + row[0] +  " " + "GET" + " " + "00000000" + " " + dt
+		try:
+			for row in curs.execute("SELECT IP_address FROM Lights"):
+				(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
+				dt = "%s.%03d" % (dt, int(micro) / 1000)
+				cmd = "S" + " " + row[0] +  " " + "GET" + " " + "00000000" + " " + "[" +  dt + "]"
 			
-			with open("workfile.txt","a") as document:
+				with open("workfile.txt","a") as document:
 					document.write(cmd)
 					document.write('\n')
-			document.close()
+				document.close()
+		except:
+			print "error in send_get_cmd"
 			
 	""" method retrieves current circadian rhythm values and calculates health status """
 	def retrieveCR_and_status(self, hour):
@@ -522,6 +589,7 @@ class Health(Screen):
 		#self.sg = str(G)
 		#self.sb = str(B)
 		global name_of_light
+		print("current rflag, before comparison %s" % self.rflag)
 		#compare CR values and sensor values
 		if ((A >= min_intensity) and (A <= max_intensity)):
 			print('pass 1')
@@ -571,9 +639,22 @@ class Health(Screen):
 		message = Label(text='Warning: {} does not fall within \n the current CR values range'.format(ln), font_size=25, valign = 'middle', size_hint=(1,.3))
 		box.add_widget(message)
 		#user input
-		_popup = Popup(title= 'Light Degradation Detected', content = box, title_size =(25),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
-		box.add_widget(Button(text='Read and Accept', size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0},on_press = _popup.dismiss))
+		_popup = Popup(title= 'Light Degradation Detected', content = box, title_size =(25),size_hint=(None, None), size=(500,250),title_align='center', auto_dismiss=False)
+		box.add_widget(Button(text='Read and Accept', size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0},on_press = self.release_flag,on_release = _popup.dismiss))
 		_popup.open()
+
+	def release_flag(self,arg1):
+		#releases next popup, if any
+		self.press_count += 1
+		print("This is the count %s" % self.count)
+		print("This is the press count %s" % self.press_count)
+		if(self.count == self.press_count):
+			self.rflag =  False
+			#reset counts
+			self.press_count = 0
+			print("rflag is %s (should be true)" % self.rflag)
+		else:
+			pass
 		
 	def switch_to_this(self, screen):
 		global screen_to_switch
@@ -609,7 +690,7 @@ class SetValues(Screen):
 			
 			global ARGB
 			ARGB = A+R+G+B
-			
+
 		color_picker.bind(color=on_color) #binds to function above
 	
 	def set_selection(self):
@@ -621,9 +702,10 @@ class SetValues(Screen):
 				ip_addresses =[r[0] for r in ips]
 				
 				for ip in ip_addresses:
-					(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+					(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
 					dt = "%s.%03d" % (dt, int(micro) / 1000)
 					cmd = "S" + " " + ip +  " " + "SET" + " " + str(ARGB) + " " + dt
+					print("this is the command %s" % cmd)
 					
 					with open("workfile.txt","a") as document:
 						document.write(cmd)
@@ -640,7 +722,7 @@ class SetValues(Screen):
 				for l in lights_down:
 					for row in curs.execute("SELECT IP_address FROM Lights WHERE Light_name = '" + l + "'"):
 
-						(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+						(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
 						dt = "%s.%03d" % (dt, int(micro) / 1000)
 						cmd = "S" + " " + row[0] +  " " + "SET" + " " + str(ARGB) + " " + dt
 						
@@ -651,7 +733,86 @@ class SetValues(Screen):
 						
 						try:
 							# disable sending CR values to lights in this room  
-							curs.execute("UPDATE Lights SET SendCR='false' WHERE IP_address = '" + row[0] + "'")
+							curs2.execute("UPDATE Lights SET SendCR='false' WHERE IP_address = '" + row[0] + "'")
+							conn.commit()
+						except:
+							print "error in updating SendCR"
+							pass
+				
+			else:
+				print "error in set_selection"
+				pass
+		except:
+			print "Error in set_selection"
+			
+			
+class SetValues2(Screen):
+	ARGB = ''
+	def __init__(self, **kwargs):
+		super(SetValues2, self).__init__(**kwargs)
+	
+	def build(self):
+		self.ids.setbox.clear_widgets()
+		
+		#create layout to display the data
+		color_picker = ColorPicker()
+		self.ids.setbox.add_widget(color_picker)
+		
+		#capture color selection
+		def on_color(instance, value):
+			RGBA = list(color_picker.hex_color[1:])
+			
+			A = (RGBA[6] + RGBA[7])
+			B = (RGBA[4] + RGBA[5])
+			G = (RGBA[2] + RGBA[3])
+			R = (RGBA[0] + RGBA[1])
+			
+			global ARGB
+			ARGB = A+R+G+B
+
+		color_picker.bind(color=on_color) #binds to function above
+	
+	#change this one
+	def set_selection(self):
+		try:
+			if len(lights_down) == 0:
+				curs.execute("SELECT IP_address FROM Lights WHERE Room ='X'")
+				ips = curs.fetchall()
+				ip_addresses =[r[0] for r in ips]
+				
+				for ip in ip_addresses:
+					(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
+					dt = "%s.%03d" % (dt, int(micro) / 1000)
+					cmd = "S" + " " + ip +  " " + "SET" + " " + str(ARGB) + " " + dt
+					print("this is the command %s" % cmd)
+					
+					with open("workfile.txt","a") as document:
+						document.write(cmd)
+						document.write('\n')
+					document.close()
+					try:
+						# disable sending CR values to lights in this room  
+						curs.execute("UPDATE Lights SET SendCR='false' WHERE IP_address = '" + ip + "'")
+						conn.commit()
+					except:
+						print "error in updating SendCR"				
+			
+			elif len(lights_down) >= 1:
+				for l in lights_down:
+					for row in curs.execute("SELECT IP_address FROM Lights WHERE Light_name = '" + l + "'"):
+
+						(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
+						dt = "%s.%03d" % (dt, int(micro) / 1000)
+						cmd = "S" + " " + row[0] +  " " + "SET" + " " + str(ARGB) + " " + dt
+						
+						with open("workfile.txt","a") as document:
+							document.write(cmd)
+							document.write('\n')
+						document.close()
+						
+						try:
+							# disable sending CR values to lights in this room  
+							curs2.execute("UPDATE Lights SET SendCR='false' WHERE IP_address = '" + row[0] + "'")
 							conn.commit()
 						except:
 							print "error in updating SendCR"
@@ -670,7 +831,34 @@ class LightsView(Screen):
 	def __init__(self, **kwargs):
 		self.layout = None
 		super(LightsView, self).__init__(**kwargs)
-		
+	
+	def CR_default(self):
+		try:
+			print(lights_down)
+			print "back to CR default"
+                	if(len(lights_down)== 0):
+                        	#return all of the lights back to CR 
+                        	#curs3.execute("UPDATE Lights SET SendCR='True' WHERE Room = '" + btns_down[0] + "'")
+                        	#conn.commit()
+                        	pass
+                	elif(len(lights_down) >= 1):
+                        	#update the lights selected back to CR 
+                        	for light in lights_down:
+					try:
+                                		curs3.execute("UPDATE Lights SET SendCR='True' WHERE Light_name = '" + light + "'")
+                                		conn.commit()
+					except:
+						print "can't update db"
+				self.clear_lights_selection()
+
+			else:
+				pass
+
+
+
+		except:
+			print "error in CR_default"
+
 	def clear_lights_selection(self):
 		try:
 			lights_down = []
@@ -721,7 +909,7 @@ class LightsView(Screen):
 		data = curs.fetchall()
 			
 		instances =[r[0] for r in data]
-		print(instances)
+		#print(instances)
 		
 		for inst in instances:
 			self.btn = ToggleButton(text='%s' % inst, size = (340, 45),size_hint=(None,None)) #create button
@@ -756,12 +944,13 @@ class LightsView(Screen):
 				lights_down.append(instance.text) # add to list of buttons with down state
 			elif value == 'normal':
 				lights_down.remove(instance.text) # remove from list if back to normal
-				print('not down')
+				#print('not down')
 			else:
 				pass
 		except ValueError:
-			print("Value error")
-	
+			#print("Value error")
+			pass
+
 	""" method checks the state of the toggle buttons for rooms section """
 	def callback(self,instance, value):
 		try:
@@ -770,7 +959,7 @@ class LightsView(Screen):
 				btns_down.append(instance.text) # add to list of buttons with down state
 			elif value == 'normal':
 				btns_down.remove(instance.text) # remove from list if back to normal
-				print('not down')
+				#print('not down')
 			else:
 				pass
 		except ValueError:
@@ -873,7 +1062,7 @@ class LightsView(Screen):
 			#retrieve IP address from database
 			for row in curs.execute("SELECT IP_address FROM Lights WHERE Light_name='" + k + "'"):
 				data = "00000000"
-				(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+				(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
 				dt = "%s.%03d" % (dt, int(micro) / 1000)
 				cmd = "S" + " " + row[0] + " " + "SHD" + " " + data + " " + dt
 				with open("workfile.txt","a") as document:
@@ -898,7 +1087,7 @@ class LightsView(Screen):
 				box_2.add_widget(Button(text='Return', font_size = 20, size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0}, on_release = popup_2.dismiss))
 				popup_2.open()
 			elif(len(lights_down) >= 1):
-				sm.current = 'set_values'
+				sm.current = 'set_values2'
 			else:
 				pass
 		except:
@@ -952,7 +1141,24 @@ class RoomView(Screen):
 	room_name = StringProperty()
 	def __init__(self, **kwargs):
 		super(RoomView, self).__init__(**kwargs)
-	
+
+	def CR_default(self):
+		print "back to CR default"
+		if(len(lights_down)== 0):
+			#return all of the lights back to CR 
+			curs3.execute("UPDATE Lights SET SendCR='True' WHERE Room = '" + btns_down[0] + "'")
+			conn.commit()
+			pass
+		else:
+			#update the lights selected back to CR 
+			for light in lights_down:
+				curs3.execute("UPDATE Lights SET SendCR='True' WHERE Light_name = '" + light + "'")
+				conn.commit()
+			self.clear_select()
+			pass
+		#except:
+		#	pass
+
 	def remove_from_database(self):
 		#check lights_down
 		global lights_down
@@ -998,8 +1204,7 @@ class RoomView(Screen):
 					self.ids.gridlayout2.add_widget(btn) #add to gridlayout 
 				self.ids.gridlayout2.bind(minimum_height=self.ids.gridlayout2.setter('height'))
 			else:
-				print("must select a light")
-				
+				pass
 		except:
 			pass
 		
@@ -1041,50 +1246,48 @@ class LoginScreen(Screen):
 		super(LoginScreen, self).__init__(**kwargs)
 	
 	def clear_user(self, u, p):
-		print "clearing username and password"
+		#clears username and pass
 		u.text = "" 
 		p.text = ""
+
+	def login(self, username, password):
+		#try:
+		user = username
+		passw = password
+		obj = Methods()
+		h = Health()
+
+		curs.execute("SELECT * FROM Users WHERE username = '" + username + "' AND password= '" + password + "'")
+		if curs.fetchone() is not None:
+			print "Successful Login"
+			self.parent.current = 'homepage'
+			#after login, these methods should execute...
+			#event checks workfile every 5 seconds for unprocessed commands 
+			event = Clock.schedule_interval(obj.cmdparser, 4.0)
+			event()
+			##updates lights stored in database with current circadian rhythm values every minute
+			light_update_event = Clock.schedule_interval(obj.update_lights,7.0)
+			light_update_event()
+			
+			##checks the health status of every light in the database
+			health_status_event = Clock.schedule_interval(h.check_health_status,20.0)
+			health_status_event()	
+
+
+
+			
+		else:
+			box = BoxLayout(orientation = 'vertical', padding = (8))
+			message = Label(text='Invalid username or password', font_size=25, valign = 'middle', size_hint=(1,.3))
+			box.add_widget(message)
+			popup = Popup(title= 'Login Error', content = box, title_size =(30),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
+			box.add_widget(Button(text='Return', font_size = 20, size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0},on_release = popup.dismiss))
+			popup.open()
+				
+	#	except:
+	#		pass
 		
 
-	
-	def login(self, username, password):
-		try:
-			user = username
-			passw = password
-			obj = Methods()
-			h = Health()
-
-			curs.execute("SELECT * FROM Users WHERE username = '" + username + "' AND password= '" + password + "'")
-			if curs.fetchone() is not None:
-				print "Successful Login"
-				self.parent.current = 'homepage'
-				#after login, these methods should execute...
-				#event checks workfile every 5 seconds for unprocessed commands 
-				event = Clock.schedule_interval(obj.cmdparser, 4.0)
-				event()
-				#updates lights stored in database with current circadian rhythm values every minute
-				light_update_event = Clock.schedule_interval(obj.update_lights,7.0)
-				light_update_event()
-				
-				#sends "GET" command to retrieve sensor data
-				get_event = Clock.schedule_interval(h.send_get_cmd, 5.0)
-				get_event()
-				
-				#checks the health status of every light in the database
-	
-
-			else:
-				box = BoxLayout(orientation = 'vertical', padding = (8))
-				message = Label(text='Invalid username or password', font_size=25, valign = 'middle', size_hint=(1,.3))
-				box.add_widget(message)
-				popup = Popup(title= 'Login Error', content = box, title_size =(30),size_hint=(None, None), size=(450,250),title_align='center', auto_dismiss=False)
-				box.add_widget(Button(text='Return', font_size = 20, size_hint=(.5,.3), pos_hint={'center_x': .5, 'center_y': 0},on_release = popup.dismiss))
-				popup.open()
-				
-		except:
-			print "error in login screen"
-			
-			
 			
 class HomePage(Screen):
 	Timeh = StringProperty()
@@ -1147,20 +1350,11 @@ class HomePage(Screen):
 			print "error in getInfo"
 		
 	def shutdown(self):
-		
-
-		#Clock.unschedule(light_update_event)
-		#Clock.unschedule(get_event)
-		#Clock.unschedule(event)
-		#not working
-		#light_update_event.cancel()
-		#get_event.cancel()
-		#event.cancel()
 
 		#grab IP address of all lights
 		data = '00000000'
 		for row in curs.execute("SELECT IP_address FROM Lights"):
-			(dt, micro) = datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f').split('.')
+			(dt, micro) = datetime.now().strftime('%Y-%m-%d_%H:%M:%S.%f').split('.')
 			dt = "%s.%03d" % (dt, int(micro) / 1000)
 			cmd = 'S' + ' ' + row[0] + ' ' + 'SUS' + ' ' + data + ' ' + dt
 			with open("workfile.txt","a") as document:
@@ -1168,8 +1362,6 @@ class HomePage(Screen):
 					document.write('\n')
 			document.close()
 			
-		
-		
 		#popup to notify user of shutdown
 		box_2 = BoxLayout(orientation = 'vertical', padding = (8))
 		#message on popup
@@ -1183,17 +1375,15 @@ class HomePage(Screen):
 
 
 	def run_demo(self):
-		print "running demo"
 		os.system("cat /home/pi/UNT-NASA/RGBdemo.txt > /home/pi/UNT-NASA/workfile.txt")
 		pass
 		
-		
-
 
 class Troubleshoot(Screen):
 	pass
 
 ############################################ JORGE's GUI Section ##################################################
+
 """This class has the buttons to 'Add New Device', 'view Ports' """
 class Setting(Screen, GridLayout, BoxLayout):
     newDevControl = 1
@@ -1245,7 +1435,7 @@ class Setting(Screen, GridLayout, BoxLayout):
             self.portsCount = str(self.new)
             self.newDevControl = 1
             
-            curs.execute("UPDATE PORTS SET Amount='" + self.portsCount + "'")
+            curs4.execute("UPDATE PORTS SET Amount='" + self.portsCount + "'")
             conn.commit()
   
             print("User Entered: {}".format(self.uInput.text))
@@ -1264,7 +1454,7 @@ class Setting(Screen, GridLayout, BoxLayout):
 
         ## To show on the Screen
         global portsCount
-        for row in curs.execute("SELECT * FROM Ports"):
+        for row in curs4.execute("SELECT * FROM Ports"):
 		self.portsCount = row[0]                       
 
         self.portsNote = "There are " + str(self.portsCount) + " Ports Available!\n"
@@ -1273,7 +1463,7 @@ class Setting(Screen, GridLayout, BoxLayout):
         ## To show on the Screen
         self.usedPorts=1
         self.note = None
-        for row in curs.execute("SELECT * FROM Lights"):
+        for row in curs4.execute("SELECT * FROM Lights"):
 		#self.portsCount = row[0]                       
                 self.usedPorts +=1
         
@@ -1371,7 +1561,7 @@ class TestOLA(Screen):
         def build(self):
 		self.ids.testolalayout.clear_widgets()
 		
-		for row in curs.execute("SELECT Light_name FROM Lights WHERE Room='X'"):
+		for row in curs4.execute("SELECT Light_name FROM Lights WHERE Room='X'"):
 			btn = ToggleButton(text='%s' % row[0], size = (780, 45),size_hint=(None,None)) #create button
 			btn.bind(state=self.lightscallback, on_press=self.showOLA)
 			self.ids.testolalayout.add_widget(btn) #add to gridlayout 
@@ -1400,7 +1590,7 @@ class TestOLA(Screen):
                         self.aColor.open()
 
                         # Prepare for color selection
-                        for row in curs.execute("SELECT IP_address FROM Lights WHERE Light_name='" + lights_down[0] + "'"):
+                        for row in curs4.execute("SELECT IP_address FROM Lights WHERE Light_name='" + lights_down[0] + "'"):
 			        cmd = "S "  + row[0] +  " " + "SET" + " "
 		                ip = row[0]
 				#print(ip)
